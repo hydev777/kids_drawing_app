@@ -22,12 +22,30 @@ class DrawerPanel with ChangeNotifier {
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
 
+  List<Offset> _points = [];
+
+  List<Offset> get points {
+    return _points;
+  }
+
+  List<Color>? get getBackgroundColors {
+    return _backgroundColors;
+  }
+
+  List<Color>? get getLineColors {
+    return _lineColors;
+  }
+
   Color get selectedLineColor {
     return _lineColors![_lineColorSelected];
   }
 
   Color get selectedBackgroundColor {
     return _backgroundColors![_backgroundSelected];
+  }
+
+  double? get lineSize {
+    return _lineSize;
   }
 
   set changeLineSize(double size) {
@@ -37,23 +55,31 @@ class DrawerPanel with ChangeNotifier {
 
   }
 
-  set changeLineColor(int index) {
+  set changeLineColor(Color color) {
 
-    if(index < _lineColors!.length) {
+    if(_lineColors!.contains(color)) {
+      int index = _lineColors!.indexOf(color);
       _lineColorSelected = index;
       notifyListeners();
     }
 
   }
 
-  set changeBackgroundColor(int index) {
+  set changeBackgroundColor(Color color) {
 
-    if(index < _backgroundColors!.length) {
+    if(_backgroundColors!.contains(color)) {
+      int index = _backgroundColors!.indexOf(color);
       _backgroundSelected = index;
       notifyListeners();
     }
 
   }
 
+  drawOnBoard(line) {
+
+    _points.add(line);
+    notifyListeners();
+
+  }
 
 }

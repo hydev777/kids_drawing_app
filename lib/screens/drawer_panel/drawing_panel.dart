@@ -1,65 +1,177 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/drawer_panel.dart';
 
 class Panel extends StatelessWidget {
   const Panel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
+    List<Color>? backgroundColor = Provider.of<DrawerPanel>(context).getBackgroundColors;
+    final panelActions = Provider.of<DrawerPanel>(context);
+
     return Scaffold(
       body: Column(
           children: [
             Container(
               height: 150,
               width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              decoration: const BoxDecoration(
+                color: Colors.white
+              ),
+              child: Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: Text('Color'),
-                  ),
-                  Row(
+                  Column(
                     children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.black
-                        ),
-                        margin: const EdgeInsets.all(5),
-                        height: 30,
-                        width: 30,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Line'),
+                          ),
+                          Row(
+                            children: [
+
+                              ...lineColors!.map((color) {
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeLineColor = color;
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: color,
+                                        border: Border.all(color: Colors.black)
+                                    ),
+                                    margin: const EdgeInsets.all(4),
+                                    height: 25,
+                                    width: 25,
+                                  ),
+                                );
+
+                              }).toList(),
+
+                            ],
+                          ),
+                        ],
                       ),
-                      Container(
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red
-                        ),
-                        margin: const EdgeInsets.all(5),
-                        height: 30,
-                        width: 30,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Background'),
+                          ),
+                          Row(
+                            children: [
+
+                              ...backgroundColor!.map((color) {
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeBackgroundColor = color;
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: color,
+                                        border: Border.all(color: Colors.black)
+                                    ),
+                                    margin: const EdgeInsets.all(4),
+                                    height: 25,
+                                    width: 25,
+                                  ),
+                                );
+
+                              }).toList(),
+
+                            ],
+                          ),
+                        ],
                       ),
-                      Container(
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue
-                        ),
-                        margin: const EdgeInsets.all(5),
-                        height: 30,
-                        width: 30,
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.yellow
-                        ),
-                        margin: const EdgeInsets.all(5),
-                        height: 30,
-                        width: 30,
-                      )
                     ],
                   ),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Actions'),
+                          ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.create),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.save),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.delete),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.share),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
@@ -82,36 +194,45 @@ class Draw extends StatefulWidget {
 }
 
 class _DrawState extends State<Draw> {
-  List<Offset> points = [];
+  // List<Offset> points = [];
   Offset? pencil = Offset(0, 0);
 
-  drawOnBoard(line) {
-
-    setState(() {
-      points.add(line);
-    });
-
-    setState(() {
-      pencil = line;
-    });
-
-  }
+  // drawOnBoard(line) {
+  //
+  //   setState(() {
+  //     points.add(line);
+  //   });
+  //
+  //   setState(() {
+  //     pencil = line;
+  //   });
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
+
+    Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
+    Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
+    double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
+    List<Offset> points = Provider.of<DrawerPanel>(context).points;
+    final drawActions = Provider.of<DrawerPanel>(context);
+
     return GestureDetector(
       onPanStart: (details) {
 
-        drawOnBoard(details.localPosition);
+        drawActions.drawOnBoard(details.localPosition);
+        // drawOnBoard();
 
       },
       onPanUpdate: (details) {
 
-        drawOnBoard(details.localPosition);
+        drawActions.drawOnBoard(details.localPosition);
+        // drawOnBoard(details.localPosition);
 
       },
       child: CustomPaint(
-        painter: Board(pencil: pencil, points: points, backgroundColor: Colors.white, lineColor: Colors.black, lineSize: 5),
+        painter: Board(pencil: pencil, points: points, backgroundColor: selectedBackgroundColor, lineColor: selectedLineColor, lineSize: lineSize),
       ),
     );
   }
