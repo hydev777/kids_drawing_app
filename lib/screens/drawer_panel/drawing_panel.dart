@@ -268,7 +268,7 @@ class _DrawState extends State<Draw> {
 }
 
 class Board extends CustomPainter {
-  final points;
+  List<Offset>? points;
   Offset? pencil;
   Color? lineColor;
   Color? backgroundColor;
@@ -288,7 +288,7 @@ class Board extends CustomPainter {
     //
     // }
 
-    for(var point in points) {
+    for(var point in points!) {
 
       canvas.drawPoints(
         PointMode.points,
