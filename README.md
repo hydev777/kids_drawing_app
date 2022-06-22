@@ -1,4 +1,4 @@
 # drawing_things
 
-A drawing app
+A simple drawing app. More features are coming soon.
 
