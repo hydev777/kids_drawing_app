@@ -75,9 +75,16 @@ class DrawerPanel with ChangeNotifier {
 
   }
 
-  drawOnBoard(line) {
+  void drawOnBoard(line) {
 
     _points.add(line);
+    notifyListeners();
+
+  }
+
+  void cleanBoard() {
+
+    _points = [];
     notifyListeners();
 
   }

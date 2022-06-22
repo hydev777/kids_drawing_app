@@ -33,6 +33,81 @@ class Panel extends StatelessWidget {
                         children: [
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Actions'),
+                          ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.create),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.save),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  panelActions.cleanBoard();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.delete),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black)
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.share),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                             child: Text('Line'),
                           ),
                           Row(
@@ -98,80 +173,6 @@ class Panel extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 10),
-                  Column(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                            child: Text('Actions'),
-                          ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.create),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.save),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.delete),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.share),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  )
                 ],
               ),
             ),
