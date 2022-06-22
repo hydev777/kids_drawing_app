@@ -238,13 +238,11 @@ class _DrawState extends State<Draw> {
       onPanStart: (details) {
 
         drawActions.drawOnBoard(details.localPosition);
-        // drawOnBoard();
 
       },
       onPanUpdate: (details) {
 
         drawActions.drawOnBoard(details.localPosition);
-        // drawOnBoard(details.localPosition);
 
       },
       child: CustomPaint(
