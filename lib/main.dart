@@ -13,10 +13,84 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Drawer(),
+      debugShowCheckedModeBanner: false,
+      home: Panel(),
     );
   }
 }
+
+class Panel extends StatelessWidget {
+  const Panel({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+          children: [
+            Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  border: Border.all()
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Color'),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black
+                        ),
+                        margin: const EdgeInsets.all(5),
+                        height: 30,
+                        width: 30,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.red
+                        ),
+                        margin: const EdgeInsets.all(5),
+                        height: 30,
+                        width: 30,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue
+                        ),
+                        margin: const EdgeInsets.all(5),
+                        height: 30,
+                        width: 30,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.yellow
+                        ),
+                        margin: const EdgeInsets.all(5),
+                        height: 30,
+                        width: 30,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height - 150,
+              child: Drawer(),
+            ),
+          ]
+      ),
+    );
+  }
+}
+
 
 class Drawer extends StatefulWidget {
   const Drawer({Key? key}) : super(key: key);
