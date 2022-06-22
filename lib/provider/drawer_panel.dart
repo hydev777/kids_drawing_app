@@ -22,7 +22,15 @@ class DrawerPanel with ChangeNotifier {
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
 
+  Offset? _pencil = Offset(0, 0);
+
   List<Offset> _points = [];
+
+  Offset? get pencil {
+
+    return _pencil;
+
+  }
 
   List<Offset> get points {
     return _points;
@@ -75,9 +83,10 @@ class DrawerPanel with ChangeNotifier {
 
   }
 
-  void drawOnBoard(line) {
+  void drawOnBoard(Offset line) {
 
     _points.add(line);
+    _pencil = line;
     notifyListeners();
 
   }

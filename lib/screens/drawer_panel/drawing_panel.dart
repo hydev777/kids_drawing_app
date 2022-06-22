@@ -223,20 +223,6 @@ class Draw extends StatefulWidget {
 }
 
 class _DrawState extends State<Draw> {
-  // List<Offset> points = [];
-  Offset? pencil = Offset(0, 0);
-
-  // drawOnBoard(line) {
-  //
-  //   setState(() {
-  //     points.add(line);
-  //   });
-  //
-  //   setState(() {
-  //     pencil = line;
-  //   });
-  //
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -245,6 +231,7 @@ class _DrawState extends State<Draw> {
     Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     List<Offset> points = Provider.of<DrawerPanel>(context).points;
+    Offset? pencil = Provider.of<DrawerPanel>(context).pencil;
     final drawActions = Provider.of<DrawerPanel>(context);
 
     return GestureDetector(
@@ -298,7 +285,7 @@ class Board extends CustomPainter {
 
     }
 
-    //   canvas.drawCircle(points![line], 5, Paint()..color = Colors.white..strokeWidth = 5);
+      canvas.drawCircle(pencil!, 5, Paint()..color = Colors.purple ..strokeWidth = 5);
 
     // for(var line = 0; line < points!.length; line++) {
     //
