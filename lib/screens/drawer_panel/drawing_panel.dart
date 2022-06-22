@@ -13,6 +13,7 @@ class Panel extends StatelessWidget {
 
     List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
     List<Color>? backgroundColor = Provider.of<DrawerPanel>(context).getBackgroundColors;
+    double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     final panelActions = Provider.of<DrawerPanel>(context);
 
     return Scaffold(
@@ -167,6 +168,33 @@ class Panel extends StatelessWidget {
 
                               }).toList(),
 
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Font Size'),
+                          ),
+                          Row(
+                            children: [
+
+                              Slider(value: lineSize!, onChanged: (newSize) {
+                                panelActions.changeLineSize = newSize;
+                              },
+                              min: 1,
+                              max: 10,
+                              divisions: 9,
+                              label: "$lineSize",
+                              )
                             ],
                           ),
                         ],
