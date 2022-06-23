@@ -2,3 +2,8 @@
 
 A simple drawing app. More features are coming soon.
 
+Features done:
+
+1. When the color of the line is changed, only new lines will have that color previous ones will remain the same.
+2. Make a difference between the lines drawn and the pencil point of contact.
+
