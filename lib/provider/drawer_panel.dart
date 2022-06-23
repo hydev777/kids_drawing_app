@@ -87,7 +87,7 @@ class DrawerPanel with ChangeNotifier {
 
   void drawOnBoard(Offset line) {
 
-    LinePoint? point = LinePoint( color: selectedLineColor, point: line );
+    LinePoint? point = LinePoint( color: selectedLineColor, point: line, size: lineSize );
 
     _points.add(point);
     _pencil = line;

@@ -278,7 +278,7 @@ class Board extends CustomPainter {
       canvas.drawPoints(
         PointMode.points,
         [point.point!],
-        Paint()..color = point.color!..strokeWidth = lineSize!,
+        Paint()..color = point.color!..strokeWidth = point.size!,
       );
 
     }
