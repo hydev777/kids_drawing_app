@@ -9,7 +9,7 @@ class DrawerPanel with ChangeNotifier {
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
 
-  Offset? _pencil = Offset(0, 0);
+  Offset? _pencil = const Offset(0, 0);
 
   List<LinePoint> _points = [];
 
@@ -73,6 +73,7 @@ class DrawerPanel with ChangeNotifier {
 
   void cleanBoard() {
     _points = [];
+    _pencil = const Offset(0, 0);
     notifyListeners();
   }
 }

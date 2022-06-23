@@ -12,7 +12,9 @@ class Panel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
-    List<Color>? backgroundColor = Provider.of<DrawerPanel>(context).getBackgroundColors;
+    List<Color>? backgroundColors = Provider.of<DrawerPanel>(context).getBackgroundColors;
+    Color? selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
+    Color? selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     final panelActions = Provider.of<DrawerPanel>(context);
 
@@ -100,11 +102,16 @@ class Panel extends StatelessWidget {
                               onTap: () {
                                 panelActions.changeLineColor = color;
                               },
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, color: color, border: Border.all(color: Colors.black)),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: color,
+                                  border: Border.all(color: Colors.black),
+                                ),
                                 margin: const EdgeInsets.all(4),
-                                height: 25,
-                                width: 25,
+                                height: selectedLineColor == color ? 30 : 25,
+                                width: selectedLineColor == color ? 30 : 25,
                               ),
                             );
                           }).toList(),
@@ -121,16 +128,21 @@ class Panel extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          ...backgroundColor!.map((color) {
+                          ...backgroundColors!.map((color) {
                             return GestureDetector(
                               onTap: () {
                                 panelActions.changeBackgroundColor = color;
                               },
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, color: color, border: Border.all(color: Colors.black)),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: color,
+                                  border: Border.all(color: Colors.black),
+                                ),
                                 margin: const EdgeInsets.all(4),
-                                height: 25,
-                                width: 25,
+                                height: selectedBackgroundColor == color ? 30 : 25,
+                                width: selectedBackgroundColor == color ? 30 : 25,
                               ),
                             );
                           }).toList(),
@@ -230,20 +242,21 @@ class Board extends CustomPainter {
 
     for (var point in points!) {
       canvas.drawPoints(
-        PointMode.points,
-        [point.point!],
-        Paint()
-          ..color = point.color!
-          ..strokeWidth = point.size!,
-      );
+          PointMode.points,
+          [point.point!],
+          Paint()
+            ..color = point.color!
+            ..strokeWidth = point.size!
+            ..strokeJoin = StrokeJoin.miter);
     }
 
     canvas.drawCircle(
-        pencil!,
-        5,
-        Paint()
-          ..color = Colors.purple
-          ..strokeWidth = 5);
+      pencil!,
+      5,
+      Paint()
+        ..color = Colors.purple
+        ..strokeWidth = 5,
+    );
   }
 
   @override
