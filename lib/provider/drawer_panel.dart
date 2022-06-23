@@ -3,23 +3,8 @@ import 'package:flutter/material.dart';
 import '../classes/line_point.dart';
 
 class DrawerPanel with ChangeNotifier {
-
-  final List<Color>? _lineColors = [
-    Colors.black,
-    Colors.red,
-    Colors.blue,
-    Colors.yellow,
-    Colors.green
-  ];
-  final List<Color>? _backgroundColors = [
-
-    Colors.white10,
-    Colors.cyanAccent,
-    Colors.deepOrangeAccent,
-    Colors.limeAccent,
-    Colors.lightGreen
-
-  ];
+  final List<Color>? _lineColors = [Colors.black, Colors.red, Colors.blue, Colors.yellow, Colors.green];
+  final List<Color>? _backgroundColors = [Colors.white10, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
   double? _lineSize = 2;
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
@@ -29,9 +14,7 @@ class DrawerPanel with ChangeNotifier {
   List<LinePoint> _points = [];
 
   Offset? get pencil {
-
     return _pencil;
-
   }
 
   List<LinePoint> get points {
@@ -59,47 +42,37 @@ class DrawerPanel with ChangeNotifier {
   }
 
   set changeLineSize(double size) {
-
     _lineSize = size;
     notifyListeners();
-
   }
 
   set changeLineColor(Color color) {
-
-    if(_lineColors!.contains(color)) {
+    if (_lineColors!.contains(color)) {
       int index = _lineColors!.indexOf(color);
       _lineColorSelected = index;
       notifyListeners();
     }
-
   }
 
   set changeBackgroundColor(Color color) {
-
-    if(_backgroundColors!.contains(color)) {
+    if (_backgroundColors!.contains(color)) {
       int index = _backgroundColors!.indexOf(color);
       _backgroundSelected = index;
       notifyListeners();
     }
-
   }
 
   void drawOnBoard(Offset line) {
-
-    LinePoint? point = LinePoint( color: selectedLineColor, point: line, size: lineSize );
+    LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line);
 
     _points.add(point);
     _pencil = line;
-    notifyListeners();
 
+    notifyListeners();
   }
 
   void cleanBoard() {
-
     _points = [];
     notifyListeners();
-
   }
-
 }

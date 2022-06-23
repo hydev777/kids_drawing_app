@@ -11,207 +11,172 @@ class Panel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
     List<Color>? backgroundColor = Provider.of<DrawerPanel>(context).getBackgroundColors;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     final panelActions = Provider.of<DrawerPanel>(context);
 
     return Scaffold(
-      body: Column(
-          children: [
-            Container(
-              height: 150,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white
-              ),
-              child: Row(
+      body: Column(children: [
+        Container(
+          height: 150,
+          width: double.infinity,
+          decoration: const BoxDecoration(color: Colors.white),
+          child: Row(
+            children: [
+              Column(
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text('Actions'),
+                      ),
+                      Row(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                            child: Text('Actions'),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                              margin: const EdgeInsets.all(4),
+                              height: 30,
+                              width: 30,
+                              child: const Icon(Icons.create),
+                            ),
                           ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.create),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.save),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  panelActions.cleanBoard();
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.delete),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black)
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: 30,
-                                  width: 30,
-                                  child: const Icon(Icons.share),
-                                ),
-                              ),
-                            ],
-                          )
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                              margin: const EdgeInsets.all(4),
+                              height: 30,
+                              width: 30,
+                              child: const Icon(Icons.save),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              panelActions.cleanBoard();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                              margin: const EdgeInsets.all(4),
+                              height: 30,
+                              width: 30,
+                              child: const Icon(Icons.delete),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                              margin: const EdgeInsets.all(4),
+                              height: 30,
+                              width: 30,
+                              child: const Icon(Icons.share),
+                            ),
+                          ),
                         ],
                       )
                     ],
-                  ),
-                  const SizedBox(width: 10),
+                  )
+                ],
+              ),
+              const SizedBox(width: 10),
+              Column(
+                children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                            child: Text('Line'),
-                          ),
-                          Row(
-                            children: [
-
-                              ...lineColors!.map((color) {
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    panelActions.changeLineColor = color;
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: color,
-                                        border: Border.all(color: Colors.black)
-                                    ),
-                                    margin: const EdgeInsets.all(4),
-                                    height: 25,
-                                    width: 25,
-                                  ),
-                                );
-
-                              }).toList(),
-
-                            ],
-                          ),
-                        ],
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text('Line'),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                            child: Text('Background'),
-                          ),
-                          Row(
-                            children: [
-
-                              ...backgroundColor!.map((color) {
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    panelActions.changeBackgroundColor = color;
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: color,
-                                        border: Border.all(color: Colors.black)
-                                    ),
-                                    margin: const EdgeInsets.all(4),
-                                    height: 25,
-                                    width: 25,
-                                  ),
-                                );
-
-                              }).toList(),
-
-                            ],
-                          ),
+                          ...lineColors!.map((color) {
+                            return GestureDetector(
+                              onTap: () {
+                                panelActions.changeLineColor = color;
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: color, border: Border.all(color: Colors.black)),
+                                margin: const EdgeInsets.all(4),
+                                height: 25,
+                                width: 25,
+                              ),
+                            );
+                          }).toList(),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(width: 10),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text('Background'),
+                      ),
+                      Row(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                            child: Text('Font Size'),
-                          ),
-                          Row(
-                            children: [
-
-                              Slider(value: lineSize!, onChanged: (newSize) {
-                                panelActions.changeLineSize = newSize;
+                          ...backgroundColor!.map((color) {
+                            return GestureDetector(
+                              onTap: () {
+                                panelActions.changeBackgroundColor = color;
                               },
-                              min: 1,
-                              max: 10,
-                              divisions: 9,
-                              label: "$lineSize",
-                              )
-                            ],
-                          ),
+                              child: Container(
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: color, border: Border.all(color: Colors.black)),
+                                margin: const EdgeInsets.all(4),
+                                height: 25,
+                                width: 25,
+                              ),
+                            );
+                          }).toList(),
                         ],
                       ),
                     ],
                   ),
                 ],
               ),
-            ),
-            Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height - 150,
-              child: const Draw(),
-            ),
-          ]
-      ),
+              const SizedBox(width: 10),
+              Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text('Font Size'),
+                      ),
+                      Row(
+                        children: [
+                          Slider(
+                            value: lineSize!,
+                            onChanged: (newSize) {
+                              panelActions.changeLineSize = newSize;
+                            },
+                            min: 1,
+                            max: 10,
+                            divisions: 9,
+                            label: "$lineSize",
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height - 150,
+          child: const Draw(),
+        ),
+      ]),
     );
   }
 }
@@ -224,11 +189,8 @@ class Draw extends StatefulWidget {
 }
 
 class _DrawState extends State<Draw> {
-
   @override
   Widget build(BuildContext context) {
-
-    Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
@@ -237,17 +199,18 @@ class _DrawState extends State<Draw> {
 
     return GestureDetector(
       onPanStart: (details) {
-
         drawActions.drawOnBoard(details.localPosition);
-
       },
       onPanUpdate: (details) {
-
         drawActions.drawOnBoard(details.localPosition);
-
       },
       child: CustomPaint(
-        painter: Board(pencil: pencil, points: points, backgroundColor: selectedBackgroundColor, lineSize: lineSize),
+        painter: Board(
+          pencil: pencil,
+          points: points,
+          backgroundColor: selectedBackgroundColor,
+          lineSize: lineSize,
+        ),
       ),
     );
   }
@@ -263,39 +226,24 @@ class Board extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // final paint = Paint()..color = lineColor!..strokeWidth = lineSize!;
-
     canvas.drawColor(backgroundColor!, BlendMode.multiply);
 
-    // for(var line = 0; line < points!.length; line++) {
-    //
-    //   canvas.drawCircle(points![line], 5, Paint()..color = Colors.white..strokeWidth = 5);
-    //
-    // }
-
-    for(var point in points!) {
-
+    for (var point in points!) {
       canvas.drawPoints(
         PointMode.points,
         [point.point!],
-        Paint()..color = point.color!..strokeWidth = point.size!,
+        Paint()
+          ..color = point.color!
+          ..strokeWidth = point.size!,
       );
-
     }
 
-      canvas.drawCircle(pencil!, 5, Paint()..color = Colors.purple..strokeWidth = 5);
-
-    // for(var line = 0; line < points!.length; line++) {
-    //
-    //   canvas.drawPoints(
-    //     PointMode.lines,
-    //     [points![line]],
-    //     Paint()..color = Colors.amber
-    //     ..strokeWidth = 10,
-    //   );
-    //
-    // }
-
+    canvas.drawCircle(
+        pencil!,
+        5,
+        Paint()
+          ..color = Colors.purple
+          ..strokeWidth = 5);
   }
 
   @override
