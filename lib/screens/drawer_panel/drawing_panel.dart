@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/drawer_panel.dart';
+import '../../classes/line_point.dart';
 
 class Panel extends StatelessWidget {
   const Panel({Key? key}) : super(key: key);
@@ -230,7 +231,7 @@ class _DrawState extends State<Draw> {
     Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
-    List<Offset> points = Provider.of<DrawerPanel>(context).points;
+    List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
     Offset? pencil = Provider.of<DrawerPanel>(context).pencil;
     final drawActions = Provider.of<DrawerPanel>(context);
 
@@ -246,24 +247,23 @@ class _DrawState extends State<Draw> {
 
       },
       child: CustomPaint(
-        painter: Board(pencil: pencil, points: points, backgroundColor: selectedBackgroundColor, lineColor: selectedLineColor, lineSize: lineSize),
+        painter: Board(pencil: pencil, points: points, backgroundColor: selectedBackgroundColor, lineSize: lineSize),
       ),
     );
   }
 }
 
 class Board extends CustomPainter {
-  List<Offset>? points;
+  List<LinePoint>? points;
   Offset? pencil;
-  Color? lineColor;
   Color? backgroundColor;
   double? lineSize;
 
-  Board({this.pencil, this.points, this.lineColor, this.backgroundColor, this.lineSize}) : super();
+  Board({this.pencil, this.points, this.backgroundColor, this.lineSize}) : super();
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = lineColor!..strokeWidth = lineSize!;
+    // final paint = Paint()..color = lineColor!..strokeWidth = lineSize!;
 
     canvas.drawColor(backgroundColor!, BlendMode.multiply);
 
@@ -277,13 +277,13 @@ class Board extends CustomPainter {
 
       canvas.drawPoints(
         PointMode.points,
-        [point],
-        paint,
+        [point.point!],
+        Paint()..color = point.color!..strokeWidth = lineSize!,
       );
 
     }
 
-      canvas.drawCircle(pencil!, 5, Paint()..color = Colors.purple ..strokeWidth = 5);
+      canvas.drawCircle(pencil!, 5, Paint()..color = Colors.purple..strokeWidth = 5);
 
     // for(var line = 0; line < points!.length; line++) {
     //

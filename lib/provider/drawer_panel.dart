@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../classes/line_point.dart';
+
 class DrawerPanel with ChangeNotifier {
 
   final List<Color>? _lineColors = [
@@ -24,7 +26,7 @@ class DrawerPanel with ChangeNotifier {
 
   Offset? _pencil = Offset(0, 0);
 
-  List<Offset> _points = [];
+  List<LinePoint> _points = [];
 
   Offset? get pencil {
 
@@ -32,7 +34,7 @@ class DrawerPanel with ChangeNotifier {
 
   }
 
-  List<Offset> get points {
+  List<LinePoint> get points {
     return _points;
   }
 
@@ -85,7 +87,9 @@ class DrawerPanel with ChangeNotifier {
 
   void drawOnBoard(Offset line) {
 
-    _points.add(line);
+    LinePoint? point = LinePoint( color: selectedLineColor, point: line );
+
+    _points.add(point);
     _pencil = line;
     notifyListeners();
 
