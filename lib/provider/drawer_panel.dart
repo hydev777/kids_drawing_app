@@ -5,7 +5,7 @@ import '../classes/line_point.dart';
 class DrawerPanel with ChangeNotifier {
   final List<Color>? _lineColors = [Colors.black, Colors.red, Colors.blue, Colors.yellow, Colors.green];
   final List<Color>? _backgroundColors = [Colors.white10, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
-  double? _lineSize = 2;
+  double? _lineSize = 5;
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
   Offset? _pencil = const Offset(0, 0);
