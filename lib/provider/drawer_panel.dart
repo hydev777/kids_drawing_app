@@ -8,13 +8,9 @@ class DrawerPanel with ChangeNotifier {
   double? _lineSize = 2;
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
-
   Offset? _pencil = const Offset(0, 0);
-
   List<LinePoint> _points = [];
-
   List<List<LinePoint>> _strokesList = [];
-
   List<List<LinePoint>> _strokesHistory = [];
 
   Offset? get pencil {
@@ -84,51 +80,38 @@ class DrawerPanel with ChangeNotifier {
   }
 
   void copyStrokeListToPoints() {
-
     _points = [];
 
-    for(List<LinePoint> strokeList in _strokesList) {
-      for(LinePoint linePoint in strokeList) {
+    for (List<LinePoint> strokeList in _strokesList) {
+      for (LinePoint linePoint in strokeList) {
         _points.add(linePoint);
       }
     }
 
     notifyListeners();
-
   }
 
   void addStrokeHistory(List<LinePoint> stroke) {
-
     _strokesList.add(stroke);
 
     copyStrokeListToPoints();
-
   }
 
   void undoStroke() {
-
-    if(_strokesList.isNotEmpty) {
-
+    if (_strokesList.isNotEmpty) {
       List<LinePoint>? stroke = _strokesList.removeLast();
 
       _strokesHistory.add(stroke);
 
       copyStrokeListToPoints();
-
     }
-
   }
 
   void redoStroke() {
-
-    if(_strokesHistory.isNotEmpty) {
-
+    if (_strokesHistory.isNotEmpty) {
       _strokesList.add(_strokesHistory.removeLast());
 
       copyStrokeListToPoints();
-
     }
-
   }
-
 }

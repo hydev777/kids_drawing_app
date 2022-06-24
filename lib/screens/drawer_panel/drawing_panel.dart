@@ -91,9 +91,7 @@ class Panel extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-
                               panelActions.undoStroke();
-
                             },
                             child: Container(
                               decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
@@ -105,9 +103,7 @@ class Panel extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-
                               panelActions.redoStroke();
-
                             },
                             child: Container(
                               decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
@@ -145,8 +141,9 @@ class Panel extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: color,
-                                  border: selectedLineColor == color ?
-                                  Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3 ) : Border.all(color: color ),
+                                  border: selectedLineColor == color
+                                      ? Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3)
+                                      : Border.all(color: color),
                                 ),
                                 margin: const EdgeInsets.all(4),
                                 height: selectedLineColor == color ? 30 : 25,
@@ -177,8 +174,7 @@ class Panel extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: color,
-                                  border: selectedBackgroundColor == color ?
-                                  Border.all(color: Colors.black, width: 3 ) : Border.all(color: color ),
+                                  border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color),
                                 ),
                                 margin: const EdgeInsets.all(4),
                                 height: selectedBackgroundColor == color ? 30 : 25,
@@ -241,12 +237,10 @@ class Draw extends StatefulWidget {
 }
 
 class _DrawState extends State<Draw> {
-
   List<LinePoint> stroke = [];
 
   @override
   Widget build(BuildContext context) {
-
     Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
     Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
@@ -257,11 +251,11 @@ class _DrawState extends State<Draw> {
     return GestureDetector(
       onPanStart: (details) {
         drawActions.drawOnBoard(details.localPosition);
-        stroke.add(LinePoint( point: details.localPosition, color: selectedLineColor, size: lineSize ));
+        stroke.add(LinePoint(point: details.localPosition, color: selectedLineColor, size: lineSize));
       },
       onPanUpdate: (details) {
         drawActions.drawOnBoard(details.localPosition);
-        stroke.add(LinePoint( point: details.localPosition, color: selectedLineColor, size: lineSize ));
+        stroke.add(LinePoint(point: details.localPosition, color: selectedLineColor, size: lineSize));
       },
       onPanEnd: (details) {
         drawActions.addStrokeHistory([...stroke]);
