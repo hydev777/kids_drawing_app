@@ -145,7 +145,8 @@ class Panel extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: color,
-                                  border: Border.all(color: Colors.black),
+                                  border: selectedLineColor == color ?
+                                  Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3 ) : Border.all(color: color ),
                                 ),
                                 margin: const EdgeInsets.all(4),
                                 height: selectedLineColor == color ? 30 : 25,
@@ -176,7 +177,8 @@ class Panel extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: color,
-                                  border: Border.all(color: Colors.black),
+                                  border: selectedBackgroundColor == color ?
+                                  Border.all(color: Colors.black, width: 3 ) : Border.all(color: color ),
                                 ),
                                 margin: const EdgeInsets.all(4),
                                 height: selectedBackgroundColor == color ? 30 : 25,
