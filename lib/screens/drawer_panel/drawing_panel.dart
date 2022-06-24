@@ -27,6 +27,7 @@ class Panel extends StatelessWidget {
           child: Row(
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,6 +37,7 @@ class Panel extends StatelessWidget {
                         child: Text('Actions'),
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           GestureDetector(
                             onTap: () {},
@@ -77,6 +79,42 @@ class Panel extends StatelessWidget {
                               height: 30,
                               width: 30,
                               child: const Icon(Icons.share),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+
+                              panelActions.undoStroke();
+
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                              margin: const EdgeInsets.all(4),
+                              height: 30,
+                              width: 30,
+                              child: const Icon(Icons.undo),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+
+                              panelActions.redoStroke();
+
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                              margin: const EdgeInsets.all(4),
+                              height: 30,
+                              width: 30,
+                              child: const Icon(Icons.redo),
                             ),
                           ),
                         ],
@@ -201,9 +239,14 @@ class Draw extends StatefulWidget {
 }
 
 class _DrawState extends State<Draw> {
+
+  List<LinePoint> stroke = [];
+
   @override
   Widget build(BuildContext context) {
+
     Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
+    Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
     Offset? pencil = Provider.of<DrawerPanel>(context).pencil;
@@ -212,9 +255,15 @@ class _DrawState extends State<Draw> {
     return GestureDetector(
       onPanStart: (details) {
         drawActions.drawOnBoard(details.localPosition);
+        stroke.add(LinePoint( point: details.localPosition, color: selectedLineColor, size: lineSize ));
       },
       onPanUpdate: (details) {
         drawActions.drawOnBoard(details.localPosition);
+        stroke.add(LinePoint( point: details.localPosition, color: selectedLineColor, size: lineSize ));
+      },
+      onPanEnd: (details) {
+        drawActions.addStrokeHistory([...stroke]);
+        stroke = [];
       },
       child: CustomPaint(
         painter: Board(
