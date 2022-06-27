@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../classes/line_point.dart';
 
+enum Tools { eraser, pencil }
+
 class DrawerPanel with ChangeNotifier {
   final List<Color>? _lineColors = [Colors.black, Colors.red, Colors.blue, Colors.yellow, Colors.green];
-  final List<Color>? _backgroundColors = [Colors.white10, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
+  final List<Color>? _backgroundColors = [Colors.white, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
   double? _lineSize = 5;
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
   Offset? _pencil = const Offset(0, 0);
+  Tools _tools = Tools.pencil;
   List<LinePoint> _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
@@ -41,6 +44,10 @@ class DrawerPanel with ChangeNotifier {
     return _lineSize;
   }
 
+  Tools get selectedTool {
+    return _tools;
+  }
+
   set changeLineSize(double size) {
     _lineSize = size;
     notifyListeners();
@@ -62,13 +69,34 @@ class DrawerPanel with ChangeNotifier {
     }
   }
 
-  void drawOnBoard(Offset line) {
-    LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line);
-
-    _points.add(point);
-    _pencil = line;
-
+  set selectTool(Tools tool) {
+    _tools = tool;
     notifyListeners();
+  }
+
+  void drawOnBoard(Offset line) {
+
+    if(_tools == Tools.pencil) {
+
+      LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line, tool: Tools.pencil);
+
+      _points.add(point);
+      _pencil = line;
+
+      notifyListeners();
+
+    } else if(_tools == Tools.eraser) {
+
+      LinePoint? point = LinePoint(size: lineSize, point: line, tool: Tools.eraser);
+
+      _points.add(point);
+      _pencil = line;
+
+      notifyListeners();
+
+    }
+
+
   }
 
   void cleanBoard() {

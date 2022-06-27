@@ -176,7 +176,7 @@ class Panel extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: color,
-                                    border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white10 ? Colors.black : color),
+                                    border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white ? Colors.black : color),
                                   ),
                                   margin: const EdgeInsets.all(4),
                                   height: selectedBackgroundColor == color ? 30 : 25,
@@ -228,7 +228,7 @@ class Panel extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-
+                                panelActions.selectTool = Tools.eraser;
                               },
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
@@ -242,6 +242,27 @@ class Panel extends StatelessWidget {
                                 width: 30,
                                 child: SvgPicture.asset(
                                     'assets/images/eraser.svg',
+                                    color: Colors.black,
+                                    semanticsLabel: 'A red up arrow'
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                panelActions.selectTool = Tools.pencil;
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white10 ? Colors.black : color),
+                                ),
+                                margin: const EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
+                                height: 30,
+                                width: 30,
+                                child: SvgPicture.asset(
+                                    'assets/images/pencil.svg',
                                     color: Colors.black,
                                     semanticsLabel: 'A red up arrow'
                                 ),
@@ -284,16 +305,29 @@ class _DrawState extends State<Draw> {
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
     Offset? pencil = Provider.of<DrawerPanel>(context).pencil;
+    Tools selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
     final drawActions = Provider.of<DrawerPanel>(context);
+
+    setStroke(Offset position) {
+      if(selectedTool == Tools.pencil) {
+
+        stroke.add(LinePoint(point: position, color: selectedLineColor, size: lineSize, tool: Tools.pencil),);
+
+      } else if(selectedTool == Tools.eraser) {
+
+        stroke.add(LinePoint(point: position, size: lineSize, tool: Tools.eraser),);
+
+      }
+    }
 
     return GestureDetector(
       onPanStart: (details) {
         drawActions.drawOnBoard(details.localPosition);
-        stroke.add(LinePoint(point: details.localPosition, color: selectedLineColor, size: lineSize));
+        setStroke(details.localPosition);
       },
       onPanUpdate: (details) {
         drawActions.drawOnBoard(details.localPosition);
-        stroke.add(LinePoint(point: details.localPosition, color: selectedLineColor, size: lineSize));
+        setStroke(details.localPosition);
       },
       onPanEnd: (details) {
         drawActions.addStrokeHistory([...stroke]);
@@ -324,22 +358,39 @@ class Board extends CustomPainter {
     canvas.drawColor(backgroundColor!, BlendMode.multiply);
 
     for (var point in points!) {
-      canvas.drawPoints(
-          PointMode.points,
-          [point.point!],
-          Paint()
-            ..color = point.color!
-            ..strokeWidth = point.size!
-            ..strokeJoin = StrokeJoin.miter);
+
+      if(point.tool == Tools.pencil) {
+
+        canvas.drawPoints(
+            PointMode.points,
+            [point.point!],
+            Paint()
+              ..color = point.color!
+              ..strokeWidth = point.size!
+              ..strokeJoin = StrokeJoin.miter
+        );
+
+      } else if(point.tool == Tools.eraser) {
+
+        canvas.drawPoints(
+            PointMode.points,
+            [point.point!],
+            Paint()
+              ..color = backgroundColor!
+              ..strokeWidth = point.size!
+              ..strokeJoin = StrokeJoin.miter
+        );
+
+      }
     }
 
-    canvas.drawCircle(
-      pencil!,
-      5,
-      Paint()
-        ..color = Colors.purple
-        ..strokeWidth = 5,
-    );
+    // canvas.drawCircle(
+    //   pencil!,
+    //   5,
+    //   Paint()
+    //     ..color = Colors.purple
+    //     ..strokeWidth = 5,
+    // );
   }
 
   @override
