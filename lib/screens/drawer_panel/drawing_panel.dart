@@ -210,6 +210,7 @@ class Panel extends StatelessWidget {
                               onChanged: (newSize) {
                                 panelActions.changeLineSize = newSize;
                               },
+                              activeColor: selectedLineColor,
                               min: 1,
                               max: 10,
                               divisions: 9,
