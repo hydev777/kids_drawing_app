@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../classes/tool.dart';
 import '../../provider/drawer_panel.dart';
 import '../../classes/line_point.dart';
 
@@ -14,8 +15,10 @@ class Panel extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
     List<Color>? backgroundColors = Provider.of<DrawerPanel>(context).getBackgroundColors;
+    List<Tool>? toolsList = Provider.of<DrawerPanel>(context).getToolsList;
     Color? selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
     Color? selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
+    Tools? selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     final panelActions = Provider.of<DrawerPanel>(context);
 
@@ -25,7 +28,6 @@ class Panel extends StatelessWidget {
           Container(
             height: 150,
             width: double.infinity,
-            // decoration: const BoxDecoration(color: Colors.white),
             child: Row(
               children: [
                 Column(
@@ -226,48 +228,30 @@ class Panel extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                panelActions.selectTool = Tools.eraser;
-                              },
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white10 ? Colors.black : color),
-                                ),
-                                margin: const EdgeInsets.all(4),
-                                padding: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: SvgPicture.asset(
-                                    'assets/images/eraser.svg',
+                            ...toolsList!.map((tool) {
+
+                              return GestureDetector(
+                                onTap: () {
+                                  panelActions.changeToolSelected = tool;
+                                },
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 3) : Border.all(color: Colors.white),
+                                  ),
+                                  margin: const EdgeInsets.all(4),
+                                  padding: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: SvgPicture.asset(
+                                    tool.srcUrl!,
                                     color: Colors.black,
-                                    semanticsLabel: 'A red up arrow'
+                                  ),
                                 ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                panelActions.selectTool = Tools.pencil;
-                              },
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white10 ? Colors.black : color),
-                                ),
-                                margin: const EdgeInsets.all(4),
-                                padding: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: SvgPicture.asset(
-                                    'assets/images/pencil.svg',
-                                    color: Colors.black,
-                                    semanticsLabel: 'A red up arrow'
-                                ),
-                              ),
-                            )
+                              );
+
+                            }).toList()
                           ],
                         ),
                       ],
@@ -311,11 +295,11 @@ class _DrawState extends State<Draw> {
     setStroke(Offset position) {
       if(selectedTool == Tools.pencil) {
 
-        stroke.add(LinePoint(point: position, color: selectedLineColor, size: lineSize, tool: Tools.pencil),);
+        stroke.add(LinePoint(point: position, color: selectedLineColor, size: lineSize, tool: Tools.pencil,),);
 
       } else if(selectedTool == Tools.eraser) {
 
-        stroke.add(LinePoint(point: position, size: lineSize, tool: Tools.eraser),);
+        stroke.add(LinePoint(point: position, size: lineSize, tool: Tools.eraser,),);
 
       }
     }

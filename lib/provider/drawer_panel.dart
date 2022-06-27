@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../classes/line_point.dart';
+import '../classes/tool.dart';
 
 enum Tools { eraser, pencil }
 
 class DrawerPanel with ChangeNotifier {
-  final List<Color>? _lineColors = [Colors.black, Colors.red, Colors.blue, Colors.yellow, Colors.green];
-  final List<Color>? _backgroundColors = [Colors.white, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
+  final List<Color> _lineColors = [Colors.black, Colors.red, Colors.blue, Colors.yellow, Colors.green];
+  final List<Color> _backgroundColors = [Colors.white, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
+  final List<Tool> _toolList = [
+    Tool( tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg' ),
+    Tool( tool: Tools.eraser, srcUrl: 'assets/images/eraser.svg' ),
+  ];
   double? _lineSize = 5;
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
+  int _toolSelected = 0;
   Offset? _pencil = const Offset(0, 0);
   Tools _tools = Tools.pencil;
   List<LinePoint> _points = [];
@@ -32,20 +38,34 @@ class DrawerPanel with ChangeNotifier {
     return _lineColors;
   }
 
+  List<Tool>? get getToolsList {
+    return _toolList;
+  }
+
   Color get selectedLineColor {
-    return _lineColors![_lineColorSelected];
+    return _lineColors[_lineColorSelected];
   }
 
   Color get selectedBackgroundColor {
-    return _backgroundColors![_backgroundSelected];
+    return _backgroundColors[_backgroundSelected];
+  }
+
+  Tools get selectedTool {
+    return _toolList[_toolSelected].tool!;
   }
 
   double? get lineSize {
     return _lineSize;
   }
 
-  Tools get selectedTool {
-    return _tools;
+  set changeToolSelected(Tool tool) {
+
+    if (_toolList.contains(tool)) {
+      int index = _toolList.indexOf(tool);
+      _toolSelected = index;
+      notifyListeners();
+    }
+
   }
 
   set changeLineSize(double size) {
@@ -54,16 +74,16 @@ class DrawerPanel with ChangeNotifier {
   }
 
   set changeLineColor(Color color) {
-    if (_lineColors!.contains(color)) {
-      int index = _lineColors!.indexOf(color);
+    if (_lineColors.contains(color)) {
+      int index = _lineColors.indexOf(color);
       _lineColorSelected = index;
       notifyListeners();
     }
   }
 
   set changeBackgroundColor(Color color) {
-    if (_backgroundColors!.contains(color)) {
-      int index = _backgroundColors!.indexOf(color);
+    if (_backgroundColors.contains(color)) {
+      int index = _backgroundColors.indexOf(color);
       _backgroundSelected = index;
       notifyListeners();
     }
@@ -76,7 +96,7 @@ class DrawerPanel with ChangeNotifier {
 
   void drawOnBoard(Offset line) {
 
-    if(_tools == Tools.pencil) {
+    if(selectedTool == Tools.pencil) {
 
       LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line, tool: Tools.pencil);
 
@@ -85,7 +105,8 @@ class DrawerPanel with ChangeNotifier {
 
       notifyListeners();
 
-    } else if(_tools == Tools.eraser) {
+    }
+    else if(selectedTool == Tools.eraser) {
 
       LinePoint? point = LinePoint(size: lineSize, point: line, tool: Tools.eraser);
 
