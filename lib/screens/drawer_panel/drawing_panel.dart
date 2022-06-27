@@ -49,6 +49,9 @@ class _PanelState extends State<Panel> {
 
   @override
   Widget build(BuildContext context) {
+
+    var viewport = MediaQuery.of(context).size.width;
+
     List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
     List<Color>? backgroundColors = Provider.of<DrawerPanel>(context).getBackgroundColors;
     List<Tool>? toolsList = Provider.of<DrawerPanel>(context).getToolsList;
@@ -58,256 +61,522 @@ class _PanelState extends State<Panel> {
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     final panelActions = Provider.of<DrawerPanel>(context);
 
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 150,
-            width: double.infinity,
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text('Actions'),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                margin: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: const Icon(Icons.create),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                margin: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: const Icon(Icons.save),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                panelActions.cleanBoard();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                margin: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: const Icon(Icons.delete),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                margin: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: const Icon(Icons.share),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                panelActions.undoStroke();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                margin: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: const Icon(Icons.undo),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                panelActions.redoStroke();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                margin: const EdgeInsets.all(4),
-                                height: 30,
-                                width: 30,
-                                child: const Icon(Icons.redo),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text('Line'),
-                        ),
-                        Row(
-                          children: [
-                            ...lineColors!.map((color) {
-                              return GestureDetector(
-                                onTap: () {
-                                  panelActions.changeLineColor = color;
-                                  changeSizeSelectorColor();
-                                },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: color,
-                                    border: selectedLineColor == color
-                                        ? Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3)
-                                        : Border.all(color: color),
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: selectedLineColor == color ? 30 : 25,
-                                  width: selectedLineColor == color ? 30 : 25,
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            viewport < 426 ?
+            Container(
+              height: 150,
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(2),
+                                  height: 25,
+                                  width: 25,
+                                  child: const Icon(Icons.create, size: 18),
                                 ),
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text('Background'),
-                        ),
-                        Row(
-                          children: [
-                            ...backgroundColors!.map((color) {
-                              return GestureDetector(
-                                onTap: () {
-                                  panelActions.changeBackgroundColor = color;
-                                  changeSizeSelectorColor();
-                                },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: color,
-                                    border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white ? Colors.black : color),
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  height: selectedBackgroundColor == color ? 30 : 25,
-                                  width: selectedBackgroundColor == color ? 30 : 25,
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(2),
+                                  height: 25,
+                                  width: 25,
+                                  child: const Icon(Icons.save, size: 18),
                                 ),
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text('Line Size'),
-                        ),
-                        Row(
-                          children: [
-                            Slider(
-                              value: lineSize!,
-                              onChanged: (newSize) {
-                                panelActions.changeLineSize = newSize;
-                              },
-                              activeColor: sizeSelectorColor,
-                              thumbColor: Colors.black,
-                              min: 1,
-                              max: 10,
-                              divisions: 9,
-                              label: "$lineSize",
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text('Tools'),
-                        ),
-                        Row(
-                          children: [
-                            ...toolsList!.map((tool) {
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  panelActions.cleanBoard();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(2),
+                                  height: 25,
+                                  width: 25,
+                                  child: const Icon(Icons.delete, size: 18),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(2),
+                                  height: 25,
+                                  width: 25,
+                                  child: const Icon(Icons.share, size: 18),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  panelActions.undoStroke();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(2),
+                                  height: 25,
+                                  width: 25,
+                                  child: const Icon(Icons.undo, size: 18),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  panelActions.redoStroke();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(2),
+                                  height: 25,
+                                  width: 25,
+                                  child: const Icon(Icons.redo, size: 18),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                            child: Text('Line Size'),
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                child: Slider(
+                                  value: lineSize!,
+                                  onChanged: (newSize) {
+                                    panelActions.changeLineSize = newSize;
+                                  },
+                                  activeColor: sizeSelectorColor,
+                                  thumbColor: Colors.black,
+                                  min: 1,
+                                  max: 10,
+                                  divisions: 9,
+                                  label: "$lineSize",
+                                ),
+                                width: 150,
+                              )
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                            child: Text('Line'),
+                          ),
+                          Row(
+                            children: [
+                              ...lineColors!.map((color) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeLineColor = color;
+                                    changeSizeSelectorColor();
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: color,
+                                      border: selectedLineColor == color
+                                          ? Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3)
+                                          : Border.all(color: color),
+                                    ),
+                                    margin: const EdgeInsets.all(2),
+                                    height: selectedLineColor == color ? 25 : 20,
+                                    width: selectedLineColor == color ? 25 : 20,
+                                  ),
+                                );
+                              }).toList(),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Background'),
+                          ),
+                          Row(
+                            children: [
+                              ...backgroundColors!.map((color) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeBackgroundColor = color;
+                                    changeSizeSelectorColor();
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: color,
+                                      border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white ? Colors.black : color),
+                                    ),
+                                    margin: const EdgeInsets.all(2),
+                                    height: selectedBackgroundColor == color ? 25 : 20,
+                                    width: selectedBackgroundColor == color ? 25 : 20,
+                                  ),
+                                );
+                              }).toList(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     const Padding(
+                      //       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      //       child: Text('Line Size'),
+                      //     ),
+                      //     Row(
+                      //       children: [
+                      //         Slider(
+                      //           value: lineSize!,
+                      //           onChanged: (newSize) {
+                      //             panelActions.changeLineSize = newSize;
+                      //           },
+                      //           activeColor: sizeSelectorColor,
+                      //           thumbColor: Colors.black,
+                      //           min: 1,
+                      //           max: 10,
+                      //           divisions: 9,
+                      //           label: "$lineSize",
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                            child: Text('Tools'),
+                          ),
+                          Row(
+                            children: [
+                              ...toolsList!.map((tool) {
 
-                              return GestureDetector(
-                                onTap: () {
-                                  panelActions.changeToolSelected = tool;
-                                  changeSizeSelectorColor();
-                                },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 3) : Border.all(color: Colors.white),
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeToolSelected = tool;
+                                    changeSizeSelectorColor();
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 3) : Border.all(color: Colors.white),
+                                    ),
+                                    margin: const EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
+                                    height: 25,
+                                    width: 25,
+                                    child: SvgPicture.asset(
+                                      tool.srcUrl!,
+                                      color: Colors.black,
+                                    ),
                                   ),
+                                );
+
+                              }).toList()
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ) :
+            Container(
+              height: 150,
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Actions'),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                   margin: const EdgeInsets.all(4),
-                                  padding: const EdgeInsets.all(4),
                                   height: 30,
                                   width: 30,
-                                  child: SvgPicture.asset(
-                                    tool.srcUrl!,
-                                    color: Colors.black,
-                                  ),
+                                  child: const Icon(Icons.create),
                                 ),
-                              );
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.save),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  panelActions.cleanBoard();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.delete),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.share),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  panelActions.undoStroke();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.undo),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  panelActions.redoStroke();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                  margin: const EdgeInsets.all(4),
+                                  height: 30,
+                                  width: 30,
+                                  child: const Icon(Icons.redo),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Line'),
+                          ),
+                          Row(
+                            children: [
+                              ...lineColors!.map((color) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeLineColor = color;
+                                    changeSizeSelectorColor();
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: color,
+                                      border: selectedLineColor == color
+                                          ? Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3)
+                                          : Border.all(color: color),
+                                    ),
+                                    margin: const EdgeInsets.all(4),
+                                    height: selectedLineColor == color ? 30 : 25,
+                                    width: selectedLineColor == color ? 30 : 25,
+                                  ),
+                                );
+                              }).toList(),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Background'),
+                          ),
+                          Row(
+                            children: [
+                              ...backgroundColors!.map((color) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeBackgroundColor = color;
+                                    changeSizeSelectorColor();
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: color,
+                                      border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white ? Colors.black : color),
+                                    ),
+                                    margin: const EdgeInsets.all(4),
+                                    height: selectedBackgroundColor == color ? 30 : 25,
+                                    width: selectedBackgroundColor == color ? 30 : 25,
+                                  ),
+                                );
+                              }).toList(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Line Size'),
+                          ),
+                          Row(
+                            children: [
+                              Slider(
+                                value: lineSize!,
+                                onChanged: (newSize) {
+                                  panelActions.changeLineSize = newSize;
+                                },
+                                activeColor: sizeSelectorColor,
+                                thumbColor: Colors.black,
+                                min: 1,
+                                max: 10,
+                                divisions: 9,
+                                label: "$lineSize",
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            child: Text('Tools'),
+                          ),
+                          Row(
+                            children: [
+                              ...toolsList!.map((tool) {
 
-                            }).toList()
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                                return GestureDetector(
+                                  onTap: () {
+                                    panelActions.changeToolSelected = tool;
+                                    changeSizeSelectorColor();
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 3) : Border.all(color: Colors.white),
+                                    ),
+                                    margin: const EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
+                                    height: 30,
+                                    width: 30,
+                                    child: SvgPicture.asset(
+                                      tool.srcUrl!,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                );
+
+                              }).toList()
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height - 150,
-            child: const Draw(),
-          ),
-        ],
+            Expanded(
+              child: const Draw(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -360,6 +629,7 @@ class _DrawState extends State<Draw> {
       },
       child: ClipRect(
         child: CustomPaint(
+          size: MediaQuery.of(context).size,
           painter: Board(
             pencil: pencil,
             points: points,
