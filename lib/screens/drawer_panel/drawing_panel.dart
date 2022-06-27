@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../provider/drawer_panel.dart';
 import '../../classes/line_point.dart';
@@ -175,7 +176,7 @@ class Panel extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: color,
-                                    border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color),
+                                    border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white10 ? Colors.black : color),
                                   ),
                                   margin: const EdgeInsets.all(4),
                                   height: selectedBackgroundColor == color ? 30 : 25,
@@ -191,13 +192,14 @@ class Panel extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text('Font Size'),
+                          child: Text('Line Size'),
                         ),
                         Row(
                           children: [
@@ -210,6 +212,40 @@ class Panel extends StatelessWidget {
                               max: 10,
                               divisions: 9,
                               label: "$lineSize",
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Text('Tools'),
+                        ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // border: selectedBackgroundColor == color ? Border.all(color: Colors.black, width: 3) : Border.all(color: color == Colors.white10 ? Colors.black : color),
+                                ),
+                                margin: const EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
+                                height: 30,
+                                width: 30,
+                                child: SvgPicture.asset(
+                                    'assets/images/eraser.svg',
+                                    color: Colors.black,
+                                    semanticsLabel: 'A red up arrow'
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -269,7 +305,6 @@ class _DrawState extends State<Draw> {
             pencil: pencil,
             points: points,
             backgroundColor: selectedBackgroundColor,
-            lineSize: lineSize,
           ),
         ),
       ),
@@ -281,9 +316,8 @@ class Board extends CustomPainter {
   List<LinePoint>? points;
   Offset? pencil;
   Color? backgroundColor;
-  double? lineSize;
 
-  Board({this.pencil, this.points, this.backgroundColor, this.lineSize}) : super();
+  Board({this.pencil, this.points, this.backgroundColor}) : super();
 
   @override
   void paint(Canvas canvas, Size size) {
