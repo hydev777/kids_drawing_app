@@ -8,8 +8,44 @@ import '../../classes/tool.dart';
 import '../../provider/drawer_panel.dart';
 import '../../classes/line_point.dart';
 
-class Panel extends StatelessWidget {
+class Panel extends StatefulWidget {
   const Panel({Key? key}) : super(key: key);
+
+  @override
+  State<Panel> createState() => _PanelState();
+}
+
+class _PanelState extends State<Panel> {
+
+  Color? sizeSelectorColor;
+
+  void changeSizeSelectorColor() {
+
+    Tools? selectedTool = Provider.of<DrawerPanel>(context, listen: false).selectedTool;
+    Color? selectedBackgroundColor = Provider.of<DrawerPanel>(context, listen: false).selectedBackgroundColor;
+    Color? selectedLineColor = Provider.of<DrawerPanel>(context, listen: false).selectedLineColor;
+
+    if(selectedTool == Tools.pencil) {
+
+      setState(() {
+        sizeSelectorColor = selectedLineColor;
+      });
+
+    } else if(selectedTool == Tools.eraser) {
+
+      setState(() {
+        sizeSelectorColor = selectedBackgroundColor;
+      });
+
+    }
+
+  }
+
+  @override
+  void initState() {
+    changeSizeSelectorColor();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +175,7 @@ class Panel extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () {
                                   panelActions.changeLineColor = color;
+                                  changeSizeSelectorColor();
                                 },
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -172,6 +209,7 @@ class Panel extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () {
                                   panelActions.changeBackgroundColor = color;
+                                  changeSizeSelectorColor();
                                 },
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -210,7 +248,8 @@ class Panel extends StatelessWidget {
                               onChanged: (newSize) {
                                 panelActions.changeLineSize = newSize;
                               },
-                              activeColor: selectedLineColor,
+                              activeColor: sizeSelectorColor,
+                              thumbColor: Colors.black,
                               min: 1,
                               max: 10,
                               divisions: 9,
@@ -234,6 +273,7 @@ class Panel extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () {
                                   panelActions.changeToolSelected = tool;
+                                  changeSizeSelectorColor();
                                 },
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
