@@ -599,8 +599,8 @@ class _PanelState extends State<Panel> {
                       ],
                     ),
                   ),
-            Expanded(
-              child: const Draw(),
+            const Expanded(
+              child: Draw(),
             ),
           ],
         ),
