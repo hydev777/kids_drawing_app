@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 
 import '../classes/line_point.dart';
@@ -6,6 +9,7 @@ import '../classes/tool.dart';
 enum Tools { eraser, pencil }
 
 class DrawerPanel with ChangeNotifier {
+
   final List<Color> _lineColors = [Colors.black, Colors.red, Colors.blue, Colors.yellow, Colors.green];
   final List<Color> _backgroundColors = [Colors.white, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
   final List<Tool> _toolList = [
@@ -21,6 +25,13 @@ class DrawerPanel with ChangeNotifier {
   List<LinePoint> _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
+  ByteData? pngImage;
+
+  ByteData? get getImage {
+
+    return pngImage;
+
+  }
 
   Offset? get pencil {
     return _pencil;
@@ -92,6 +103,46 @@ class DrawerPanel with ChangeNotifier {
   set selectTool(Tools tool) {
     _tools = tool;
     notifyListeners();
+  }
+
+  convertCanvasToImage() async {
+
+    final recorder = ui.PictureRecorder();
+    final canvas = ui.Canvas(recorder);
+
+    if(_points.isNotEmpty) {
+
+      canvas.drawColor(selectedBackgroundColor, BlendMode.multiply);
+
+      for (var point in points) {
+        if (point.tool == Tools.pencil) {
+          canvas.drawPoints(
+            ui.PointMode.points,
+            [point.point!],
+            Paint()
+              ..color = point.color!
+              ..strokeWidth = point.size!
+              ..strokeJoin = StrokeJoin.miter,
+          );
+        }
+        else if (point.tool == Tools.eraser) {
+          canvas.drawPoints(
+            ui.PointMode.points,
+            [point.point!],
+            Paint()
+              ..color = selectedBackgroundColor
+              ..strokeWidth = point.size!
+              ..strokeJoin = StrokeJoin.miter,
+          );
+        }
+      }
+
+      final picture = recorder.endRecording();
+      ui.Image img = await picture.toImage(500, 500);
+      pngImage = await img.toByteData( format: ui.ImageByteFormat.png );
+
+    }
+
   }
 
   void drawOnBoard(Offset line) {
