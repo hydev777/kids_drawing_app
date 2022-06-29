@@ -8,6 +8,7 @@ import '../../classes/tool.dart';
 import '../../provider/drawer_panel.dart';
 import '../../classes/line_point.dart';
 import '../view_image/view_image.dart';
+import 'draw/draw.dart';
 
 class Panel extends StatefulWidget {
   const Panel({Key? key}) : super(key: key);
@@ -55,7 +56,6 @@ class _PanelState extends State<Panel> {
     Color? selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     Tools? selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
-    // ui.Image? image = Provider.of<DrawerPanel>(context).getImage;
     List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
     final panelActions = Provider.of<DrawerPanel>(context);
 
@@ -278,31 +278,6 @@ class _PanelState extends State<Panel> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     const Padding(
-                            //       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                            //       child: Text('Line Size'),
-                            //     ),
-                            //     Row(
-                            //       children: [
-                            //         Slider(
-                            //           value: lineSize!,
-                            //           onChanged: (newSize) {
-                            //             panelActions.changeLineSize = newSize;
-                            //           },
-                            //           activeColor: sizeSelectorColor,
-                            //           thumbColor: Colors.black,
-                            //           min: 1,
-                            //           max: 10,
-                            //           divisions: 9,
-                            //           label: "$lineSize",
-                            //         )
-                            //       ],
-                            //     ),
-                            //   ],
-                            // ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -606,144 +581,5 @@ class _PanelState extends State<Panel> {
         ),
       ),
     );
-  }
-}
-
-class Draw extends StatefulWidget {
-  const Draw({Key? key}) : super(key: key);
-
-  @override
-  State<Draw> createState() => _DrawState();
-}
-
-class _DrawState extends State<Draw> {
-  List<LinePoint> stroke = [];
-
-  @override
-  Widget build(BuildContext context) {
-    Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
-    Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
-    double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
-    List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
-    Offset? pencil = Provider.of<DrawerPanel>(context).pencil;
-    Tools selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
-    // Canvas? canvasCopy = Provider.of<DrawerPanel>(context).getCanvas;
-    final drawActions = Provider.of<DrawerPanel>(context);
-
-    setStroke(Offset position) {
-      if (selectedTool == Tools.pencil) {
-        stroke.add(
-          LinePoint(
-            point: position,
-            color: selectedLineColor,
-            size: lineSize,
-            tool: Tools.pencil,
-          ),
-        );
-      } else if (selectedTool == Tools.eraser) {
-        stroke.add(
-          LinePoint(
-            point: position,
-            size: lineSize,
-            tool: Tools.eraser,
-          ),
-        );
-      }
-    }
-
-    return GestureDetector(
-      onPanStart: (details) {
-        drawActions.drawOnBoard(details.localPosition);
-        setStroke(details.localPosition);
-      },
-      onPanUpdate: (details) {
-        drawActions.drawOnBoard(details.localPosition);
-        setStroke(details.localPosition);
-      },
-      onPanEnd: (details) {
-        drawActions.addStrokeHistory([...stroke]);
-        stroke = [];
-      },
-      child: ClipRect(
-        child: CustomPaint(
-          size: MediaQuery.of(context).size,
-          painter: Board(
-            pencil: pencil,
-            points: points,
-            backgroundColor: selectedBackgroundColor,
-            // canvasCopy: canvasCopy
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Board extends CustomPainter {
-  List<LinePoint>? points;
-  Offset? pencil;
-  Color? backgroundColor;
-
-  Board({
-    this.pencil,
-    this.points,
-    this.backgroundColor,
-    // this.canvasCopy,
-  }) : super();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawColor(backgroundColor!, BlendMode.multiply);
-
-    for (var point in points!) {
-      if (point.tool == Tools.pencil) {
-        canvas.drawPoints(
-          ui.PointMode.points,
-          [point.point!],
-          Paint()
-            ..color = point.color!
-            ..strokeWidth = point.size!
-            ..strokeJoin = StrokeJoin.miter,
-        );
-      } else if (point.tool == Tools.eraser) {
-        canvas.drawPoints(
-          ui.PointMode.points,
-          [point.point!],
-          Paint()
-            ..color = backgroundColor!
-            ..strokeWidth = point.size!
-            ..strokeJoin = StrokeJoin.miter,
-        );
-      }
-    }
-
-    // canvas.drawCircle(
-    //   pencil!,
-    //   5,
-    //   Paint()
-    //     ..color = Colors.purple
-    //     ..strokeWidth = 5,
-    // );
-  }
-
-  // @override
-  // void paint(Canvas canvas, Size size) {
-  //
-  //   PictureRecorder recorder = PictureRecorder();
-  //   outerRecorder = recorder;
-  //   tempCanvas = Canvas(recorder);
-  //   canvas.drawImage(image, Offset(0.0, 0.0), Paint());
-  //   tempCanvas.drawImage(image, Offset(0.0, 0.0), Paint());
-  //
-  //   for (Offset offset in points) {
-  //     canvas.drawCircle(offset, 10, painter);
-  //     tempCanvas.drawCircle(offset, 10, painter);
-  //   }
-  //
-  // }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }
