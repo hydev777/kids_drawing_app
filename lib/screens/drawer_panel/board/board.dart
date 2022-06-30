@@ -6,22 +6,22 @@ import '../../../provider/drawer_panel.dart';
 
 class Board extends CustomPainter {
   List<LinePoint>? points;
-  ui.Image? pointer;
-  Offset? pointerOffset;
-  Offset? pencil;
   Color? backgroundColor;
+  ui.Image? pointerImage;
+  Offset? pointerOffset;
 
   Board({
-    this.pencil,
     this.points,
     this.backgroundColor,
-    this.pointer,
+    this.pointerImage,
     this.pointerOffset,
   }) : super();
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawColor(backgroundColor!, BlendMode.multiply);
+
+    canvas.drawImage(pointerImage!, pointerOffset!, Paint());
 
     for (var point in points!) {
       if (point.tool == Tools.pencil) {
@@ -44,8 +44,6 @@ class Board extends CustomPainter {
         );
       }
     }
-
-    // canvas.drawImage(pointer!, pointerOffset!, Paint());
 
     // canvas.drawCircle(
     //   pencil!,

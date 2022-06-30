@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,8 +23,9 @@ class _DrawState extends State<Draw> {
     Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
-    Offset? pencil = Provider.of<DrawerPanel>(context).pencil;
+    Offset? pointerOffset = Provider.of<DrawerPanel>(context).pointerOffset;
     Tools selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
+    ui.Image pointerImage = Provider.of<DrawerPanel>(context).pointerImage;
     final drawActions = Provider.of<DrawerPanel>(context);
 
     setStroke(Offset position) {
@@ -63,9 +66,10 @@ class _DrawState extends State<Draw> {
         child: CustomPaint(
           size: MediaQuery.of(context).size,
           painter: Board(
-            pencil: pencil,
+            pointerOffset: pointerOffset,
             points: points,
             backgroundColor: selectedBackgroundColor,
+            pointerImage: pointerImage
           ),
         ),
       ),

@@ -101,7 +101,6 @@ class _PanelState extends State<Panel> {
 
                                         }
 
-
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
@@ -165,18 +164,18 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.redo, size: 18),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        panelActions.testPointer();
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                        margin: const EdgeInsets.all(4),
-                                        height: 30,
-                                        width: 30,
-                                        child: const Icon(Icons.image),
-                                      ),
-                                    )
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     // panelActions.testPointer();
+                                    //   },
+                                    //   child: Container(
+                                    //     decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                    //     margin: const EdgeInsets.all(4),
+                                    //     height: 30,
+                                    //     width: 30,
+                                    //     child: const Icon(Icons.image),
+                                    //   ),
+                                    // )
                                   ],
                                 )
                               ],
@@ -435,18 +434,18 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.redo),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        panelActions.testPointer();
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                        margin: const EdgeInsets.all(4),
-                                        height: 30,
-                                        width: 30,
-                                        child: const Icon(Icons.image),
-                                      ),
-                                    ),
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     panelActions.testPointer();
+                                    //   },
+                                    //   child: Container(
+                                    //     decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                    //     margin: const EdgeInsets.all(4),
+                                    //     height: 30,
+                                    //     width: 30,
+                                    //     child: const Icon(Icons.image),
+                                    //   ),
+                                    // ),
                                   ],
                                 )
                               ],
