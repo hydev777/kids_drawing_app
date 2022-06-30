@@ -61,7 +61,7 @@ class _PanelState extends State<Panel> {
     Color? selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     Tools? selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
-    List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
+    List<LinePoint>? points = Provider.of<DrawerPanel>(context).points;
     final panelActions = Provider.of<DrawerPanel>(context);
 
     return SafeArea(
@@ -98,7 +98,7 @@ class _PanelState extends State<Panel> {
 
                                         panelActions.convertCanvasToImage();
 
-                                        if(points.isNotEmpty) {
+                                        if(points!.isNotEmpty) {
 
                                           Navigator.of(context).push(
                                             MaterialPageRoute<void>(
@@ -356,7 +356,7 @@ class _PanelState extends State<Panel> {
 
                                         panelActions.convertCanvasToImage();
 
-                                        if(points.isNotEmpty) {
+                                        if(points!.isNotEmpty) {
 
                                           Navigator.of(context).push(
                                             MaterialPageRoute<void>(

@@ -21,29 +21,54 @@ class Board extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.drawColor(backgroundColor!, BlendMode.multiply);
 
-    canvas.drawImage(pointerImage!, pointerOffset!, Paint());
+    // canvas.drawImage(pointerImage!, pointerOffset!, Paint());
 
-    for (var point in points!) {
-      if (point.tool == Tools.pencil) {
-        canvas.drawPoints(
-          ui.PointMode.points,
-          [point.point!],
+    for (int i = 0; i < (points!.length - 1); i++) {
+
+      if (points![i].point != null && points![i + 1].point != null) {
+        canvas.drawLine(
+          points![i].point!,
+          points![i + 1].point!,
           Paint()
-            ..color = point.color!
-            ..strokeWidth = point.size!
+            ..color = points![i].color!
+            ..strokeWidth = points![i].size!
             ..strokeJoin = StrokeJoin.miter,
         );
-      } else if (point.tool == Tools.eraser) {
-        canvas.drawPoints(
-          ui.PointMode.points,
-          [point.point!],
+      } else {
+        canvas.drawCircle(
+          points![i - 1].point!,
+          Paint().strokeWidth / 2,
           Paint()
-            ..color = backgroundColor!
-            ..strokeWidth = point.size!
+            ..color = points![i - 1].color!
+            ..strokeWidth = points![i - 1].size!
             ..strokeJoin = StrokeJoin.miter,
         );
       }
     }
+
+    // for (var point in points!) {
+    //   if (point.tool == Tools.pencil) {
+    //
+    //     canvas.drawPoints(
+    //       ui.PointMode.points,
+    //       [point.point!],
+    //       Paint()
+    //         ..color = point.color!
+    //         ..strokeWidth = point.size!
+    //         ..strokeJoin = StrokeJoin.miter,
+    //     );
+    //   }
+    //   else if (point.tool == Tools.eraser) {
+    //     canvas.drawPoints(
+    //       ui.PointMode.points,
+    //       [point.point!],
+    //       Paint()
+    //         ..color = backgroundColor!
+    //         ..strokeWidth = point.size!
+    //         ..strokeJoin = StrokeJoin.miter,
+    //     );
+    //   }
+    // }
 
     // canvas.drawCircle(
     //   pencil!,

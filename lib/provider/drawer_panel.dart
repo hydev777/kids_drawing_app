@@ -1,10 +1,8 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../classes/line_point.dart';
@@ -25,7 +23,7 @@ class DrawerPanel with ChangeNotifier {
   int _toolSelected = 0;
   Offset? _pointerOffset = const Offset(0, 0);
   Tools _tools = Tools.pencil;
-  List<LinePoint> _points = [];
+  List<LinePoint>? _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
   ByteData? pngImage;
@@ -46,8 +44,8 @@ class DrawerPanel with ChangeNotifier {
     return _pointerOffset;
   }
 
-  List<LinePoint> get points {
-    return _points;
+  List<LinePoint>? get points {
+    return _points!;
   }
 
   List<Color>? get getBackgroundColors {
@@ -129,10 +127,10 @@ class DrawerPanel with ChangeNotifier {
     final recorder = ui.PictureRecorder();
     final canvas = ui.Canvas(recorder);
 
-    if (_points.isNotEmpty) {
+    if (_points!.isNotEmpty) {
       canvas.drawColor(selectedBackgroundColor, BlendMode.multiply);
 
-      for (var point in points) {
+      for (var point in points!) {
         if (point.tool == Tools.pencil) {
           canvas.drawPoints(
             ui.PointMode.points,
@@ -160,18 +158,18 @@ class DrawerPanel with ChangeNotifier {
     }
   }
 
-  void drawOnBoard(Offset line) {
+  void drawOnBoard(line) {
     if (selectedTool == Tools.pencil) {
       LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line, tool: Tools.pencil);
 
-      _points.add(point);
+      _points!.add(point);
       _pointerOffset = line;
 
       notifyListeners();
     } else if (selectedTool == Tools.eraser) {
       LinePoint? point = LinePoint(size: lineSize, point: line, tool: Tools.eraser);
 
-      _points.add(point);
+      _points!.add(point);
       _pointerOffset = line;
 
       notifyListeners();
@@ -191,7 +189,7 @@ class DrawerPanel with ChangeNotifier {
 
     for (List<LinePoint> strokeList in _strokesList) {
       for (LinePoint linePoint in strokeList) {
-        _points.add(linePoint);
+        _points!.add(linePoint);
       }
     }
 

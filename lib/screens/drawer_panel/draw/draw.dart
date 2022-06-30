@@ -22,7 +22,7 @@ class _DrawState extends State<Draw> {
     Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
     Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
-    List<LinePoint> points = Provider.of<DrawerPanel>(context).points;
+    List<LinePoint>? points = Provider.of<DrawerPanel>(context).points;
     Offset? pointerOffset = Provider.of<DrawerPanel>(context).pointerOffset;
     Tools selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
     ui.Image pointerImage = Provider.of<DrawerPanel>(context).pointerImage;
@@ -59,6 +59,15 @@ class _DrawState extends State<Draw> {
         setStroke(details.localPosition);
       },
       onPanEnd: (details) {
+        print("END");
+        drawActions.drawOnBoard(null);
+        stroke.add(
+          LinePoint(
+            point: null,
+            size: lineSize,
+            tool: Tools.eraser,
+          ),
+        );
         drawActions.addStrokeHistory([...stroke]);
         stroke = [];
       },
