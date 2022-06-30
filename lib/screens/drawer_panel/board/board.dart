@@ -46,37 +46,6 @@ class Board extends CustomPainter {
       }
     }
 
-    // for (var point in points!) {
-    //   if (point.tool == Tools.pencil) {
-    //
-    //     canvas.drawPoints(
-    //       ui.PointMode.points,
-    //       [point.point!],
-    //       Paint()
-    //         ..color = point.color!
-    //         ..strokeWidth = point.size!
-    //         ..strokeJoin = StrokeJoin.miter,
-    //     );
-    //   }
-    //   else if (point.tool == Tools.eraser) {
-    //     canvas.drawPoints(
-    //       ui.PointMode.points,
-    //       [point.point!],
-    //       Paint()
-    //         ..color = backgroundColor!
-    //         ..strokeWidth = point.size!
-    //         ..strokeJoin = StrokeJoin.miter,
-    //     );
-    //   }
-    // }
-
-    // canvas.drawCircle(
-    //   pencil!,
-    //   5,
-    //   Paint()
-    //     ..color = Colors.purple
-    //     ..strokeWidth = 5,
-    // );
   }
 
   @override
