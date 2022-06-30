@@ -1,7 +1,10 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../classes/line_point.dart';
 import '../classes/tool.dart';
@@ -26,6 +29,10 @@ class DrawerPanel with ChangeNotifier {
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
   ByteData? pngImage;
+  File? image;
+  ui.Image? pointerImage;
+  ui.Picture? pointerPicture;
+  bool showImage = false;
 
   ByteData? get getImage {
 
@@ -214,4 +221,33 @@ class DrawerPanel with ChangeNotifier {
       copyStrokeListToPoints();
     }
   }
+
+  void testPointer() async {
+
+    image = await getImageFileFromAssets("pointers/pencil_pointer.svg");
+    showImage = true;
+
+    PictureInfo pointer = await svg.svgPictureDecoder(image!.readAsBytesSync(), true, const ColorFilter.linearToSrgbGamma(), UniqueKey().toString());
+
+    pointerImage = await pointer.picture!.toImage(70, 70);
+
+    notifyListeners();
+
+    print({
+      image!.path,
+      image!.absolute,
+      image!.parent,
+      image!.uri,
+    });
+
+  }
+
+  Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+    // final file = File('${(await getTemporaryDirectory()).path}/$path');
+    File file = await  File('${(await getTemporaryDirectory()).path}/pencil_pointer.svg').create(recursive: true);
+    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    return file;
+  }
+
 }

@@ -7,6 +7,7 @@ import './screens/drawer_panel/drawing_panel.dart';
 import './provider/drawer_panel.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

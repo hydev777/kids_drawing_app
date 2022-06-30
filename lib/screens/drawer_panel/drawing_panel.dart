@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -19,8 +20,6 @@ class Panel extends StatefulWidget {
 
 class _PanelState extends State<Panel> {
   Color? sizeSelectorColor;
-  final recorder = ui.PictureRecorder();
-  ui.Canvas? canvas;
 
   void changeSizeSelectorColor() {
     Tools? selectedTool = Provider.of<DrawerPanel>(context, listen: false).selectedTool;
@@ -41,14 +40,13 @@ class _PanelState extends State<Panel> {
   @override
   void initState() {
     changeSizeSelectorColor();
-    canvas = ui.Canvas(recorder);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var viewportWidth = MediaQuery.of(context).size.width;
 
+    var viewportWidth = MediaQuery.of(context).size.width;
     List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
     List<Color>? backgroundColors = Provider.of<DrawerPanel>(context).getBackgroundColors;
     List<Tool>? toolsList = Provider.of<DrawerPanel>(context).getToolsList;
@@ -167,6 +165,18 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.redo, size: 18),
                                       ),
                                     ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        panelActions.testPointer();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        margin: const EdgeInsets.all(4),
+                                        height: 30,
+                                        width: 30,
+                                        child: const Icon(Icons.image),
+                                      ),
+                                    )
                                   ],
                                 )
                               ],
@@ -425,6 +435,18 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.redo),
                                       ),
                                     ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        panelActions.testPointer();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        margin: const EdgeInsets.all(4),
+                                        height: 30,
+                                        width: 30,
+                                        child: const Icon(Icons.image),
+                                      ),
+                                    ),
                                   ],
                                 )
                               ],
@@ -574,6 +596,9 @@ class _PanelState extends State<Panel> {
                       ],
                     ),
                   ),
+            // Provider.of<DrawerPanel>(context).showImage ? Container(
+            //   child: RawImage(image: Provider.of<DrawerPanel>(context).pointerImage, width: 40, height: 40,),
+            // ) : Container()
             const Expanded(
               child: Draw(),
             ),

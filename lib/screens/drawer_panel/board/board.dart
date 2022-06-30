@@ -6,6 +6,8 @@ import '../../../provider/drawer_panel.dart';
 
 class Board extends CustomPainter {
   List<LinePoint>? points;
+  ui.Image? pointer;
+  Offset? pointerOffset;
   Offset? pencil;
   Color? backgroundColor;
 
@@ -13,6 +15,8 @@ class Board extends CustomPainter {
     this.pencil,
     this.points,
     this.backgroundColor,
+    this.pointer,
+    this.pointerOffset,
   }) : super();
 
   @override
@@ -41,7 +45,7 @@ class Board extends CustomPainter {
       }
     }
 
-    // canvas.drawImage(image, offset, paint)
+    // canvas.drawImage(pointer!, pointerOffset!, Paint());
 
     // canvas.drawCircle(
     //   pencil!,

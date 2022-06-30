@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   provider: ^6.0.3
   flutter_svg: ^1.0.3
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,7 @@ flutter:
   assets:
     - assets/images/eraser.svg
     - assets/images/pencil.svg
+    - assets/pointers/pencil_pointer.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
