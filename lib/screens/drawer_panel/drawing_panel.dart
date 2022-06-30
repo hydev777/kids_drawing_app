@@ -21,6 +21,12 @@ class Panel extends StatefulWidget {
 class _PanelState extends State<Panel> {
   Color? sizeSelectorColor;
 
+  void setImageToolOnInit() {
+
+    Provider.of<DrawerPanel>(context, listen: false).changeToolPicture();
+
+  }
+
   void changeSizeSelectorColor() {
     Tools? selectedTool = Provider.of<DrawerPanel>(context, listen: false).selectedTool;
     Color? selectedBackgroundColor = Provider.of<DrawerPanel>(context, listen: false).selectedBackgroundColor;
@@ -30,6 +36,7 @@ class _PanelState extends State<Panel> {
       setState(() {
         sizeSelectorColor = selectedLineColor;
       });
+      setImageToolOnInit();
     } else if (selectedTool == Tools.eraser) {
       setState(() {
         sizeSelectorColor = selectedBackgroundColor;
@@ -164,18 +171,6 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.redo, size: 18),
                                       ),
                                     ),
-                                    // GestureDetector(
-                                    //   onTap: () {
-                                    //     // panelActions.testPointer();
-                                    //   },
-                                    //   child: Container(
-                                    //     decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                    //     margin: const EdgeInsets.all(4),
-                                    //     height: 30,
-                                    //     width: 30,
-                                    //     child: const Icon(Icons.image),
-                                    //   ),
-                                    // )
                                   ],
                                 )
                               ],
@@ -434,18 +429,6 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.redo),
                                       ),
                                     ),
-                                    // GestureDetector(
-                                    //   onTap: () {
-                                    //     panelActions.testPointer();
-                                    //   },
-                                    //   child: Container(
-                                    //     decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                    //     margin: const EdgeInsets.all(4),
-                                    //     height: 30,
-                                    //     width: 30,
-                                    //     child: const Icon(Icons.image),
-                                    //   ),
-                                    // ),
                                   ],
                                 )
                               ],

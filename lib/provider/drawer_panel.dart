@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:io';
 
@@ -28,13 +29,11 @@ class DrawerPanel with ChangeNotifier {
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
   ByteData? pngImage;
-  File? image;
   ui.Image? _pointerImage;
   ui.Picture? pointerPicture;
-  bool showImage = false;
 
   ui.Image get pointerImage {
-    changeToolPicture(_tools);
+    changeToolPicture();
 
     return _pointerImage!;
   }
@@ -113,20 +112,18 @@ class DrawerPanel with ChangeNotifier {
     notifyListeners();
   }
 
-  changeToolPicture(Tools tools) async {
-    if (tools == Tools.pencil) {
-      image = await getImageFileFromAssets("pointers/pencil_pointer.svg");  // image is type File
-      PictureInfo pointer = await svg.svgPictureDecoder(   // here the method svgPictureDecoder will
-        image!.readAsBytesSync(),                          // convert the svg into a PictureInfo type
-        true,
-        const ColorFilter.linearToSrgbGamma(),
+  changeToolPicture() async {
+    if (_tools == Tools.pencil) {
+      PictureInfo pointer = await svg.svgPictureDecoder(
+        await getImageFileFromAssets("pointers/pencil_pointer.svg"), // get the svg converted to
+        true,                                                        // Uint8List to then decode it
+        const ColorFilter.linearToSrgbGamma(),                       // as a PictureInfo
         UniqueKey().toString(),
       );
-      _pointerImage = await pointer.picture!.toImage(70, 70);  // get the property picture and convert it to
-                                                               // Image or use the Picture elsewhere you want it
-    }
-    notifyListeners();
-  }
+      _pointerImage = await pointer.picture!.toImage(70, 70); // get the property picture of
+    }                                                         // pointer and convert it to Image
+    notifyListeners();                                       //  or use only the picture property
+  }                                                          //  if needed
 
   convertCanvasToImage() async {
     final recorder = ui.PictureRecorder();
@@ -225,24 +222,13 @@ class DrawerPanel with ChangeNotifier {
     }
   }
 
-  void testPointer() async {
-    image = await getImageFileFromAssets("pointers/pencil_pointer.svg");
-    PictureInfo pointer = await svg.svgPictureDecoder(image!.readAsBytesSync(), true, const ColorFilter.linearToSrgbGamma(), UniqueKey().toString());
-    pointerPicture = pointer.picture!;
-    _pointerImage = await pointer.picture!.toImage(70, 70);
-    notifyListeners();
-  }
-
-  Future<File> getImageFileFromAssets(String path) async {
-    final byteData = await rootBundle.load('assets/$path');
-    File file = await File('${(await getTemporaryDirectory()).path}/pencil_pointer.svg').create(recursive: true);
-    await file.writeAsBytes(
-      byteData.buffer.asUint8List(
-        byteData.offsetInBytes,
-        byteData.lengthInBytes,
-      ),
+  Future<Uint8List> getImageFileFromAssets(String path) async {
+    ByteData byteData = await rootBundle.load('assets/$path'); // 1. Obtain the svg image from the assets
+    Uint8List image = byteData.buffer.asUint8List(             // 2. Convert the svg image to Uint8List
+      byteData.offsetInBytes,
+      byteData.lengthInBytes,
     );
-    return file;
+    return image;
   }
 
 }
