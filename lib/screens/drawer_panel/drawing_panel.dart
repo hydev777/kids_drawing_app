@@ -21,11 +21,11 @@ class Panel extends StatefulWidget {
 class _PanelState extends State<Panel> {
   Color? sizeSelectorColor;
 
-  void setImageToolOnInit() {
-
-    Provider.of<DrawerPanel>(context, listen: false).changeToolPicture();
-
-  }
+  // void setImageToolOnInit() {
+  //
+  //   Provider.of<DrawerPanel>(context, listen: false).changeToolPicture();
+  //
+  // }
 
   void changeSizeSelectorColor() {
     Tools? selectedTool = Provider.of<DrawerPanel>(context, listen: false).selectedTool;
@@ -36,7 +36,7 @@ class _PanelState extends State<Panel> {
       setState(() {
         sizeSelectorColor = selectedLineColor;
       });
-      setImageToolOnInit();
+      // setImageToolOnInit();
     } else if (selectedTool == Tools.eraser) {
       setState(() {
         sizeSelectorColor = selectedBackgroundColor;
@@ -97,12 +97,14 @@ class _PanelState extends State<Panel> {
                                       onTap: () async {
 
                                         panelActions.convertCanvasToImage();
+                                        ByteData? image = Provider.of<DrawerPanel>(context, listen: false).getImage;
+                                        print(image!.lengthInBytes);
 
                                         if(points!.isNotEmpty) {
 
                                           Navigator.of(context).push(
                                             MaterialPageRoute<void>(
-                                              builder: (BuildContext context) => ViewImage(image: Provider.of<DrawerPanel>(context).getImage),
+                                              builder: (BuildContext context) => ViewImage(image: image),
                                             ),
                                           );
 
@@ -360,7 +362,7 @@ class _PanelState extends State<Panel> {
 
                                           Navigator.of(context).push(
                                             MaterialPageRoute<void>(
-                                              builder: (BuildContext context) => ViewImage(image: Provider.of<DrawerPanel>(context).getImage),
+                                              builder: (BuildContext context) => ViewImage(image: Provider.of<DrawerPanel>(context, listen: false).getImage),
                                             ),
                                           );
 

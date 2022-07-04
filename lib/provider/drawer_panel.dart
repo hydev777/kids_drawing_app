@@ -26,18 +26,18 @@ class DrawerPanel with ChangeNotifier {
   List<LinePoint>? _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
-  ByteData? pngImage;
+  ByteData? _pngImage;
   ui.Image? _pointerImage;
   ui.Picture? pointerPicture;
 
-  ui.Image get pointerImage {
-    changeToolPicture();
-
-    return _pointerImage!;
-  }
+  // ui.Image get pointerImage {
+  //   changeToolPicture();
+  //
+  //   return _pointerImage!;
+  // }
 
   ByteData? get getImage {
-    return pngImage;
+    return _pngImage;
   }
 
   Offset? get pointerOffset {
@@ -110,18 +110,18 @@ class DrawerPanel with ChangeNotifier {
     notifyListeners();
   }
 
-  changeToolPicture() async {
-    if (_tools == Tools.pencil) {
-      PictureInfo pointer = await svg.svgPictureDecoder(
-        await getImageFileFromAssets("pointers/pencil_pointer.svg"), // get the svg converted to
-        true,                                                        // Uint8List to then decode it
-        const ColorFilter.linearToSrgbGamma(),                       // as a PictureInfo
-        UniqueKey().toString(),
-      );
-      _pointerImage = await pointer.picture!.toImage(70, 70); // get the property picture of
-    }                                                         // pointer and convert it to Image
-    notifyListeners();                                       //  or use only the picture property
-  }                                                          //  if needed
+  // changeToolPicture() async {
+  //   if (_tools == Tools.pencil) {
+  //     PictureInfo pointer = await svg.svgPictureDecoder(
+  //       await getImageFileFromAssets("pointers/pencil_pointer.svg"), // get the svg converted to
+  //       true,                                                        // Uint8List to then decode it
+  //       const ColorFilter.linearToSrgbGamma(),                       // as a PictureInfo
+  //       UniqueKey().toString(),
+  //     );
+  //     _pointerImage = await pointer.picture!.toImage(70, 70); // get the property picture of
+  //   }                                                         // pointer and convert it to Image
+  //   notifyListeners();                                       //  or use only the picture property
+  // }                                                          //  if needed
 
   convertCanvasToImage() async {
     final recorder = ui.PictureRecorder();
@@ -130,31 +130,60 @@ class DrawerPanel with ChangeNotifier {
     if (_points!.isNotEmpty) {
       canvas.drawColor(selectedBackgroundColor, BlendMode.multiply);
 
-      for (var point in points!) {
-        if (point.tool == Tools.pencil) {
-          canvas.drawPoints(
-            ui.PointMode.points,
-            [point.point!],
-            Paint()
-              ..color = point.color!
-              ..strokeWidth = point.size!
-              ..strokeJoin = StrokeJoin.miter,
-          );
-        } else if (point.tool == Tools.eraser) {
-          canvas.drawPoints(
-            ui.PointMode.points,
-            [point.point!],
-            Paint()
-              ..color = selectedBackgroundColor
-              ..strokeWidth = point.size!
-              ..strokeJoin = StrokeJoin.miter,
-          );
+      for (int i = 0; i < (points!.length - 1); i++) {
+
+        if(points![i].tool == Tools.pencil) {
+
+          if (points![i].point != null && points![i + 1].point != null) {
+            canvas.drawLine(
+                points![i].point!,
+                points![i + 1].point!,
+                Paint()
+                  ..color = points![i].color!
+                  ..strokeWidth = points![i].size!
+            );
+          }
+          else if(points![i].point == null) {
+            canvas.drawCircle(
+                points![i - 1].point!,
+                points![i - 1].size! / 2,
+                Paint()
+                  ..color = points![i - 1].color!
+                  ..strokeWidth = points![i - 1].size!
+            );
+          }
+
         }
+        else if (points![i].tool == Tools.eraser) {
+
+          if (points![i].point != null && points![i + 1].point != null) {
+            canvas.drawLine(
+              points![i].point!,
+              points![i + 1].point!,
+              Paint()
+                ..color = selectedBackgroundColor
+                ..strokeWidth = points![i].size!
+                ..strokeJoin = StrokeJoin.miter,
+            );
+          }
+          else if(points![i].point == null) {
+            canvas.drawCircle(
+              points![i - 1].point!,
+              points![i - 1].size! / 2,
+              Paint()
+                ..color = selectedBackgroundColor
+                ..strokeWidth = points![i - 1].size!
+                ..strokeJoin = StrokeJoin.miter,
+            );
+          }
+
+        }
+
       }
 
       final picture = recorder.endRecording();
       ui.Image img = await picture.toImage(500, 500);
-      pngImage = await img.toByteData(format: ui.ImageByteFormat.png);
+      _pngImage = await img.toByteData(format: ui.ImageByteFormat.png);
     }
   }
 

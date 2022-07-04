@@ -25,7 +25,7 @@ class _DrawState extends State<Draw> {
     List<LinePoint>? points = Provider.of<DrawerPanel>(context).points;
     Offset? pointerOffset = Provider.of<DrawerPanel>(context).pointerOffset;
     Tools selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
-    ui.Image pointerImage = Provider.of<DrawerPanel>(context).pointerImage;
+    // ui.Image pointerImage = Provider.of<DrawerPanel>(context).pointerImage;
     final drawActions = Provider.of<DrawerPanel>(context);
 
     setStroke(Offset position) {
@@ -78,7 +78,7 @@ class _DrawState extends State<Draw> {
             pointerOffset: pointerOffset,
             points: points,
             backgroundColor: selectedBackgroundColor,
-            pointerImage: pointerImage
+            // pointerImage: pointerImage
           ),
         ),
       ),

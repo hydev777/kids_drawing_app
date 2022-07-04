@@ -34,7 +34,6 @@ class Board extends CustomPainter {
             Paint()
               ..color = points![i].color!
               ..strokeWidth = points![i].size!
-              ..strokeJoin = StrokeJoin.miter,
           );
         }
         else if(points![i].point == null) {
@@ -44,11 +43,11 @@ class Board extends CustomPainter {
             Paint()
               ..color = points![i - 1].color!
               ..strokeWidth = points![i - 1].size!
-              ..strokeJoin = StrokeJoin.miter,
           );
         }
 
-      } else if (points![i].tool == Tools.eraser) {
+      }
+      else if (points![i].tool == Tools.eraser) {
 
         if (points![i].point != null && points![i + 1].point != null) {
           canvas.drawLine(
@@ -72,8 +71,6 @@ class Board extends CustomPainter {
         }
 
       }
-
-
 
     }
 
