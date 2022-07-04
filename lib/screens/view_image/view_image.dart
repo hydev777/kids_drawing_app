@@ -32,6 +32,11 @@ class _ViewImageState extends State<ViewImage> {
                 pngBytes!.buffer.asUint8List(),
               ),
             ),
+            Row(
+              children: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.whatsapp)),
+              ],
+            )
           ],
         ),
       ),

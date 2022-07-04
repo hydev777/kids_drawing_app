@@ -19,7 +19,6 @@ class Panel extends StatefulWidget {
 }
 
 class _PanelState extends State<Panel> {
-  Color? sizeSelectorColor;
 
   // void setImageToolOnInit() {
   //
@@ -27,26 +26,26 @@ class _PanelState extends State<Panel> {
   //
   // }
 
-  void changeSizeSelectorColor() {
-    Tools? selectedTool = Provider.of<DrawerPanel>(context, listen: false).selectedTool;
-    Color? selectedBackgroundColor = Provider.of<DrawerPanel>(context, listen: false).selectedBackgroundColor;
-    Color? selectedLineColor = Provider.of<DrawerPanel>(context, listen: false).selectedLineColor;
-
-    if (selectedTool == Tools.pencil) {
-      setState(() {
-        sizeSelectorColor = selectedLineColor;
-      });
-      // setImageToolOnInit();
-    } else if (selectedTool == Tools.eraser) {
-      setState(() {
-        sizeSelectorColor = selectedBackgroundColor;
-      });
-    }
-  }
+  // void changeSizeSelectorColor() {
+  //   Tools? selectedTool = Provider.of<DrawerPanel>(context, listen: false).selectedTool;
+  //   Color? selectedBackgroundColor = Provider.of<DrawerPanel>(context, listen: false).selectedBackgroundColor;
+  //   Color? selectedLineColor = Provider.of<DrawerPanel>(context, listen: false).selectedLineColor;
+  //
+  //   if (selectedTool == Tools.pencil) {
+  //     setState(() {
+  //       sizeSelectorColor = selectedLineColor;
+  //     });
+  //     // setImageToolOnInit();
+  //   } else if (selectedTool == Tools.eraser) {
+  //     setState(() {
+  //       sizeSelectorColor = selectedBackgroundColor;
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
-    changeSizeSelectorColor();
+    Provider.of<DrawerPanel>(context, listen: false).changeSizeSelectorColor();
     super.initState();
   }
 
@@ -62,6 +61,7 @@ class _PanelState extends State<Panel> {
     Tools? selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
     double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
     List<LinePoint>? points = Provider.of<DrawerPanel>(context).points;
+    Color? sizeSelectorColor = Provider.of<DrawerPanel>(context).lineSizeColor;
     final panelActions = Provider.of<DrawerPanel>(context);
 
     return SafeArea(
@@ -99,9 +99,6 @@ class _PanelState extends State<Panel> {
                                         if(points!.isNotEmpty){
 
                                           panelActions.convertCanvasToImage();
-                                          // ByteData? image = Provider.of<DrawerPanel>(context, listen: false).getImage;
-
-                                          // print(image!.lengthInBytes);
 
                                           ByteData? image = await Provider.of<DrawerPanel>(context, listen: false).convertCanvasToImage();
 
@@ -226,7 +223,8 @@ class _PanelState extends State<Panel> {
                                       return GestureDetector(
                                         onTap: () {
                                           panelActions.changeLineColor = color;
-                                          changeSizeSelectorColor();
+                                          // panelActions.changeSizeSelectorColor();
+                                          // changeSizeSelectorColor();
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 300),
@@ -260,7 +258,7 @@ class _PanelState extends State<Panel> {
                                       return GestureDetector(
                                         onTap: () {
                                           panelActions.changeBackgroundColor = color;
-                                          changeSizeSelectorColor();
+                                          // changeSizeSelectorColor();
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 300),
@@ -300,7 +298,7 @@ class _PanelState extends State<Panel> {
                                       return GestureDetector(
                                         onTap: () {
                                           panelActions.changeToolSelected = tool;
-                                          changeSizeSelectorColor();
+                                          // changeSizeSelectorColor();
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 300),
@@ -458,7 +456,7 @@ class _PanelState extends State<Panel> {
                                       return GestureDetector(
                                         onTap: () {
                                           panelActions.changeLineColor = color;
-                                          changeSizeSelectorColor();
+                                          // changeSizeSelectorColor();
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 300),
@@ -492,7 +490,7 @@ class _PanelState extends State<Panel> {
                                       return GestureDetector(
                                         onTap: () {
                                           panelActions.changeBackgroundColor = color;
-                                          changeSizeSelectorColor();
+                                          // changeSizeSelectorColor();
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 300),
@@ -557,7 +555,7 @@ class _PanelState extends State<Panel> {
                                       return GestureDetector(
                                         onTap: () {
                                           panelActions.changeToolSelected = tool;
-                                          changeSizeSelectorColor();
+                                          // changeSizeSelectorColor();
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(milliseconds: 300),

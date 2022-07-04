@@ -20,13 +20,14 @@ class DrawerPanel with ChangeNotifier {
   double? _lineSize = 5;
   int _lineColorSelected = 0;
   int _backgroundSelected = 0;
+  Color? _sizeSelectorColor;
   int _toolSelected = 0;
   Offset? _pointerOffset = const Offset(0, 0);
   Tools _tools = Tools.pencil;
   List<LinePoint>? _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
-  ui.Image? _pointerImage;
+  // ui.Image? _pointerImage;
   ui.Picture? pointerPicture;
 
   // ui.Image get pointerImage {
@@ -34,6 +35,10 @@ class DrawerPanel with ChangeNotifier {
   //
   //   return _pointerImage!;
   // }
+
+  Color? get lineSizeColor {
+    return _sizeSelectorColor;
+  }
 
   Offset? get pointerOffset {
     return _pointerOffset;
@@ -90,6 +95,7 @@ class DrawerPanel with ChangeNotifier {
       _lineColorSelected = index;
       notifyListeners();
     }
+    changeSizeSelectorColor();
   }
 
   set changeBackgroundColor(Color color) {
@@ -98,6 +104,7 @@ class DrawerPanel with ChangeNotifier {
       _backgroundSelected = index;
       notifyListeners();
     }
+    changeSizeSelectorColor();
   }
 
   set selectTool(Tools tool) {
@@ -117,6 +124,93 @@ class DrawerPanel with ChangeNotifier {
   //   }                                                         // pointer and convert it to Image
   //   notifyListeners();                                       //  or use only the picture property
   // }                                                          //  if needed
+
+  void changeSizeSelectorColor() {
+
+    if (selectedTool == Tools.pencil) {
+      _sizeSelectorColor = selectedLineColor;
+      // setImageToolOnInit();
+    } else if (selectedTool == Tools.eraser) {
+      _sizeSelectorColor = selectedBackgroundColor;
+    }
+
+    notifyListeners();
+  }
+
+  void drawOnBoard(line) {
+    if (selectedTool == Tools.pencil) {
+      LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line, tool: Tools.pencil);
+
+      _points!.add(point);
+      _pointerOffset = line;
+
+      notifyListeners();
+    } else if (selectedTool == Tools.eraser) {
+      LinePoint? point = LinePoint(size: lineSize, point: line, tool: Tools.eraser);
+
+      _points!.add(point);
+      _pointerOffset = line;
+
+      notifyListeners();
+    }
+  }
+
+  void cleanBoard() {
+    _points = [];
+    _strokesList = [];
+    _strokesHistory = [];
+    _pointerOffset = const Offset(0, 0);
+
+    _lineSize = 5;
+    _lineColorSelected = 0;
+    _backgroundSelected = 0;
+
+    if (selectedTool == Tools.pencil) {
+      _sizeSelectorColor = selectedLineColor;
+    } else if (selectedTool == Tools.eraser) {
+      _sizeSelectorColor = selectedBackgroundColor;
+    }
+
+    selectTool = Tools.pencil;
+
+    notifyListeners();
+  }
+
+  void copyStrokeListToPoints() {
+    _points = [];
+
+    for (List<LinePoint> strokeList in _strokesList) {
+      for (LinePoint linePoint in strokeList) {
+        _points!.add(linePoint);
+      }
+    }
+
+    notifyListeners();
+  }
+
+  void addStrokeHistory(List<LinePoint> stroke) {
+    _strokesList.add(stroke);
+
+    copyStrokeListToPoints();
+  }
+
+  void undoStroke() {
+    if (_strokesList.isNotEmpty) {
+      List<LinePoint>? stroke = _strokesList.removeLast();
+
+      _strokesHistory.add(stroke);
+
+      copyStrokeListToPoints();
+    }
+  }
+
+  void redoStroke() {
+    if (_strokesHistory.isNotEmpty) {
+      _strokesList.add(_strokesHistory.removeLast());
+
+      copyStrokeListToPoints();
+    }
+  }
 
   Future<ByteData?>? convertCanvasToImage() async {
 
@@ -185,68 +279,6 @@ class DrawerPanel with ChangeNotifier {
 
     }
 
-  }
-
-  void drawOnBoard(line) {
-    if (selectedTool == Tools.pencil) {
-      LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line, tool: Tools.pencil);
-
-      _points!.add(point);
-      _pointerOffset = line;
-
-      notifyListeners();
-    } else if (selectedTool == Tools.eraser) {
-      LinePoint? point = LinePoint(size: lineSize, point: line, tool: Tools.eraser);
-
-      _points!.add(point);
-      _pointerOffset = line;
-
-      notifyListeners();
-    }
-  }
-
-  void cleanBoard() {
-    _points = [];
-    _strokesList = [];
-    _strokesHistory = [];
-    _pointerOffset = const Offset(0, 0);
-    notifyListeners();
-  }
-
-  void copyStrokeListToPoints() {
-    _points = [];
-
-    for (List<LinePoint> strokeList in _strokesList) {
-      for (LinePoint linePoint in strokeList) {
-        _points!.add(linePoint);
-      }
-    }
-
-    notifyListeners();
-  }
-
-  void addStrokeHistory(List<LinePoint> stroke) {
-    _strokesList.add(stroke);
-
-    copyStrokeListToPoints();
-  }
-
-  void undoStroke() {
-    if (_strokesList.isNotEmpty) {
-      List<LinePoint>? stroke = _strokesList.removeLast();
-
-      _strokesHistory.add(stroke);
-
-      copyStrokeListToPoints();
-    }
-  }
-
-  void redoStroke() {
-    if (_strokesHistory.isNotEmpty) {
-      _strokesList.add(_strokesHistory.removeLast());
-
-      copyStrokeListToPoints();
-    }
   }
 
   Future<Uint8List> getImageFileFromAssets(String path) async {
