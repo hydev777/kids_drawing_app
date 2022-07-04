@@ -96,11 +96,14 @@ class _PanelState extends State<Panel> {
                                     GestureDetector(
                                       onTap: () async {
 
-                                        panelActions.convertCanvasToImage();
-                                        ByteData? image = Provider.of<DrawerPanel>(context, listen: false).getImage;
-                                        print(image!.lengthInBytes);
+                                        if(points!.isNotEmpty){
 
-                                        if(points!.isNotEmpty) {
+                                          panelActions.convertCanvasToImage();
+                                          // ByteData? image = Provider.of<DrawerPanel>(context, listen: false).getImage;
+
+                                          // print(image!.lengthInBytes);
+
+                                          ByteData? image = await Provider.of<DrawerPanel>(context, listen: false).convertCanvasToImage();
 
                                           Navigator.of(context).push(
                                             MaterialPageRoute<void>(
@@ -360,9 +363,11 @@ class _PanelState extends State<Panel> {
 
                                         if(points!.isNotEmpty) {
 
+                                          ByteData? image = await Provider.of<DrawerPanel>(context, listen: false).convertCanvasToImage();
+
                                           Navigator.of(context).push(
                                             MaterialPageRoute<void>(
-                                              builder: (BuildContext context) => ViewImage(image: Provider.of<DrawerPanel>(context, listen: false).getImage),
+                                              builder: (BuildContext context) => ViewImage(image: image),
                                             ),
                                           );
 

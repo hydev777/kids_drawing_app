@@ -26,7 +26,6 @@ class DrawerPanel with ChangeNotifier {
   List<LinePoint>? _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
-  ByteData? _pngImage;
   ui.Image? _pointerImage;
   ui.Picture? pointerPicture;
 
@@ -35,10 +34,6 @@ class DrawerPanel with ChangeNotifier {
   //
   //   return _pointerImage!;
   // }
-
-  ByteData? get getImage {
-    return _pngImage;
-  }
 
   Offset? get pointerOffset {
     return _pointerOffset;
@@ -123,56 +118,59 @@ class DrawerPanel with ChangeNotifier {
   //   notifyListeners();                                       //  or use only the picture property
   // }                                                          //  if needed
 
-  convertCanvasToImage() async {
-    final recorder = ui.PictureRecorder();
-    final canvas = ui.Canvas(recorder);
+  Future<ByteData?>? convertCanvasToImage() async {
 
     if (_points!.isNotEmpty) {
+
+      ByteData? pngImage;
+      final recorder = ui.PictureRecorder();
+      final canvas = ui.Canvas(recorder);
+
       canvas.drawColor(selectedBackgroundColor, BlendMode.multiply);
 
-      for (int i = 0; i < (points!.length - 1); i++) {
+      for (int i = 0; i < (_points!.length - 1); i++) {
 
-        if(points![i].tool == Tools.pencil) {
+        if(_points![i].tool == Tools.pencil) {
 
-          if (points![i].point != null && points![i + 1].point != null) {
+          if (_points![i].point != null && _points![i + 1].point != null) {
             canvas.drawLine(
-                points![i].point!,
-                points![i + 1].point!,
+                _points![i].point!,
+                _points![i + 1].point!,
                 Paint()
-                  ..color = points![i].color!
-                  ..strokeWidth = points![i].size!
+                  ..color = _points![i].color!
+                  ..strokeWidth = _points![i].size!
             );
           }
-          else if(points![i].point == null) {
+          else if(_points![i].point == null) {
             canvas.drawCircle(
-                points![i - 1].point!,
-                points![i - 1].size! / 2,
+                _points![i - 1].point!,
+                _points![i - 1].size! / 2,
                 Paint()
-                  ..color = points![i - 1].color!
-                  ..strokeWidth = points![i - 1].size!
+                  ..color = _points![i - 1].color!
+                  ..strokeWidth = _points![i - 1].size!
             );
           }
 
         }
-        else if (points![i].tool == Tools.eraser) {
+        else if (_points![i].tool == Tools.eraser) {
 
-          if (points![i].point != null && points![i + 1].point != null) {
+          if (_points![i].point != null && _points![i + 1].point != null) {
             canvas.drawLine(
-              points![i].point!,
-              points![i + 1].point!,
+              _points![i].point!,
+              _points![i + 1].point!,
               Paint()
                 ..color = selectedBackgroundColor
-                ..strokeWidth = points![i].size!
+                ..strokeWidth = _points![i].size!
                 ..strokeJoin = StrokeJoin.miter,
             );
           }
-          else if(points![i].point == null) {
+          else if(_points![i].point == null) {
             canvas.drawCircle(
-              points![i - 1].point!,
-              points![i - 1].size! / 2,
+              _points![i - 1].point!,
+              _points![i - 1].size! / 2,
               Paint()
                 ..color = selectedBackgroundColor
-                ..strokeWidth = points![i - 1].size!
+                ..strokeWidth = _points![i - 1].size!
                 ..strokeJoin = StrokeJoin.miter,
             );
           }
@@ -181,10 +179,12 @@ class DrawerPanel with ChangeNotifier {
 
       }
 
-      final picture = recorder.endRecording();
+      ui.Picture picture = recorder.endRecording();
       ui.Image img = await picture.toImage(500, 500);
-      _pngImage = await img.toByteData(format: ui.ImageByteFormat.png);
+      return pngImage = await img.toByteData(format: ui.ImageByteFormat.png);
+
     }
+
   }
 
   void drawOnBoard(line) {
