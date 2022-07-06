@@ -24,7 +24,9 @@ class _ViewImageState extends State<ViewImage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Save Drawing'),
+        ),
         body: Column(
           children: [
             Expanded(
@@ -34,7 +36,8 @@ class _ViewImageState extends State<ViewImage> {
             ),
             Row(
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.whatsapp)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.save)),
+                TextButton(onPressed: () {}, child: const Text('Cancel'))
               ],
             )
           ],

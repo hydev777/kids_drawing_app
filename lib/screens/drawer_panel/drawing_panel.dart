@@ -1,7 +1,10 @@
 import 'dart:typed_data';
+import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,6 +22,21 @@ class Panel extends StatefulWidget {
 }
 
 class _PanelState extends State<Panel> {
+  Future<void> savePaintInDevice() async {
+    ByteData? image = await Provider.of<DrawerPanel>(context, listen: false).convertCanvasToImage();
+    final Uint8List pngBytes = image!.buffer.asUint8List();
+
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String fullPath = '$dir/${DateTime.now().millisecond}.png';
+    File capturedFile = File(fullPath);
+    await capturedFile.writeAsBytes(pngBytes);
+
+    await GallerySaver.saveImage(capturedFile.path).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Drawing saved!'),
+      ));
+    });
+  }
 
   @override
   void initState() {
@@ -28,7 +46,6 @@ class _PanelState extends State<Panel> {
 
   @override
   Widget build(BuildContext context) {
-
     var viewportWidth = MediaQuery.of(context).size.width;
     List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
     List<Color>? backgroundColors = Provider.of<DrawerPanel>(context).getBackgroundColors;
@@ -72,21 +89,11 @@ class _PanelState extends State<Panel> {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-
-                                        if(points!.isNotEmpty){
-
+                                        if (points!.isNotEmpty) {
                                           panelActions.convertCanvasToImage();
 
-                                          ByteData? image = await Provider.of<DrawerPanel>(context, listen: false).convertCanvasToImage();
-
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute<void>(
-                                              builder: (BuildContext context) => ViewImage(image: image),
-                                            ),
-                                          );
-
+                                          await savePaintInDevice();
                                         }
-
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
@@ -329,21 +336,11 @@ class _PanelState extends State<Panel> {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
+                                        if (points!.isNotEmpty) {
+                                          panelActions.convertCanvasToImage();
 
-                                        panelActions.convertCanvasToImage();
-
-                                        if(points!.isNotEmpty) {
-
-                                          ByteData? image = await Provider.of<DrawerPanel>(context, listen: false).convertCanvasToImage();
-
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute<void>(
-                                              builder: (BuildContext context) => ViewImage(image: image),
-                                            ),
-                                          );
-
+                                          await savePaintInDevice();
                                         }
-
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),

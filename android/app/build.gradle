@@ -26,6 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+
     compileSdkVersion flutter.compileSdkVersion
 
     compileOptions {
@@ -66,3 +67,9 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+ android {
+       defaultConfig {
+             minSdkVersion 21
+           }
+     }
