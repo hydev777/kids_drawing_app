@@ -40,8 +40,10 @@ class _PanelState extends State<Panel> {
 
   @override
   void initState() {
-    Provider.of<DrawerPanel>(context, listen: false).changeSizeSelectorColor();
     super.initState();
+    Future.delayed(const Duration(seconds: 0), () {
+      Provider.of<DrawerPanel>(context, listen: false).changeSizeSelectorColor();
+    });
   }
 
   @override

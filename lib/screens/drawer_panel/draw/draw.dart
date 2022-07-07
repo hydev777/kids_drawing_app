@@ -59,7 +59,6 @@ class _DrawState extends State<Draw> {
         setStroke(details.localPosition);
       },
       onPanEnd: (details) {
-        print("END");
         drawActions.drawOnBoard(null);
         stroke.add(
           LinePoint(

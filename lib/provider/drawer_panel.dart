@@ -129,7 +129,6 @@ class DrawerPanel with ChangeNotifier {
 
     if (selectedTool == Tools.pencil) {
       _sizeSelectorColor = selectedLineColor;
-      // setImageToolOnInit();
     } else if (selectedTool == Tools.eraser) {
       _sizeSelectorColor = selectedBackgroundColor;
     }
@@ -145,7 +144,8 @@ class DrawerPanel with ChangeNotifier {
       _pointerOffset = line;
 
       notifyListeners();
-    } else if (selectedTool == Tools.eraser) {
+    }
+    else if (selectedTool == Tools.eraser) {
       LinePoint? point = LinePoint(size: lineSize, point: line, tool: Tools.eraser);
 
       _points!.add(point);
@@ -235,10 +235,10 @@ class DrawerPanel with ChangeNotifier {
                   ..strokeWidth = _points![i].size!
             );
           }
-          else if(_points![i].point == null) {
+          else if(points![i].point == null && points![i + 1].point == null) {
             canvas.drawCircle(
-                _points![i - 1].point!,
-                _points![i - 1].size! / 2,
+                _points![i].point!,
+                _points![i].size! / 2,
                 Paint()
                   ..color = _points![i - 1].color!
                   ..strokeWidth = _points![i - 1].size!
@@ -258,10 +258,10 @@ class DrawerPanel with ChangeNotifier {
                 ..strokeJoin = StrokeJoin.miter,
             );
           }
-          else if(_points![i].point == null) {
+          else if(points![i].point == null && points![i + 1].point == null) {
             canvas.drawCircle(
-              _points![i - 1].point!,
-              _points![i - 1].size! / 2,
+              _points![i].point!,
+              _points![i].size! / 2,
               Paint()
                 ..color = selectedBackgroundColor
                 ..strokeWidth = _points![i - 1].size!

@@ -36,10 +36,10 @@ class Board extends CustomPainter {
               ..strokeWidth = points![i].size!
           );
         }
-        else if(points![i].point == null) {
+        else if(points![i].point == null && points![i + 1].point == null) {
           canvas.drawCircle(
-            points![i - 1].point!,
-            points![i - 1].size! / 2,
+            points![i].point!,
+            points![i].size! / 2,
             Paint()
               ..color = points![i - 1].color!
               ..strokeWidth = points![i - 1].size!
@@ -59,10 +59,10 @@ class Board extends CustomPainter {
               ..strokeJoin = StrokeJoin.miter,
           );
         }
-        else if(points![i].point == null) {
+        else if(points![i].point == null && points![i + 1].point == null) {
           canvas.drawCircle(
-            points![i - 1].point!,
-            points![i - 1].size! / 2,
+            points![i].point!,
+            points![i].size! / 2,
             Paint()
               ..color = backgroundColor!
               ..strokeWidth = points![i - 1].size!
