@@ -9,4 +9,5 @@ Features done:
 3. When the size of the line is changed, only new lines will have the new size previous ones will remain the same.
 4. Undo and redo.
 5. Eraser tool made.
+6. Save drawing to device.
 
