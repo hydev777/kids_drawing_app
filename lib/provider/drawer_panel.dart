@@ -165,13 +165,14 @@ class DrawerPanel with ChangeNotifier {
     _lineColorSelected = 0;
     _backgroundSelected = 0;
 
+    // _tools = Tools.pencil;
+    // changeToolSelected = Tool( tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg' );
+
     if (selectedTool == Tools.pencil) {
       _sizeSelectorColor = selectedLineColor;
     } else if (selectedTool == Tools.eraser) {
       _sizeSelectorColor = selectedBackgroundColor;
     }
-
-    selectTool = Tools.pencil;
 
     notifyListeners();
   }
