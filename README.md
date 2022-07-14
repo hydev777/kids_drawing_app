@@ -10,4 +10,5 @@ Features done:
 4. Undo and redo.
 5. Eraser tool made.
 6. Save drawing to device.
+7. Create new drawing.
 
