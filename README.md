@@ -1,6 +1,8 @@
 # drawing_things
 
-A simple drawing app. More features are coming soon.
+A simple drawing app. 
+
+This is an app to practice the combination of various widgets to create something new and creative. The drawing was made using the widgets GestureDectector, Offset and CustomPaint.
 
 Features done:
 
