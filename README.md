@@ -2,7 +2,7 @@
 
 A simple drawing app. 
 
-This is an app to practice the combination of various widgets to create something new and creative. The drawing was made using the widgets GestureDectector, Offset and CustomPaint.
+This is an app to practice the combination of various widgets to create something new and creative. The drawing was made using the widgets GestureDetector, Offset and CustomPaint.
 
 Features done:
 
