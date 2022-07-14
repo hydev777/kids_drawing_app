@@ -80,7 +80,63 @@ class _PanelState extends State<Panel> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () async {
+
+                                        if (points!.isNotEmpty) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              backgroundColor: Colors.white,
+                                              title: const Text("Notice"),
+                                              content: const Text(
+                                                'Do you want to save the drawing?',
+                                                style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                    'CANCEL',
+                                                    style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+
+                                                    await savePaintInDevice();
+                                                    panelActions.newPaint();
+                                                    Navigator.of(context).pop();
+
+                                                  },
+                                                  child: const Text(
+                                                    'SAVE',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF10FB06),
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+
+                                        } else {
+
+                                          panelActions.newPaint();
+
+                                        }
+
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
@@ -92,7 +148,7 @@ class _PanelState extends State<Panel> {
                                     GestureDetector(
                                       onTap: () async {
                                         if (points!.isNotEmpty) {
-                                          panelActions.convertCanvasToImage();
+                                          // panelActions.convertCanvasToImage();
 
                                           await savePaintInDevice();
                                         }
@@ -105,18 +161,18 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.save, size: 18),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        panelActions.cleanBoard();
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                        margin: const EdgeInsets.all(2),
-                                        height: 25,
-                                        width: 25,
-                                        child: const Icon(Icons.delete, size: 18),
-                                      ),
-                                    ),
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     panelActions.cleanBoard();
+                                    //   },
+                                    //   child: Container(
+                                    //     decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                    //     margin: const EdgeInsets.all(2),
+                                    //     height: 25,
+                                    //     width: 25,
+                                    //     child: const Icon(Icons.delete, size: 18),
+                                    //   ),
+                                    // ),
                                     GestureDetector(
                                       onTap: () {},
                                       child: Container(
@@ -327,7 +383,60 @@ class _PanelState extends State<Panel> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        if (points!.isNotEmpty) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              backgroundColor: Colors.white,
+                                              title: const Text("Notice"),
+                                              content: const Text(
+                                                'Do you want to save the drawing?',
+                                                style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                    'CANCEL',
+                                                    style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+
+                                                    await savePaintInDevice();
+                                                    panelActions.newPaint();
+                                                    Navigator.of(context).pop();
+
+                                                  },
+                                                  child: const Text(
+                                                    'SAVE',
+                                                    style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }  else {
+
+                                          panelActions.newPaint();
+
+                                        }
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                         margin: const EdgeInsets.all(4),
@@ -339,7 +448,7 @@ class _PanelState extends State<Panel> {
                                     GestureDetector(
                                       onTap: () async {
                                         if (points!.isNotEmpty) {
-                                          panelActions.convertCanvasToImage();
+                                          // panelActions.convertCanvasToImage();
 
                                           await savePaintInDevice();
                                         }
@@ -352,18 +461,18 @@ class _PanelState extends State<Panel> {
                                         child: const Icon(Icons.save),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        panelActions.cleanBoard();
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
-                                        margin: const EdgeInsets.all(4),
-                                        height: 30,
-                                        width: 30,
-                                        child: const Icon(Icons.delete),
-                                      ),
-                                    ),
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     panelActions.cleanBoard();
+                                    //   },
+                                    //   child: Container(
+                                    //     decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                    //     margin: const EdgeInsets.all(4),
+                                    //     height: 30,
+                                    //     width: 30,
+                                    //     child: const Icon(Icons.delete),
+                                    //   ),
+                                    // ),
                                     GestureDetector(
                                       onTap: () {},
                                       child: Container(

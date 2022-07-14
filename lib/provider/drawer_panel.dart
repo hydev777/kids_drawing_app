@@ -177,6 +177,34 @@ class DrawerPanel with ChangeNotifier {
     notifyListeners();
   }
 
+  void newPaint() {
+
+    if(_points!.isNotEmpty) {
+
+      _points = [];
+      _strokesList = [];
+      _strokesHistory = [];
+      _pointerOffset = const Offset(0, 0);
+
+      _lineSize = 5;
+      _lineColorSelected = 0;
+      _backgroundSelected = 0;
+
+      // _tools = Tools.pencil;
+      changeToolSelected = Tool( tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg' );
+
+      if (selectedTool == Tools.pencil) {
+        _sizeSelectorColor = selectedLineColor;
+      } else if (selectedTool == Tools.eraser) {
+        _sizeSelectorColor = selectedBackgroundColor;
+      }
+
+      notifyListeners();
+
+    }
+
+  }
+
   void copyStrokeListToPoints() {
     _points = [];
 
