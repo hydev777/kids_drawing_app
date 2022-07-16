@@ -57,10 +57,11 @@ class _PanelState extends State<Panel> {
           actions: [
             TextButton(
               onPressed: () {
+                panelActions.newPaint();
                 Navigator.of(context).pop();
               },
               child: const Text(
-                'CANCEL',
+                'NO',
                 style: TextStyle(
                     color: Colors.black54,
                     fontSize: 16,
