@@ -1,6 +1,6 @@
 # drawing_things
 
-A simple drawing app. 
+A simple drawing app made in flutter. 
 
 This is an app to practice the combination of various widgets to create something new and creative. The drawing was made using the widgets GestureDetector, Offset and CustomPaint.
 
