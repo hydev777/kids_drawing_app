@@ -148,9 +148,9 @@ class _PanelState extends State<Panel> {
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
-                                        height: 25,
-                                        width: 25,
-                                        child: const Icon(Icons.create, size: 18),
+                                        height: 35,
+                                        width: 35,
+                                        child: const Icon(Icons.create, size: 22),
                                       ),
                                     ),
                                     GestureDetector(
@@ -164,9 +164,9 @@ class _PanelState extends State<Panel> {
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
-                                        height: 25,
-                                        width: 25,
-                                        child: const Icon(Icons.save, size: 18),
+                                        height: 35,
+                                        width: 35,
+                                        child: const Icon(Icons.save, size: 22),
                                       ),
                                     ),
                                     GestureDetector(
@@ -174,9 +174,9 @@ class _PanelState extends State<Panel> {
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
-                                        height: 25,
-                                        width: 25,
-                                        child: const Icon(Icons.share, size: 18),
+                                        height: 35,
+                                        width: 35,
+                                        child: const Icon(Icons.share, size: 22),
                                       ),
                                     ),
                                   ],
@@ -194,9 +194,9 @@ class _PanelState extends State<Panel> {
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
-                                        height: 25,
-                                        width: 25,
-                                        child: const Icon(Icons.undo, size: 18),
+                                        height: 35,
+                                        width: 35,
+                                        child: const Icon(Icons.undo, size: 22),
                                       ),
                                     ),
                                     GestureDetector(
@@ -206,9 +206,9 @@ class _PanelState extends State<Panel> {
                                       child: Container(
                                         decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
-                                        height: 25,
-                                        width: 25,
-                                        child: const Icon(Icons.redo, size: 18),
+                                        height: 35,
+                                        width: 35,
+                                        child: const Icon(Icons.redo, size: 22),
                                       ),
                                     ),
                                   ],
@@ -338,12 +338,12 @@ class _PanelState extends State<Panel> {
                                           duration: const Duration(milliseconds: 300),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 3) : Border.all(color: Colors.white),
+                                            border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 4) : Border.all(color: Colors.white),
                                           ),
                                           margin: const EdgeInsets.all(4),
                                           padding: const EdgeInsets.all(4),
-                                          height: 25,
-                                          width: 25,
+                                          height: 30,
+                                          width: 30,
                                           child: SvgPicture.asset(
                                             tool.srcUrl!,
                                             color: Colors.black,
@@ -596,9 +596,6 @@ class _PanelState extends State<Panel> {
                       ],
                     ),
                   ),
-            // Provider.of<DrawerPanel>(context).showImage ? Container(
-            //   child: RawImage(image: Provider.of<DrawerPanel>(context).pointerImage, width: 40, height: 40,),
-            // ) : Container()
             const Expanded(
               child: Draw(),
             ),
