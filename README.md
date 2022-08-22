@@ -4,6 +4,8 @@ Drawing app made in flutter.
 
 This is an app to practice the combination of various widgets to create something new and creative. The drawing was made using the widgets GestureDetector, Offset and CustomPaint.
 
+![drawing_image](https://user-images.githubusercontent.com/84458390/185927726-3f06207f-4e05-4038-92ea-51ec1f56bbfc.png)
+
 Features done:
 
 1. When the color of the line is changed, only new lines will have that color previous ones will remain the same.
