@@ -10,8 +10,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../classes/tool.dart';
 import '../provider/drawer_panel.dart';
 import '../classes/line_point.dart';
-import '../../view_image/view/view_image.dart';
-import '../widgets/draw/drawing_area.dart';
+// import '../../view_image/view/view_image.dart';
+import '../widgets/draw_area/drawing_area.dart';
 
 class Panel extends StatefulWidget {
   const Panel({Key? key}) : super(key: key);
