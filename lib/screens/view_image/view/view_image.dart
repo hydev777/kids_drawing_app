@@ -36,8 +36,14 @@ class _ViewImageState extends State<ViewImage> {
             ),
             Row(
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.save)),
-                TextButton(onPressed: () {}, child: const Text('Cancel'))
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.save),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Cancel'),
+                )
               ],
             )
           ],

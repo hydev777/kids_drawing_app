@@ -116,7 +116,7 @@ class _PanelState extends State<Panel> {
         body: Column(
           children: [
             viewportWidth < 426
-                ? Container(
+                ? SizedBox(
                     height: 150,
                     width: double.infinity,
                     child: Row(
@@ -400,7 +400,7 @@ class _PanelState extends State<Panel> {
                       ],
                     ),
                   )
-                : Container(
+                : SizedBox(
                     height: 150,
                     width: double.infinity,
                     child: Row(
