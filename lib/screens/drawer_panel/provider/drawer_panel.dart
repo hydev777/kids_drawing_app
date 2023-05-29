@@ -223,7 +223,7 @@ class DrawerPanel with ChangeNotifier {
     }
   }
 
-  Future<ByteData?>? convertCanvasToImage() async {
+  Future<ByteData?> convertCanvasToImage() async {
     if (_points!.isNotEmpty) {
       ByteData? pngImage;
       final recorder = ui.PictureRecorder();
@@ -273,7 +273,10 @@ class DrawerPanel with ChangeNotifier {
 
       ui.Picture picture = recorder.endRecording();
       ui.Image img = await picture.toImage(500, 500);
-      return pngImage = await img.toByteData(format: ui.ImageByteFormat.png);
+      pngImage = await img.toByteData(format: ui.ImageByteFormat.png);
+      return pngImage;
+    } else {
+      return ByteData(0);
     }
   }
 
