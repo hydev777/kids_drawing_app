@@ -1,9 +1,7 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../classes/line_point.dart';
 import '../classes/tool.dart';
@@ -11,8 +9,22 @@ import '../classes/tool.dart';
 enum Tools { eraser, pencil }
 
 class DrawerPanel with ChangeNotifier {
-  final List<Color> _lineColors = [Colors.black, Colors.red, Colors.blue, Colors.yellow, Colors.green];
-  final List<Color> _backgroundColors = [Colors.white, Colors.cyanAccent, Colors.deepOrangeAccent, Colors.limeAccent, Colors.lightGreen];
+  final List<Color> _lineColors = [
+    Colors.white,
+    Colors.black,
+    Colors.red,
+    Colors.blue,
+    Colors.yellow,
+    Colors.green
+  ];
+  final List<Color> _backgroundColors = [
+    Colors.white,
+    Colors.black,
+    Colors.red,
+    Colors.blue,
+    Colors.yellow,
+    Colors.green
+  ];
   final List<Tool> _toolList = [
     Tool(tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg'),
     Tool(tool: Tools.eraser, srcUrl: 'assets/images/eraser.svg'),
@@ -23,18 +35,10 @@ class DrawerPanel with ChangeNotifier {
   Color? _sizeSelectorColor;
   int _toolSelected = 0;
   Offset? _pointerOffset = const Offset(0, 0);
-  Tools _tools = Tools.pencil;
   List<LinePoint>? _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
-  // ui.Image? _pointerImage;
   ui.Picture? pointerPicture;
-
-  // ui.Image get pointerImage {
-  //   changeToolPicture();
-  //
-  //   return _pointerImage!;
-  // }
 
   Color? get lineSizeColor {
     return _sizeSelectorColor;
@@ -107,26 +111,7 @@ class DrawerPanel with ChangeNotifier {
     changeSizeSelectorColor();
   }
 
-  set selectTool(Tools tool) {
-    _tools = tool;
-    notifyListeners();
-  }
-
-  // changeToolPicture() async {
-  //   if (_tools == Tools.pencil) {
-  //     PictureInfo pointer = await svg.svgPictureDecoder(
-  //       await getImageFileFromAssets("pointers/pencil_pointer.svg"), // get the svg converted to
-  //       true,                                                        // Uint8List to then decode it
-  //       const ColorFilter.linearToSrgbGamma(),                       // as a PictureInfo
-  //       UniqueKey().toString(),
-  //     );
-  //     _pointerImage = await pointer.picture!.toImage(70, 70); // get the property picture of
-  //   }                                                         // pointer and convert it to Image
-  //   notifyListeners();                                       //  or use only the picture property
-  // }                                                          //  if needed
-
   void changeSizeSelectorColor() {
-
     if (selectedTool == Tools.pencil) {
       _sizeSelectorColor = selectedLineColor;
     } else if (selectedTool == Tools.eraser) {
@@ -138,15 +123,19 @@ class DrawerPanel with ChangeNotifier {
 
   void drawOnBoard(line) {
     if (selectedTool == Tools.pencil) {
-      LinePoint? point = LinePoint(color: selectedLineColor, size: lineSize, point: line, tool: Tools.pencil);
+      LinePoint? point = LinePoint(
+          color: selectedLineColor,
+          size: lineSize,
+          point: line,
+          tool: Tools.pencil);
 
       _points!.add(point);
       _pointerOffset = line;
 
       notifyListeners();
-    }
-    else if (selectedTool == Tools.eraser) {
-      LinePoint? point = LinePoint(size: lineSize, point: line, tool: Tools.eraser);
+    } else if (selectedTool == Tools.eraser) {
+      LinePoint? point =
+          LinePoint(size: lineSize, point: line, tool: Tools.eraser);
 
       _points!.add(point);
       _pointerOffset = line;
@@ -165,9 +154,6 @@ class DrawerPanel with ChangeNotifier {
     _lineColorSelected = 0;
     _backgroundSelected = 0;
 
-    // _tools = Tools.pencil;
-    // changeToolSelected = Tool( tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg' );
-
     if (selectedTool == Tools.pencil) {
       _sizeSelectorColor = selectedLineColor;
     } else if (selectedTool == Tools.eraser) {
@@ -178,9 +164,7 @@ class DrawerPanel with ChangeNotifier {
   }
 
   void newPaint() {
-
-    if(_points!.isNotEmpty) {
-
+    if (_points!.isNotEmpty) {
       _points = [];
       _strokesList = [];
       _strokesHistory = [];
@@ -190,8 +174,8 @@ class DrawerPanel with ChangeNotifier {
       _lineColorSelected = 0;
       _backgroundSelected = 0;
 
-      // _tools = Tools.pencil;
-      changeToolSelected = Tool( tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg' );
+      changeToolSelected =
+          Tool(tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg');
 
       if (selectedTool == Tools.pencil) {
         _sizeSelectorColor = selectedLineColor;
@@ -200,9 +184,7 @@ class DrawerPanel with ChangeNotifier {
       }
 
       notifyListeners();
-
     }
-
   }
 
   void copyStrokeListToPoints() {
@@ -242,9 +224,7 @@ class DrawerPanel with ChangeNotifier {
   }
 
   Future<ByteData?>? convertCanvasToImage() async {
-
     if (_points!.isNotEmpty) {
-
       ByteData? pngImage;
       final recorder = ui.PictureRecorder();
       final canvas = ui.Canvas(recorder);
@@ -252,31 +232,23 @@ class DrawerPanel with ChangeNotifier {
       canvas.drawColor(selectedBackgroundColor, BlendMode.multiply);
 
       for (int i = 0; i < (_points!.length - 1); i++) {
-
-        if(_points![i].tool == Tools.pencil) {
-
+        if (_points![i].tool == Tools.pencil) {
           if (_points![i].point != null && _points![i + 1].point != null) {
             canvas.drawLine(
                 _points![i].point!,
                 _points![i + 1].point!,
                 Paint()
                   ..color = _points![i].color!
-                  ..strokeWidth = _points![i].size!
-            );
-          }
-          else if(points![i].point == null && points![i + 1].point == null) {
+                  ..strokeWidth = _points![i].size!);
+          } else if (points![i].point == null && points![i + 1].point == null) {
             canvas.drawCircle(
                 _points![i].point!,
                 _points![i].size! / 2,
                 Paint()
                   ..color = _points![i - 1].color!
-                  ..strokeWidth = _points![i - 1].size!
-            );
+                  ..strokeWidth = _points![i - 1].size!);
           }
-
-        }
-        else if (_points![i].tool == Tools.eraser) {
-
+        } else if (_points![i].tool == Tools.eraser) {
           if (_points![i].point != null && _points![i + 1].point != null) {
             canvas.drawLine(
               _points![i].point!,
@@ -286,8 +258,7 @@ class DrawerPanel with ChangeNotifier {
                 ..strokeWidth = _points![i].size!
                 ..strokeJoin = StrokeJoin.miter,
             );
-          }
-          else if(points![i].point == null && points![i + 1].point == null) {
+          } else if (points![i].point == null && points![i + 1].point == null) {
             canvas.drawCircle(
               _points![i].point!,
               _points![i].size! / 2,
@@ -297,26 +268,23 @@ class DrawerPanel with ChangeNotifier {
                 ..strokeJoin = StrokeJoin.miter,
             );
           }
-
         }
-
       }
 
       ui.Picture picture = recorder.endRecording();
       ui.Image img = await picture.toImage(500, 500);
       return pngImage = await img.toByteData(format: ui.ImageByteFormat.png);
-
     }
-
   }
 
   Future<Uint8List> getImageFileFromAssets(String path) async {
-    ByteData byteData = await rootBundle.load('assets/$path'); // 1. Obtain the svg image from the assets
-    Uint8List image = byteData.buffer.asUint8List(             // 2. Convert the svg image to Uint8List
+    ByteData byteData = await rootBundle
+        .load('assets/$path'); // 1. Obtain the svg image from the assets
+    Uint8List image = byteData.buffer.asUint8List(
+      // 2. Convert the svg image to Uint8List
       byteData.offsetInBytes,
       byteData.lengthInBytes,
     );
     return image;
   }
-
 }

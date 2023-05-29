@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -8,11 +7,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../classes/tool.dart';
-import '../../provider/drawer_panel.dart';
-import '../../classes/line_point.dart';
-import '../view_image/view_image.dart';
-import 'draw/draw.dart';
+import '../classes/tool.dart';
+import '../provider/drawer_panel.dart';
+import '../classes/line_point.dart';
+import '../../view_image/view/view_image.dart';
+import '../widgets/draw/drawing_area.dart';
 
 class Panel extends StatefulWidget {
   const Panel({Key? key}) : super(key: key);
@@ -22,9 +21,8 @@ class Panel extends StatefulWidget {
 }
 
 class _PanelState extends State<Panel> {
-
   Future<void> savePaintInDevice() async {
-    ByteData? image = await Provider.of<DrawerPanel>(context, listen: false).convertCanvasToImage();
+    ByteData? image = await context.read<DrawerPanel>().convertCanvasToImage();
     final Uint8List pngBytes = image!.buffer.asUint8List();
 
     final String dir = (await getApplicationDocumentsDirectory()).path;
@@ -39,8 +37,7 @@ class _PanelState extends State<Panel> {
     });
   }
 
-  void createNewDrawing(List<LinePoint>? points, panelActions) {
-
+  void createNewDrawing(List<LinePoint>? points) {
     if (points!.isNotEmpty) {
       showDialog(
         context: context,
@@ -57,7 +54,7 @@ class _PanelState extends State<Panel> {
           actions: [
             TextButton(
               onPressed: () {
-                panelActions.newPaint();
+                context.read<DrawerPanel>().newPaint();
                 Navigator.of(context).pop();
               },
               child: const Text(
@@ -65,60 +62,54 @@ class _PanelState extends State<Panel> {
                 style: TextStyle(
                     color: Colors.black54,
                     fontSize: 16,
-                    fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
               ),
             ),
             TextButton(
               onPressed: () async {
-
                 await savePaintInDevice();
-                panelActions.newPaint();
+                context.read<DrawerPanel>().newPaint();
                 Navigator.of(context).pop();
-
               },
               child: const Text(
                 'SAVE',
                 style: TextStyle(
                     color: Color(0xFF10FB06),
                     fontSize: 16,
-                    fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
               ),
             )
           ],
         ),
       );
-
     } else {
-
-      panelActions.newPaint();
-
+      context.read<DrawerPanel>().newPaint();
     }
-
   }
 
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 0), () {
-      Provider.of<DrawerPanel>(context, listen: false).changeSizeSelectorColor();
+      context.read<DrawerPanel>().changeSizeSelectorColor();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var viewportWidth = MediaQuery.of(context).size.width;
-    List<Color>? lineColors = Provider.of<DrawerPanel>(context).getLineColors;
-    List<Color>? backgroundColors = Provider.of<DrawerPanel>(context).getBackgroundColors;
-    List<Tool>? toolsList = Provider.of<DrawerPanel>(context).getToolsList;
-    Color? selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
-    Color? selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
-    Tools? selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
-    double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
-    List<LinePoint>? points = Provider.of<DrawerPanel>(context).points;
-    Color? sizeSelectorColor = Provider.of<DrawerPanel>(context).lineSizeColor;
-    final panelActions = Provider.of<DrawerPanel>(context);
+    List<Color>? lineColors = context.watch<DrawerPanel>().getLineColors;
+    List<Color>? backgroundColors =
+        context.watch<DrawerPanel>().getBackgroundColors;
+    List<Tool>? toolsList = context.watch<DrawerPanel>().getToolsList;
+    Color? selectedBackgroundColor =
+        context.watch<DrawerPanel>().selectedBackgroundColor;
+    Color? selectedLineColor = context.watch<DrawerPanel>().selectedLineColor;
+    Tools? selectedTool = context.watch<DrawerPanel>().selectedTool;
+    double? lineSize = context.watch<DrawerPanel>().lineSize;
+    List<LinePoint>? points = context.watch<DrawerPanel>().points;
+    Color? sizeSelectorColor = context.watch<DrawerPanel>().lineSizeColor;
+    final panelActions = context.read<DrawerPanel>();
 
     return SafeArea(
       child: Scaffold(
@@ -141,16 +132,18 @@ class _PanelState extends State<Panel> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-
-                                        createNewDrawing(points, panelActions);
-
+                                        createNewDrawing(points);
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
                                         height: 35,
                                         width: 35,
-                                        child: const Icon(Icons.create, size: 22),
+                                        child:
+                                            const Icon(Icons.create, size: 22),
                                       ),
                                     ),
                                     GestureDetector(
@@ -162,7 +155,10 @@ class _PanelState extends State<Panel> {
                                         }
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
                                         height: 35,
                                         width: 35,
@@ -172,11 +168,15 @@ class _PanelState extends State<Panel> {
                                     GestureDetector(
                                       onTap: () {},
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
                                         height: 35,
                                         width: 35,
-                                        child: const Icon(Icons.share, size: 22),
+                                        child:
+                                            const Icon(Icons.share, size: 22),
                                       ),
                                     ),
                                   ],
@@ -192,7 +192,10 @@ class _PanelState extends State<Panel> {
                                         panelActions.undoStroke();
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
                                         height: 35,
                                         width: 35,
@@ -204,7 +207,10 @@ class _PanelState extends State<Panel> {
                                         panelActions.redoStroke();
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(2),
                                         height: 35,
                                         width: 35,
@@ -219,7 +225,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 2, horizontal: 2),
                                   child: Text('Line Size'),
                                 ),
                                 Row(
@@ -252,7 +259,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 2, horizontal: 2),
                                   child: Text('Line'),
                                 ),
                                 Row(
@@ -263,17 +271,26 @@ class _PanelState extends State<Panel> {
                                           panelActions.changeLineColor = color;
                                         },
                                         child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: color,
                                             border: selectedLineColor == color
-                                                ? Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3)
+                                                ? Border.all(
+                                                    color: color == Colors.black
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    width: 3)
                                                 : Border.all(color: color),
                                           ),
                                           margin: const EdgeInsets.all(2),
-                                          height: selectedLineColor == color ? 25 : 20,
-                                          width: selectedLineColor == color ? 25 : 20,
+                                          height: selectedLineColor == color
+                                              ? 25
+                                              : 20,
+                                          width: selectedLineColor == color
+                                              ? 25
+                                              : 20,
                                         ),
                                       );
                                     }).toList(),
@@ -285,7 +302,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
                                   child: Text('Background'),
                                 ),
                                 Row(
@@ -293,20 +311,34 @@ class _PanelState extends State<Panel> {
                                     ...backgroundColors!.map((color) {
                                       return GestureDetector(
                                         onTap: () {
-                                          panelActions.changeBackgroundColor = color;
+                                          panelActions.changeBackgroundColor =
+                                              color;
                                         },
                                         child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: color,
-                                            border: selectedBackgroundColor == color
-                                                ? Border.all(color: Colors.black, width: 3)
-                                                : Border.all(color: color == Colors.white ? Colors.black : color),
+                                            border: selectedBackgroundColor ==
+                                                    color
+                                                ? Border.all(
+                                                    color: Colors.black,
+                                                    width: 3)
+                                                : Border.all(
+                                                    color: color == Colors.white
+                                                        ? Colors.black
+                                                        : color),
                                           ),
                                           margin: const EdgeInsets.all(2),
-                                          height: selectedBackgroundColor == color ? 25 : 20,
-                                          width: selectedBackgroundColor == color ? 25 : 20,
+                                          height:
+                                              selectedBackgroundColor == color
+                                                  ? 25
+                                                  : 20,
+                                          width:
+                                              selectedBackgroundColor == color
+                                                  ? 25
+                                                  : 20,
                                         ),
                                       );
                                     }).toList(),
@@ -324,7 +356,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 2, horizontal: 2),
                                   child: Text('Tools'),
                                 ),
                                 Row(
@@ -332,13 +365,20 @@ class _PanelState extends State<Panel> {
                                     ...toolsList!.map((tool) {
                                       return GestureDetector(
                                         onTap: () {
-                                          panelActions.changeToolSelected = tool;
+                                          panelActions.changeToolSelected =
+                                              tool;
                                         },
                                         child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 4) : Border.all(color: Colors.white),
+                                            border: selectedTool == tool.tool
+                                                ? Border.all(
+                                                    color: Colors.black,
+                                                    width: 4)
+                                                : Border.all(
+                                                    color: Colors.white),
                                           ),
                                           margin: const EdgeInsets.all(4),
                                           padding: const EdgeInsets.all(4),
@@ -372,7 +412,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
                                   child: Text('Actions'),
                                 ),
                                 Row(
@@ -380,12 +421,13 @@ class _PanelState extends State<Panel> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-
-                                        createNewDrawing(points, panelActions);
-
+                                        createNewDrawing(points);
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(4),
                                         height: 30,
                                         width: 30,
@@ -401,7 +443,10 @@ class _PanelState extends State<Panel> {
                                         }
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(4),
                                         height: 30,
                                         width: 30,
@@ -411,7 +456,10 @@ class _PanelState extends State<Panel> {
                                     GestureDetector(
                                       onTap: () {},
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(4),
                                         height: 30,
                                         width: 30,
@@ -431,7 +479,10 @@ class _PanelState extends State<Panel> {
                                         panelActions.undoStroke();
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(4),
                                         height: 30,
                                         width: 30,
@@ -443,7 +494,10 @@ class _PanelState extends State<Panel> {
                                         panelActions.redoStroke();
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.black)),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.black)),
                                         margin: const EdgeInsets.all(4),
                                         height: 30,
                                         width: 30,
@@ -463,7 +517,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
                                   child: Text('Line'),
                                 ),
                                 Row(
@@ -474,17 +529,26 @@ class _PanelState extends State<Panel> {
                                           panelActions.changeLineColor = color;
                                         },
                                         child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: color,
                                             border: selectedLineColor == color
-                                                ? Border.all(color: color == Colors.black ? Colors.white : Colors.black, width: 3)
+                                                ? Border.all(
+                                                    color: color == Colors.black
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    width: 3)
                                                 : Border.all(color: color),
                                           ),
                                           margin: const EdgeInsets.all(4),
-                                          height: selectedLineColor == color ? 30 : 25,
-                                          width: selectedLineColor == color ? 30 : 25,
+                                          height: selectedLineColor == color
+                                              ? 30
+                                              : 25,
+                                          width: selectedLineColor == color
+                                              ? 30
+                                              : 25,
                                         ),
                                       );
                                     }).toList(),
@@ -496,7 +560,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
                                   child: Text('Background'),
                                 ),
                                 Row(
@@ -504,20 +569,34 @@ class _PanelState extends State<Panel> {
                                     ...backgroundColors!.map((color) {
                                       return GestureDetector(
                                         onTap: () {
-                                          panelActions.changeBackgroundColor = color;
+                                          panelActions.changeBackgroundColor =
+                                              color;
                                         },
                                         child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: color,
-                                            border: selectedBackgroundColor == color
-                                                ? Border.all(color: Colors.black, width: 3)
-                                                : Border.all(color: color == Colors.white ? Colors.black : color),
+                                            border: selectedBackgroundColor ==
+                                                    color
+                                                ? Border.all(
+                                                    color: Colors.black,
+                                                    width: 3)
+                                                : Border.all(
+                                                    color: color == Colors.white
+                                                        ? Colors.black
+                                                        : color),
                                           ),
                                           margin: const EdgeInsets.all(4),
-                                          height: selectedBackgroundColor == color ? 30 : 25,
-                                          width: selectedBackgroundColor == color ? 30 : 25,
+                                          height:
+                                              selectedBackgroundColor == color
+                                                  ? 30
+                                                  : 25,
+                                          width:
+                                              selectedBackgroundColor == color
+                                                  ? 30
+                                                  : 25,
                                         ),
                                       );
                                     }).toList(),
@@ -535,7 +614,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
                                   child: Text('Line Size'),
                                 ),
                                 Row(
@@ -560,7 +640,8 @@ class _PanelState extends State<Panel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
                                   child: Text('Tools'),
                                 ),
                                 Row(
@@ -568,13 +649,20 @@ class _PanelState extends State<Panel> {
                                     ...toolsList!.map((tool) {
                                       return GestureDetector(
                                         onTap: () {
-                                          panelActions.changeToolSelected = tool;
+                                          panelActions.changeToolSelected =
+                                              tool;
                                         },
                                         child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            border: selectedTool == tool.tool ? Border.all(color: Colors.black, width: 3) : Border.all(color: Colors.white),
+                                            border: selectedTool == tool.tool
+                                                ? Border.all(
+                                                    color: Colors.black,
+                                                    width: 3)
+                                                : Border.all(
+                                                    color: Colors.white),
                                           ),
                                           margin: const EdgeInsets.all(4),
                                           padding: const EdgeInsets.all(4),
@@ -597,7 +685,7 @@ class _PanelState extends State<Panel> {
                     ),
                   ),
             const Expanded(
-              child: Draw(),
+              child: DrawingArea(),
             ),
           ],
         ),

@@ -1,32 +1,30 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../classes/line_point.dart';
-import '../../../provider/drawer_panel.dart';
-import '../board/board.dart';
+import '../../classes/line_point.dart';
+import '../../provider/drawer_panel.dart';
+import '../board/drawing_board.dart';
 
-class Draw extends StatefulWidget {
-  const Draw({Key? key}) : super(key: key);
+class DrawingArea extends StatefulWidget {
+  const DrawingArea({Key? key}) : super(key: key);
 
   @override
-  State<Draw> createState() => _DrawState();
+  State<DrawingArea> createState() => _DrawingAreaState();
 }
 
-class _DrawState extends State<Draw> {
+class _DrawingAreaState extends State<DrawingArea> {
   List<LinePoint> stroke = [];
 
   @override
   Widget build(BuildContext context) {
-    Color selectedBackgroundColor = Provider.of<DrawerPanel>(context).selectedBackgroundColor;
-    Color selectedLineColor = Provider.of<DrawerPanel>(context).selectedLineColor;
-    double? lineSize = Provider.of<DrawerPanel>(context).lineSize;
-    List<LinePoint>? points = Provider.of<DrawerPanel>(context).points;
-    Offset? pointerOffset = Provider.of<DrawerPanel>(context).pointerOffset;
-    Tools selectedTool = Provider.of<DrawerPanel>(context).selectedTool;
-    // ui.Image pointerImage = Provider.of<DrawerPanel>(context).pointerImage;
-    final drawActions = Provider.of<DrawerPanel>(context);
+    Color selectedBackgroundColor =
+        context.watch<DrawerPanel>().selectedBackgroundColor;
+    Color selectedLineColor = context.watch<DrawerPanel>().selectedLineColor;
+    double? lineSize = context.watch<DrawerPanel>().lineSize;
+    List<LinePoint>? points = context.watch<DrawerPanel>().points;
+    Offset? pointerOffset = context.watch<DrawerPanel>().pointerOffset;
+    Tools selectedTool = context.watch<DrawerPanel>().selectedTool;
+    final drawActions = context.read<DrawerPanel>();
 
     setStroke(Offset position) {
       if (selectedTool == Tools.pencil) {
@@ -73,7 +71,7 @@ class _DrawState extends State<Draw> {
       child: ClipRect(
         child: CustomPaint(
           size: MediaQuery.of(context).size,
-          painter: Board(
+          painter: DrawingBoard(
             pointerOffset: pointerOffset,
             points: points,
             backgroundColor: selectedBackgroundColor,
