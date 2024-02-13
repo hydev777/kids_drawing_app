@@ -90,9 +90,12 @@ class _PanelState extends State<Panel> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 0), () {
-      context.read<DrawerPanel>().changeSizeSelectorColor();
-    });
+    Future.delayed(
+      const Duration(seconds: 0),
+      () {
+        context.read<DrawerPanel>().changeSizeSelectorColor();
+      },
+    );
   }
 
   @override
