@@ -1,6 +1,6 @@
 # drawing_things
 
-Drawing app made in flutter. 
+Drawing app made in flutter with clean architecture. 
 
 This is an app to practice the combination of various widgets to create something new and creative. The drawing was made using the widgets GestureDetector, Offset and CustomPaint.
 
