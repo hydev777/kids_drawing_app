@@ -119,7 +119,7 @@ class _PanelState extends State<Panel> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: Column(
             children: [
               viewportWidth < 426
@@ -251,7 +251,7 @@ class _PanelState extends State<Panel> {
                               )
                             ],
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           Column(
                             children: [
                               Column(
@@ -350,7 +350,7 @@ class _PanelState extends State<Panel> {
                               ),
                             ],
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
