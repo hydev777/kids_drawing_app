@@ -275,10 +275,7 @@ class _PanelState extends State<Panel> {
                                       onChanged: (newSize) {
                                         panelActions.changeLineSize = newSize;
                                       },
-                                      activeColor:
-                                          sizeSelectorColor == Colors.white
-                                              ? Colors.white54
-                                              : sizeSelectorColor,
+                                      activeColor: selectedLineColor,
                                       thumbColor: Colors.black,
                                       min: 1,
                                       max: 10,
