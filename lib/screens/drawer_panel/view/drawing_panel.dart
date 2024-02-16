@@ -307,6 +307,10 @@ class _PanelState extends State<Panel> {
                                         return ColorOption(
                                           color: color,
                                           selectedColor: selectedLineColor,
+                                          onTap: () {
+                                            panelActions.changeLineColor =
+                                                color;
+                                          },
                                         );
                                       }).toList(),
                                     ],
@@ -328,6 +332,10 @@ class _PanelState extends State<Panel> {
                                           color: color,
                                           selectedColor:
                                               selectedBackgroundColor,
+                                          onTap: () {
+                                            panelActions.changeBackgroundColor =
+                                                color;
+                                          },
                                         );
                                       }).toList(),
                                     ],
@@ -360,6 +368,10 @@ class _PanelState extends State<Panel> {
                                         return ColorOption(
                                           color: color,
                                           selectedColor: selectedLineColor,
+                                          onTap: () {
+                                            panelActions.changeLineColor =
+                                                color;
+                                          },
                                         );
                                       }).toList(),
                                     ],
@@ -381,6 +393,10 @@ class _PanelState extends State<Panel> {
                                           color: color,
                                           selectedColor:
                                               selectedBackgroundColor,
+                                          onTap: () {
+                                            panelActions.changeBackgroundColor =
+                                                color;
+                                          },
                                         );
                                       }).toList(),
                                     ],

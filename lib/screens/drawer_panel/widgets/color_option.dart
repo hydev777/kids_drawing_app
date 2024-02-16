@@ -9,19 +9,17 @@ class ColorOption extends StatelessWidget {
     Key? key,
     required this.color,
     required this.selectedColor,
+    required this.onTap,
   }) : super(key: key);
 
   final Color color;
   final Color selectedColor;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final panelActions = context.read<DrawerPanel>();
-
     return GestureDetector(
-      onTap: () {
-        panelActions.changeLineColor = color;
-      },
+      onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
