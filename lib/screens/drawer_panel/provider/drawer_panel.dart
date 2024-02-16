@@ -171,11 +171,13 @@ class DrawerPanel with ChangeNotifier {
       _pointerOffset = const Offset(0, 0);
 
       _lineSize = 5;
-      _lineColorSelected = 0;
+      _lineColorSelected = 1;
       _backgroundSelected = 0;
 
-      changeToolSelected =
-          Tool(tool: Tools.pencil, srcUrl: 'assets/images/pencil.svg');
+      changeToolSelected = Tool(
+        tool: Tools.pencil,
+        srcUrl: 'assets/images/pencil.svg',
+      );
 
       if (selectedTool == Tools.pencil) {
         _sizeSelectorColor = selectedLineColor;
