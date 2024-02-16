@@ -15,7 +15,7 @@ import '../widgets/draw_area/drawing_area.dart';
 
 const circleShadow = BoxShadow(
   color: Colors.black54,
-  offset: Offset(2, 2),
+  offset: Offset(3, 2),
 );
 
 class Panel extends StatefulWidget {
@@ -344,22 +344,14 @@ class _PanelState extends State<Panel> {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: color,
-                                              border: selectedLineColor == color
+                                              border: color == Colors.white
                                                   ? Border.all(
-                                                      color:
-                                                          color == Colors.black
-                                                              ? Colors.white60
-                                                              : Colors.black,
-                                                      width: 2,
+                                                      color: Colors.black,
+                                                      width: 1,
                                                     )
-                                                  : color == Colors.white
-                                                      ? Border.all(
-                                                          color: Colors.black,
-                                                          width: 1,
-                                                        )
-                                                      : Border.all(
-                                                          color: color,
-                                                        ),
+                                                  : Border.all(
+                                                      color: color,
+                                                    ),
                                               boxShadow:
                                                   selectedLineColor == color
                                                       ? [
@@ -404,23 +396,14 @@ class _PanelState extends State<Panel> {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: color,
-                                              border: selectedBackgroundColor ==
-                                                      color
+                                              border: color == Colors.white
                                                   ? Border.all(
-                                                      color:
-                                                          color == Colors.black
-                                                              ? Colors.white60
-                                                              : Colors.black,
-                                                      width: 2,
+                                                      color: Colors.black,
+                                                      width: 1,
                                                     )
-                                                  : color == Colors.white
-                                                      ? Border.all(
-                                                          color: Colors.black,
-                                                          width: 1,
-                                                        )
-                                                      : Border.all(
-                                                          color: color,
-                                                        ),
+                                                  : Border.all(
+                                                      color: color,
+                                                    ),
                                               boxShadow:
                                                   selectedBackgroundColor ==
                                                           color
@@ -733,11 +716,6 @@ class _PanelState extends State<Panel> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
-                            border: selectedTool == tool.tool
-                                ? Border.all(color: Colors.black, width: 2)
-                                : Border.all(
-                                    color: Colors.white,
-                                  ),
                             boxShadow: selectedTool == tool.tool
                                 ? [
                                     circleShadow,
@@ -746,7 +724,7 @@ class _PanelState extends State<Panel> {
                           ),
                           margin: const EdgeInsets.all(4),
                           padding: const EdgeInsets.all(4),
-                          height: 30,
+                          height: selectedTool == tool.tool ? 30 : 25,
                           width: 30,
                           child: SvgPicture.asset(
                             tool.srcUrl!,
