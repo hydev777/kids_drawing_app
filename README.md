@@ -4,7 +4,7 @@ Drawing app made in flutter with clean architecture.
 
 This is an app to practice the combination of various widgets to create something new and creative. The drawing was made using the widgets GestureDetector, Offset and CustomPaint.
 
-![drawing_image](https://user-images.githubusercontent.com/84458390/185927726-3f06207f-4e05-4038-92ea-51ec1f56bbfc.png)
+![pendraw](https://github.com/hydev777/kids_drawing_app/assets/84458390/f26ec5b5-10e7-48e0-9bb2-c43716e9386f)
 
 Features done:
 
