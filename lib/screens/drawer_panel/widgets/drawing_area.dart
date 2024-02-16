@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../classes/line_point.dart';
-import '../../provider/drawer_panel.dart';
-import '../drawing_board/drawing_board.dart';
+import '../classes/line_point.dart';
+import '../provider/drawer_panel.dart';
+import 'drawing_board.dart';
 
 class DrawingArea extends StatefulWidget {
   const DrawingArea({Key? key}) : super(key: key);

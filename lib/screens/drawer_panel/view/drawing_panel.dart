@@ -2,21 +2,16 @@ import 'dart:typed_data';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../classes/tool.dart';
 import '../provider/drawer_panel.dart';
 import '../classes/line_point.dart';
-import '../widgets/draw_area/drawing_area.dart';
-
-const circleShadow = BoxShadow(
-  color: Colors.black54,
-  offset: Offset(3, 2),
-);
+import '../widgets/color_option.dart';
+import '../widgets/drawing_area.dart';
+import '../widgets/drawing_tool.dart';
 
 class Panel extends StatefulWidget {
   const Panel({Key? key}) : super(key: key);
@@ -309,40 +304,9 @@ class _PanelState extends State<Panel> {
                                   Row(
                                     children: [
                                       ...lineColors!.map((color) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            panelActions.changeLineColor =
-                                                color;
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: color,
-                                              border: color == Colors.white
-                                                  ? Border.all(
-                                                      color: Colors.black,
-                                                      width: 1,
-                                                    )
-                                                  : Border.all(
-                                                      color: color,
-                                                    ),
-                                              boxShadow:
-                                                  selectedLineColor == color
-                                                      ? [
-                                                          circleShadow,
-                                                        ]
-                                                      : [],
-                                            ),
-                                            margin: const EdgeInsets.all(2),
-                                            height: selectedLineColor == color
-                                                ? 25
-                                                : 20,
-                                            width: selectedLineColor == color
-                                                ? 25
-                                                : 20,
-                                          ),
+                                        return ColorOption(
+                                          color: color,
+                                          selectedColor: selectedLineColor,
                                         );
                                       }).toList(),
                                     ],
@@ -360,44 +324,10 @@ class _PanelState extends State<Panel> {
                                   Row(
                                     children: [
                                       ...backgroundColors!.map((color) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            panelActions.changeBackgroundColor =
-                                                color;
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: const Duration(
-                                              milliseconds: 300,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: color,
-                                              border: color == Colors.white
-                                                  ? Border.all(
-                                                      color: Colors.black,
-                                                      width: 1,
-                                                    )
-                                                  : Border.all(
-                                                      color: color,
-                                                    ),
-                                              boxShadow:
-                                                  selectedBackgroundColor ==
-                                                          color
-                                                      ? [
-                                                          circleShadow,
-                                                        ]
-                                                      : [],
-                                            ),
-                                            margin: const EdgeInsets.all(2),
-                                            height:
-                                                selectedBackgroundColor == color
-                                                    ? 25
-                                                    : 20,
-                                            width:
-                                                selectedBackgroundColor == color
-                                                    ? 25
-                                                    : 20,
-                                          ),
+                                        return ColorOption(
+                                          color: color,
+                                          selectedColor:
+                                              selectedBackgroundColor,
                                         );
                                       }).toList(),
                                     ],
@@ -427,41 +357,9 @@ class _PanelState extends State<Panel> {
                                   Row(
                                     children: [
                                       ...lineColors!.map((color) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            panelActions.changeLineColor =
-                                                color;
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: color,
-                                              border: selectedLineColor == color
-                                                  ? Border.all(
-                                                      color:
-                                                          color == Colors.black
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                      width: 3,
-                                                    )
-                                                  : Border.all(color: color),
-                                              boxShadow:
-                                                  selectedLineColor == color
-                                                      ? [
-                                                          circleShadow,
-                                                        ]
-                                                      : [],
-                                            ),
-                                            margin: const EdgeInsets.all(4),
-                                            height: selectedLineColor == color
-                                                ? 30
-                                                : 25,
-                                            width: selectedLineColor == color
-                                                ? 30
-                                                : 25,
-                                          ),
+                                        return ColorOption(
+                                          color: color,
+                                          selectedColor: selectedLineColor,
                                         );
                                       }).toList(),
                                     ],
@@ -479,46 +377,10 @@ class _PanelState extends State<Panel> {
                                   Row(
                                     children: [
                                       ...backgroundColors!.map((color) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            panelActions.changeBackgroundColor =
-                                                color;
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: color,
-                                              border: selectedBackgroundColor ==
-                                                      color
-                                                  ? Border.all(
-                                                      color: Colors.black,
-                                                      width: 3)
-                                                  : Border.all(
-                                                      color:
-                                                          color == Colors.white
-                                                              ? Colors.black
-                                                              : color,
-                                                    ),
-                                              boxShadow:
-                                                  selectedBackgroundColor ==
-                                                          color
-                                                      ? [
-                                                          circleShadow,
-                                                        ]
-                                                      : [],
-                                            ),
-                                            margin: const EdgeInsets.all(4),
-                                            height:
-                                                selectedBackgroundColor == color
-                                                    ? 30
-                                                    : 25,
-                                            width:
-                                                selectedBackgroundColor == color
-                                                    ? 30
-                                                    : 25,
-                                          ),
+                                        return ColorOption(
+                                          color: color,
+                                          selectedColor:
+                                              selectedBackgroundColor,
                                         );
                                       }).toList(),
                                     ],
@@ -577,30 +439,9 @@ class _PanelState extends State<Panel> {
                 child: Row(
                   children: [
                     ...toolsList!.map((tool) {
-                      return GestureDetector(
-                        onTap: () {
-                          panelActions.changeToolSelected = tool;
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: selectedTool == tool.tool
-                                ? [
-                                    circleShadow,
-                                  ]
-                                : [],
-                          ),
-                          margin: const EdgeInsets.all(4),
-                          padding: const EdgeInsets.all(4),
-                          height: selectedTool == tool.tool ? 30 : 25,
-                          width: 30,
-                          child: SvgPicture.asset(
-                            tool.srcUrl!,
-                            color: Colors.black,
-                          ),
-                        ),
+                      return DrawingTool(
+                        tool: tool,
+                        selectedTool: selectedTool,
                       );
                     }).toList()
                   ],

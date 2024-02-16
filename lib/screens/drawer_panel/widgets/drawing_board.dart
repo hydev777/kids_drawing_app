@@ -1,8 +1,8 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
-import '../../classes/line_point.dart';
-import '../../provider/drawer_panel.dart';
+import '../classes/line_point.dart';
+import '../provider/drawer_panel.dart';
 
 class DrawingBoard extends CustomPainter {
   List<LinePoint>? points;
