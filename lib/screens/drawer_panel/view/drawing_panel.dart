@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,11 @@ import '../classes/tool.dart';
 import '../provider/drawer_panel.dart';
 import '../classes/line_point.dart';
 import '../widgets/draw_area/drawing_area.dart';
+
+const circleShadow = BoxShadow(
+  color: Colors.black54,
+  offset: Offset(2, 2),
+);
 
 class Panel extends StatefulWidget {
   const Panel({Key? key}) : super(key: key);
@@ -73,10 +79,10 @@ class _PanelState extends State<Panel> {
                 context.read<DrawerPanel>().newPaint();
                 Navigator.of(context).pop();
               },
-              child: const Text(
+              child: Text(
                 'SAVE',
                 style: TextStyle(
-                    color: Color(0xFF10FB06),
+                    color: Colors.deepPurple[300],
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
               ),
@@ -118,103 +124,165 @@ class _PanelState extends State<Panel> {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            GestureDetector(
+              onTap: () async {
+                createNewDrawing(points);
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                margin: const EdgeInsets.all(2),
+                height: 35,
+                width: 35,
+                child: const Icon(Icons.create, size: 22),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                panelActions.undoStroke();
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                margin: const EdgeInsets.all(2),
+                height: 35,
+                width: 35,
+                child: const Icon(Icons.undo, size: 22),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                panelActions.redoStroke();
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                margin: const EdgeInsets.all(2),
+                height: 35,
+                width: 35,
+                child: const Icon(Icons.redo, size: 22),
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                if (points!.isNotEmpty) {
+                  await savePaintInDevice();
+                }
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                margin: const EdgeInsets.all(2),
+                height: 35,
+                width: 35,
+                child: const Icon(Icons.save, size: 22),
+              ),
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Column(
             children: [
               viewportWidth < 426
                   ? SizedBox(
-                      height: 150,
+                      height: 120,
                       width: double.infinity,
                       child: Row(
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          createNewDrawing(points);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: Colors.black)),
-                                          margin: const EdgeInsets.all(2),
-                                          height: 35,
-                                          width: 35,
-                                          child: const Icon(Icons.create,
-                                              size: 22),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          if (points!.isNotEmpty) {
-                                            await savePaintInDevice();
-                                          }
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: Colors.black)),
-                                          margin: const EdgeInsets.all(2),
-                                          height: 35,
-                                          width: 35,
-                                          child:
-                                              const Icon(Icons.save, size: 22),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          panelActions.undoStroke();
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: Colors.black)),
-                                          margin: const EdgeInsets.all(2),
-                                          height: 35,
-                                          width: 35,
-                                          child:
-                                              const Icon(Icons.undo, size: 22),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          panelActions.redoStroke();
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: Colors.black)),
-                                          margin: const EdgeInsets.all(2),
-                                          height: 35,
-                                          width: 35,
-                                          child:
-                                              const Icon(Icons.redo, size: 22),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                              // Column(
+                              //   crossAxisAlignment: CrossAxisAlignment.start,
+                              //   children: [
+                              //     Row(
+                              //       mainAxisAlignment: MainAxisAlignment.start,
+                              //       children: [
+                              //         GestureDetector(
+                              //           onTap: () async {
+                              //             createNewDrawing(points);
+                              //           },
+                              //           child: Container(
+                              //             decoration: BoxDecoration(
+                              //                 shape: BoxShape.circle,
+                              //                 border: Border.all(
+                              //                     color: Colors.black)),
+                              //             margin: const EdgeInsets.all(2),
+                              //             height: 35,
+                              //             width: 35,
+                              //             child: const Icon(Icons.create,
+                              //                 size: 22),
+                              //           ),
+                              //         ),
+                              //         GestureDetector(
+                              //           onTap: () async {
+                              //             if (points!.isNotEmpty) {
+                              //               await savePaintInDevice();
+                              //             }
+                              //           },
+                              //           child: Container(
+                              //             decoration: BoxDecoration(
+                              //                 shape: BoxShape.circle,
+                              //                 border: Border.all(
+                              //                     color: Colors.black)),
+                              //             margin: const EdgeInsets.all(2),
+                              //             height: 35,
+                              //             width: 35,
+                              //             child:
+                              //                 const Icon(Icons.save, size: 22),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     )
+                              //   ],
+                              // ),
+                              // Column(
+                              //   children: [
+                              //     Row(
+                              //       children: [
+                              //         GestureDetector(
+                              //           onTap: () {
+                              //             panelActions.undoStroke();
+                              //           },
+                              //           child: Container(
+                              //             decoration: BoxDecoration(
+                              //                 shape: BoxShape.circle,
+                              //                 border: Border.all(
+                              //                     color: Colors.black)),
+                              //             margin: const EdgeInsets.all(2),
+                              //             height: 35,
+                              //             width: 35,
+                              //             child:
+                              //                 const Icon(Icons.undo, size: 22),
+                              //           ),
+                              //         ),
+                              //         GestureDetector(
+                              //           onTap: () {
+                              //             panelActions.redoStroke();
+                              //           },
+                              //           child: Container(
+                              //             decoration: BoxDecoration(
+                              //                 shape: BoxShape.circle,
+                              //                 border: Border.all(
+                              //                     color: Colors.black)),
+                              //             margin: const EdgeInsets.all(2),
+                              //             height: 35,
+                              //             width: 35,
+                              //             child:
+                              //                 const Icon(Icons.redo, size: 22),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     )
+                              //   ],
+                              // ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -280,10 +348,24 @@ class _PanelState extends State<Panel> {
                                                   ? Border.all(
                                                       color:
                                                           color == Colors.black
-                                                              ? Colors.white
+                                                              ? Colors.white60
                                                               : Colors.black,
-                                                      width: 3)
-                                                  : Border.all(color: color),
+                                                      width: 2,
+                                                    )
+                                                  : color == Colors.white
+                                                      ? Border.all(
+                                                          color: Colors.black,
+                                                          width: 1,
+                                                        )
+                                                      : Border.all(
+                                                          color: color,
+                                                        ),
+                                              boxShadow:
+                                                  selectedLineColor == color
+                                                      ? [
+                                                          circleShadow,
+                                                        ]
+                                                      : [],
                                             ),
                                             margin: const EdgeInsets.all(2),
                                             height: selectedLineColor == color
@@ -317,20 +399,35 @@ class _PanelState extends State<Panel> {
                                           },
                                           child: AnimatedContainer(
                                             duration: const Duration(
-                                                milliseconds: 300),
+                                              milliseconds: 300,
+                                            ),
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: color,
                                               border: selectedBackgroundColor ==
                                                       color
                                                   ? Border.all(
-                                                      color: Colors.black,
-                                                      width: 3)
-                                                  : Border.all(
                                                       color:
-                                                          color == Colors.white
-                                                              ? Colors.black
-                                                              : color),
+                                                          color == Colors.black
+                                                              ? Colors.white60
+                                                              : Colors.black,
+                                                      width: 2,
+                                                    )
+                                                  : color == Colors.white
+                                                      ? Border.all(
+                                                          color: Colors.black,
+                                                          width: 1,
+                                                        )
+                                                      : Border.all(
+                                                          color: color,
+                                                        ),
+                                              boxShadow:
+                                                  selectedBackgroundColor ==
+                                                          color
+                                                      ? [
+                                                          circleShadow,
+                                                        ]
+                                                      : [],
                                             ),
                                             margin: const EdgeInsets.all(2),
                                             height:
@@ -350,60 +447,11 @@ class _PanelState extends State<Panel> {
                               ),
                             ],
                           ),
-                          const SizedBox(width: 5),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 2, horizontal: 2),
-                                    child: Text('Tools'),
-                                  ),
-                                  Row(
-                                    children: [
-                                      ...toolsList!.map((tool) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            panelActions.changeToolSelected =
-                                                tool;
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: selectedTool == tool.tool
-                                                  ? Border.all(
-                                                      color: Colors.black,
-                                                      width: 4)
-                                                  : Border.all(
-                                                      color: Colors.white),
-                                            ),
-                                            margin: const EdgeInsets.all(4),
-                                            padding: const EdgeInsets.all(4),
-                                            height: 30,
-                                            width: 30,
-                                            child: SvgPicture.asset(
-                                              tool.srcUrl!,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        );
-                                      }).toList()
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     )
                   : SizedBox(
-                      height: 150,
+                      height: 120,
                       width: double.infinity,
                       child: Row(
                         children: [
@@ -543,8 +591,15 @@ class _PanelState extends State<Panel> {
                                                           color == Colors.black
                                                               ? Colors.white
                                                               : Colors.black,
-                                                      width: 3)
+                                                      width: 3,
+                                                    )
                                                   : Border.all(color: color),
+                                              boxShadow:
+                                                  selectedLineColor == color
+                                                      ? [
+                                                          circleShadow,
+                                                        ]
+                                                      : [],
                                             ),
                                             margin: const EdgeInsets.all(4),
                                             height: selectedLineColor == color
@@ -591,7 +646,15 @@ class _PanelState extends State<Panel> {
                                                       color:
                                                           color == Colors.white
                                                               ? Colors.black
-                                                              : color),
+                                                              : color,
+                                                    ),
+                                              boxShadow:
+                                                  selectedBackgroundColor ==
+                                                          color
+                                                      ? [
+                                                          circleShadow,
+                                                        ]
+                                                      : [],
                                             ),
                                             margin: const EdgeInsets.all(4),
                                             height:
@@ -641,49 +704,6 @@ class _PanelState extends State<Panel> {
                                   ),
                                 ],
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 5),
-                                    child: Text('Tools'),
-                                  ),
-                                  Row(
-                                    children: [
-                                      ...toolsList!.map((tool) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            panelActions.changeToolSelected =
-                                                tool;
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: selectedTool == tool.tool
-                                                  ? Border.all(
-                                                      color: Colors.black,
-                                                      width: 3)
-                                                  : Border.all(
-                                                      color: Colors.white),
-                                            ),
-                                            margin: const EdgeInsets.all(4),
-                                            padding: const EdgeInsets.all(4),
-                                            height: 30,
-                                            width: 30,
-                                            child: SvgPicture.asset(
-                                              tool.srcUrl!,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        );
-                                      }).toList()
-                                    ],
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                         ],
@@ -692,6 +712,52 @@ class _PanelState extends State<Panel> {
               const Expanded(
                 child: DrawingArea(),
               ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[300],
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                ),
+                padding: const EdgeInsets.all(4),
+                height: 50,
+                child: Row(
+                  children: [
+                    ...toolsList!.map((tool) {
+                      return GestureDetector(
+                        onTap: () {
+                          panelActions.changeToolSelected = tool;
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: selectedTool == tool.tool
+                                ? Border.all(color: Colors.black, width: 2)
+                                : Border.all(
+                                    color: Colors.white,
+                                  ),
+                            boxShadow: selectedTool == tool.tool
+                                ? [
+                                    circleShadow,
+                                  ]
+                                : [],
+                          ),
+                          margin: const EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
+                          height: 30,
+                          width: 30,
+                          child: SvgPicture.asset(
+                            tool.srcUrl!,
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
+                    }).toList()
+                  ],
+                ),
+              )
             ],
           ),
         ),

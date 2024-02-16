@@ -30,7 +30,7 @@ class DrawerPanel with ChangeNotifier {
     Tool(tool: Tools.eraser, srcUrl: 'assets/images/eraser.svg'),
   ];
   double? _lineSize = 5;
-  int _lineColorSelected = 0;
+  int _lineColorSelected = 1;
   int _backgroundSelected = 0;
   Color? _sizeSelectorColor;
   int _toolSelected = 0;
