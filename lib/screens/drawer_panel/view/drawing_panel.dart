@@ -172,7 +172,9 @@ class _PanelState extends State<Panel> {
           actions: [
             GestureDetector(
               onTap: () async {
-                clearBoard();
+                if (points!.isNotEmpty) {
+                  clearBoard();
+                }
               },
               child: Container(
                 decoration: const BoxDecoration(
