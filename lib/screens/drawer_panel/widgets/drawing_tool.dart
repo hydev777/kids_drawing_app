@@ -37,8 +37,8 @@ class DrawingTool extends StatelessWidget {
         ),
         margin: const EdgeInsets.all(4),
         padding: const EdgeInsets.all(4),
-        height: selectedTool == tool.tool ? 30 : 25,
-        width: 30,
+        height: selectedTool == tool.tool ? 35 : 25,
+        width: selectedTool == tool.tool ? 35 : 25,
         child: SvgPicture.asset(
           tool.srcUrl!,
           color: Colors.black,

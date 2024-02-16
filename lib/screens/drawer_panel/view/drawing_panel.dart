@@ -148,7 +148,6 @@ class _PanelState extends State<Panel> {
 
   @override
   Widget build(BuildContext context) {
-    var viewportWidth = MediaQuery.of(context).size.width;
     List<Color>? lineColors = context.watch<DrawerPanel>().getLineColors;
     List<Color>? backgroundColors =
         context.watch<DrawerPanel>().getBackgroundColors;
