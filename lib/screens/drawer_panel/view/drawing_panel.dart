@@ -163,7 +163,7 @@ class _PanelState extends State<Panel> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.deepPurple[500],
+          backgroundColor: Colors.blue[500],
           actions: [
             GestureDetector(
               onTap: () async {
@@ -445,7 +445,7 @@ class _PanelState extends State<Panel> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple[300],
+                  color: Colors.blue[200],
                   borderRadius: const BorderRadius.all(
                     Radius.circular(8),
                   ),
