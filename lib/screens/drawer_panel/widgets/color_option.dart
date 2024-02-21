@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../core/ui/constants/constants.dart';
-import '../provider/drawer_panel.dart';
 
 class ColorOption extends StatelessWidget {
   const ColorOption({

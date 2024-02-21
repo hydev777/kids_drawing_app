@@ -3,8 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../classes/line_point.dart';
-import '../classes/tool.dart';
+import '../classes/classes.dart';
 
 enum Tools { eraser, pencil }
 
@@ -32,17 +31,11 @@ class DrawerPanel with ChangeNotifier {
   double? _lineSize = 5;
   int _lineColorSelected = 1;
   int _backgroundSelected = 0;
-  Color? _sizeSelectorColor;
   int _toolSelected = 0;
   Offset? _pointerOffset = const Offset(0, 0);
   List<LinePoint>? _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
-  ui.Picture? pointerPicture;
-
-  Color? get lineSizeColor {
-    return _sizeSelectorColor;
-  }
 
   Offset? get pointerOffset {
     return _pointerOffset;
@@ -99,7 +92,6 @@ class DrawerPanel with ChangeNotifier {
       _lineColorSelected = index;
       notifyListeners();
     }
-    changeSizeSelectorColor();
   }
 
   set changeBackgroundColor(Color color) {
@@ -108,17 +100,6 @@ class DrawerPanel with ChangeNotifier {
       _backgroundSelected = index;
       notifyListeners();
     }
-    changeSizeSelectorColor();
-  }
-
-  void changeSizeSelectorColor() {
-    if (selectedTool == Tools.pencil) {
-      _sizeSelectorColor = selectedLineColor;
-    } else if (selectedTool == Tools.eraser) {
-      _sizeSelectorColor = selectedBackgroundColor;
-    }
-
-    notifyListeners();
   }
 
   void drawOnBoard(line) {
@@ -154,12 +135,6 @@ class DrawerPanel with ChangeNotifier {
     _lineColorSelected = 0;
     _backgroundSelected = 0;
 
-    if (selectedTool == Tools.pencil) {
-      _sizeSelectorColor = selectedLineColor;
-    } else if (selectedTool == Tools.eraser) {
-      _sizeSelectorColor = selectedBackgroundColor;
-    }
-
     notifyListeners();
   }
 
@@ -178,12 +153,6 @@ class DrawerPanel with ChangeNotifier {
         tool: Tools.pencil,
         srcUrl: 'assets/images/pencil.svg',
       );
-
-      if (selectedTool == Tools.pencil) {
-        _sizeSelectorColor = selectedLineColor;
-      } else if (selectedTool == Tools.eraser) {
-        _sizeSelectorColor = selectedBackgroundColor;
-      }
 
       notifyListeners();
     }
@@ -283,10 +252,8 @@ class DrawerPanel with ChangeNotifier {
   }
 
   Future<Uint8List> getImageFileFromAssets(String path) async {
-    ByteData byteData = await rootBundle
-        .load('assets/$path'); // 1. Obtain the svg image from the assets
+    ByteData byteData = await rootBundle.load('assets/$path');
     Uint8List image = byteData.buffer.asUint8List(
-      // 2. Convert the svg image to Uint8List
       byteData.offsetInBytes,
       byteData.lengthInBytes,
     );

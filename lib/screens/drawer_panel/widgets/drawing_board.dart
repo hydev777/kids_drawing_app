@@ -21,6 +21,8 @@ class DrawingBoard extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.drawColor(backgroundColor!, BlendMode.multiply);
 
+    // TODO: Add Shader pencil options
+
     for (int i = 0; i < (points!.length - 1); i++) {
       if (points![i].tool == Tools.pencil) {
         if (points![i].point != null && points![i + 1].point != null) {

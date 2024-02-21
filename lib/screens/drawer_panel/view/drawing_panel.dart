@@ -1,19 +1,14 @@
 import 'dart:typed_data';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../classes/tool.dart';
 import '../provider/drawer_panel.dart';
-import '../classes/line_point.dart';
-import '../widgets/color_option.dart';
-import '../widgets/drawing_area.dart';
-import '../widgets/drawing_tool.dart';
+import '../classes/classes.dart';
+import '../widgets/widgets.dart';
 
 class Panel extends StatefulWidget {
   const Panel({Key? key}) : super(key: key);
@@ -138,12 +133,6 @@ class _PanelState extends State<Panel> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      const Duration(seconds: 0),
-      () {
-        context.read<DrawerPanel>().changeSizeSelectorColor();
-      },
-    );
   }
 
   @override
@@ -158,7 +147,6 @@ class _PanelState extends State<Panel> {
     Tools? selectedTool = context.watch<DrawerPanel>().selectedTool;
     double? lineSize = context.watch<DrawerPanel>().lineSize;
     List<LinePoint>? points = context.watch<DrawerPanel>().points;
-    Color? sizeSelectorColor = context.watch<DrawerPanel>().lineSizeColor;
     final panelActions = context.read<DrawerPanel>();
 
     return SafeArea(
