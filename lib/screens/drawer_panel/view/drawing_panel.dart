@@ -6,7 +6,8 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/drawer_panel.dart';
+import '../../../core/enums/enums.dart';
+import '../provider/provider.dart';
 import '../classes/classes.dart';
 import '../widgets/widgets.dart';
 
@@ -48,7 +49,7 @@ class _PanelState extends State<Panel> {
             TextButton(
               onPressed: () async {
                 await savePaintInDevice();
-                context.read<DrawerPanel>().newPaint();
+                context.read<DrawerProvider>().newPaint();
                 Navigator.of(context).pop();
               },
               child: Text(
@@ -63,12 +64,13 @@ class _PanelState extends State<Panel> {
         ),
       );
     } else {
-      context.read<DrawerPanel>().newPaint();
+      context.read<DrawerProvider>().newPaint();
     }
   }
 
   Future<void> savePaintInDevice() async {
-    ByteData? image = await context.read<DrawerPanel>().convertCanvasToImage();
+    ByteData? image =
+        await context.read<DrawerProvider>().convertCanvasToImage();
     final Uint8List pngBytes = image!.buffer.asUint8List();
 
     final String dir = (await getTemporaryDirectory()).path;
@@ -114,7 +116,7 @@ class _PanelState extends State<Panel> {
           ),
           TextButton(
             onPressed: () async {
-              context.read<DrawerPanel>().newPaint();
+              context.read<DrawerProvider>().newPaint();
               Navigator.of(context).pop();
             },
             child: Text(
@@ -137,17 +139,18 @@ class _PanelState extends State<Panel> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color>? lineColors = context.watch<DrawerPanel>().getLineColors;
+    List<Color>? lineColors = context.watch<DrawerProvider>().lineColors;
     List<Color>? backgroundColors =
-        context.watch<DrawerPanel>().getBackgroundColors;
-    List<Tool>? toolsList = context.watch<DrawerPanel>().getToolsList;
+        context.watch<DrawerProvider>().backgroundColors;
+    List<Tool>? toolsList = context.watch<DrawerProvider>().toolList;
     Color? selectedBackgroundColor =
-        context.watch<DrawerPanel>().selectedBackgroundColor;
-    Color? selectedLineColor = context.watch<DrawerPanel>().selectedLineColor;
-    Tools? selectedTool = context.watch<DrawerPanel>().selectedTool;
-    double? lineSize = context.watch<DrawerPanel>().lineSize;
-    List<LinePoint>? points = context.watch<DrawerPanel>().points;
-    final panelActions = context.read<DrawerPanel>();
+        context.watch<DrawerProvider>().selectedBackgroundColor;
+    Color? selectedLineColor =
+        context.watch<DrawerProvider>().selectedLineColor;
+    Tools? selectedTool = context.watch<DrawerProvider>().selectedTool;
+    double? lineSize = context.watch<DrawerProvider>().lineSize;
+    List<LinePoint>? points = context.watch<DrawerProvider>().points;
+    final panelActions = context.read<DrawerProvider>();
 
     return SafeArea(
       child: Scaffold(

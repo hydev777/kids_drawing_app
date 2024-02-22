@@ -3,11 +3,10 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/enums/enums.dart';
 import '../classes/classes.dart';
 
-enum Tools { eraser, pencil }
-
-class DrawerPanel with ChangeNotifier {
+class DrawerProvider with ChangeNotifier {
   final List<Color> _lineColors = [
     Colors.white,
     Colors.black,
@@ -45,15 +44,15 @@ class DrawerPanel with ChangeNotifier {
     return _points!;
   }
 
-  List<Color>? get getBackgroundColors {
+  List<Color>? get backgroundColors {
     return _backgroundColors;
   }
 
-  List<Color>? get getLineColors {
+  List<Color>? get lineColors {
     return _lineColors;
   }
 
-  List<Tool>? get getToolsList {
+  List<Tool>? get toolList {
     return _toolList;
   }
 

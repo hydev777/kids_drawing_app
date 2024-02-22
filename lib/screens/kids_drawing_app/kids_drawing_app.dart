@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../drawer_panel/provider/drawer_panel.dart';
-import '../drawer_panel/view/drawing_panel.dart';
+import '../../router/router.dart';
+import '../drawer_panel/provider/provider.dart';
 
 class KidsDrawingApp extends StatelessWidget {
   const KidsDrawingApp({Key? key}) : super(key: key);
@@ -12,12 +12,12 @@ class KidsDrawingApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => DrawerPanel(),
+          create: (ctx) => DrawerProvider(),
         )
       ],
-      child: const MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: router,
         debugShowCheckedModeBanner: false,
-        home: Panel(),
       ),
     );
   }

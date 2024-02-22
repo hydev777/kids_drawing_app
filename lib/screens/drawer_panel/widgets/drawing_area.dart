@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../classes/line_point.dart';
-import '../provider/drawer_panel.dart';
+import '../../../core/enums/enums.dart';
+import '../classes/classes.dart';
+import '../provider/provider.dart';
 import 'drawing_board.dart';
 
 class DrawingArea extends StatefulWidget {
@@ -18,13 +19,13 @@ class _DrawingAreaState extends State<DrawingArea> {
   @override
   Widget build(BuildContext context) {
     Color selectedBackgroundColor =
-        context.watch<DrawerPanel>().selectedBackgroundColor;
-    Color selectedLineColor = context.watch<DrawerPanel>().selectedLineColor;
-    double? lineSize = context.watch<DrawerPanel>().lineSize;
-    List<LinePoint>? points = context.watch<DrawerPanel>().points;
-    Offset? pointerOffset = context.watch<DrawerPanel>().pointerOffset;
-    Tools selectedTool = context.watch<DrawerPanel>().selectedTool;
-    final drawActions = context.read<DrawerPanel>();
+        context.watch<DrawerProvider>().selectedBackgroundColor;
+    Color selectedLineColor = context.watch<DrawerProvider>().selectedLineColor;
+    double? lineSize = context.watch<DrawerProvider>().lineSize;
+    List<LinePoint>? points = context.watch<DrawerProvider>().points;
+    Offset? pointerOffset = context.watch<DrawerProvider>().pointerOffset;
+    Tools selectedTool = context.watch<DrawerProvider>().selectedTool;
+    final drawActions = context.read<DrawerProvider>();
 
     setStroke(Offset position) {
       if (selectedTool == Tools.pencil) {

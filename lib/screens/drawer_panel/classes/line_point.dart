@@ -1,5 +1,6 @@
 import 'dart:ui';
-import '../provider/drawer_panel.dart';
+
+import '../../../core/enums/enums.dart';
 
 class LinePoint {
   Offset? point;

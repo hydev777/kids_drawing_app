@@ -3,8 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/ui/constants/constants.dart';
-import '../classes/tool.dart';
-import '../provider/drawer_panel.dart';
+import '../classes/classes.dart';
+import '../provider/provider.dart';
+import '../../../core/enums/enums.dart';
 
 class DrawingTool extends StatelessWidget {
   const DrawingTool({
@@ -18,7 +19,7 @@ class DrawingTool extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final panelActions = context.read<DrawerPanel>();
+    final panelActions = context.read<DrawerProvider>();
 
     return GestureDetector(
       onTap: () {
