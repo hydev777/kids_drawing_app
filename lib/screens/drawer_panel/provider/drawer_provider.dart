@@ -104,18 +104,22 @@ class DrawerProvider with ChangeNotifier {
   void drawOnBoard(line) {
     if (selectedTool == Tools.pencil) {
       LinePoint? point = LinePoint(
-          color: selectedLineColor,
-          size: lineSize,
-          point: line,
-          tool: Tools.pencil);
+        color: selectedLineColor,
+        size: lineSize,
+        point: line,
+        tool: Tools.pencil,
+      );
 
       _points!.add(point);
       _pointerOffset = line;
 
       notifyListeners();
     } else if (selectedTool == Tools.eraser) {
-      LinePoint? point =
-          LinePoint(size: lineSize, point: line, tool: Tools.eraser);
+      LinePoint? point = LinePoint(
+        size: lineSize,
+        point: line,
+        tool: Tools.eraser,
+      );
 
       _points!.add(point);
       _pointerOffset = line;
@@ -129,7 +133,6 @@ class DrawerProvider with ChangeNotifier {
     _strokesList = [];
     _strokesHistory = [];
     _pointerOffset = const Offset(0, 0);
-
     _lineSize = 5;
     _lineColorSelected = 0;
     _backgroundSelected = 0;
@@ -143,7 +146,6 @@ class DrawerProvider with ChangeNotifier {
       _strokesList = [];
       _strokesHistory = [];
       _pointerOffset = const Offset(0, 0);
-
       _lineSize = 5;
       _lineColorSelected = 1;
       _backgroundSelected = 0;

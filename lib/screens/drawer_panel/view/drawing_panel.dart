@@ -133,11 +133,6 @@ class _PanelState extends State<Panel> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     List<Color>? lineColors = context.watch<DrawerProvider>().lineColors;
     List<Color>? backgroundColors =
