@@ -324,6 +324,7 @@ class _PanelState extends State<Panel> {
                     ),
                   ),
                   padding: const EdgeInsets.all(4),
+                  margin: const EdgeInsets.all(2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
