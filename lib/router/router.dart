@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../screens/drawer_panel/view/drawing_panel.dart';
+import 'package:kids_drawing_app/screens/drawer_panel/view/view.dart';
 
 final _rootKey = GlobalKey<NavigatorState>();
 
