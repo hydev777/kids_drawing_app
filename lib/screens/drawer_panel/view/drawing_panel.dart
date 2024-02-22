@@ -204,105 +204,106 @@ class _PanelState extends State<Panel> {
               Align(
                 alignment: Alignment.topCenter,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[200],
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(8),
+                    ),
                   ),
-                  height: 90,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  margin: const EdgeInsets.all(2),
+                  height: 95,
+                  alignment: Alignment.center,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          const Text(
+                            'Line Size',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Row(
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 2),
-                                child: Text('Line Size'),
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    child: Slider(
-                                      value: lineSize!,
-                                      onChanged: (newSize) {
-                                        panelActions.changeLineSize = newSize;
-                                      },
-                                      activeColor: selectedLineColor,
-                                      thumbColor: Colors.black,
-                                      min: 1,
-                                      max: 10,
-                                      divisions: 9,
-                                      label: "$lineSize",
-                                      inactiveColor: Colors.black45,
-                                    ),
-                                    width: 150,
-                                  )
-                                ],
-                              ),
+                              SizedBox(
+                                child: Slider(
+                                  value: lineSize!,
+                                  onChanged: (newSize) {
+                                    panelActions.changeLineSize = newSize;
+                                  },
+                                  activeColor: selectedLineColor,
+                                  thumbColor: Colors.black,
+                                  min: 1,
+                                  max: 10,
+                                  divisions: 9,
+                                  label: "$lineSize",
+                                  inactiveColor: Colors.black45,
+                                ),
+                                width: 140,
+                              )
                             ],
-                          )
+                          ),
                         ],
                       ),
-                      const SizedBox(width: 5),
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 2),
-                                child: Text('Line'),
-                              ),
-                              SizedBox(
-                                width: 105,
-                                child: Wrap(
-                                  children: [
-                                    ...lineColors!.map((color) {
-                                      return ColorOption(
-                                        color: color,
-                                        selectedColor: selectedLineColor,
-                                        onTap: () {
-                                          panelActions.changeLineColor = color;
-                                        },
-                                      );
-                                    }).toList(),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          const Text(
+                            'Line',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          const SizedBox(
-                            width: 10,
+                          SizedBox(
+                            width: 105,
+                            child: Wrap(
+                              children: [
+                                ...lineColors!.map((color) {
+                                  return ColorOption(
+                                    color: color,
+                                    selectedColor: selectedLineColor,
+                                    onTap: () {
+                                      panelActions.changeLineColor = color;
+                                    },
+                                  );
+                                }).toList(),
+                              ],
+                            ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: Text('Background'),
-                              ),
-                              SizedBox(
-                                width: 110,
-                                child: Wrap(
-                                  children: [
-                                    ...backgroundColors!.map((color) {
-                                      return ColorOption(
-                                        color: color,
-                                        selectedColor: selectedBackgroundColor,
-                                        onTap: () {
-                                          panelActions.changeBackgroundColor =
-                                              color;
-                                        },
-                                      );
-                                    }).toList(),
-                                  ],
-                                ),
-                              ),
-                            ],
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Background',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 105,
+                            child: Wrap(
+                              children: [
+                                ...backgroundColors!.map((color) {
+                                  return ColorOption(
+                                    color: color,
+                                    selectedColor: selectedBackgroundColor,
+                                    onTap: () {
+                                      panelActions.changeBackgroundColor =
+                                          color;
+                                    },
+                                  );
+                                }).toList(),
+                              ],
+                            ),
                           ),
                         ],
                       ),
