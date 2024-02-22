@@ -42,7 +42,6 @@ class DrawingTool extends StatelessWidget {
         width: selectedTool == tool.tool ? 35 : 25,
         child: SvgPicture.asset(
           tool.srcUrl!,
-          color: Colors.black,
         ),
       ),
     );

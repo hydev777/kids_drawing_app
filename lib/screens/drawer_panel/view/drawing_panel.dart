@@ -152,78 +152,46 @@ class _PanelState extends State<Panel> {
         appBar: AppBar(
           backgroundColor: Colors.blue[500],
           actions: [
-            GestureDetector(
-              onTap: () async {
+            ActionButton(
+              onTap: () {
                 if (points!.isNotEmpty) {
                   clearBoard();
                 }
               },
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                margin: const EdgeInsets.all(2),
-                height: 35,
-                width: 35,
-                child: const Icon(
-                  Icons.restart_alt,
-                  size: 22,
-                  color: Colors.white,
-                ),
+              icon: const Icon(
+                Icons.restart_alt,
+                size: 22,
+                color: Colors.white,
               ),
             ),
-            GestureDetector(
+            ActionButton(
               onTap: () {
                 panelActions.undoStroke();
               },
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                margin: const EdgeInsets.all(2),
-                height: 35,
-                width: 35,
-                child: const Icon(
-                  Icons.undo,
-                  size: 22,
-                  color: Colors.white,
-                ),
+              icon: const Icon(
+                Icons.undo,
+                size: 22,
+                color: Colors.white,
               ),
             ),
-            GestureDetector(
+            ActionButton(
               onTap: () {
                 panelActions.redoStroke();
               },
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                margin: const EdgeInsets.all(2),
-                height: 35,
-                width: 35,
-                child: const Icon(
-                  Icons.redo,
-                  size: 22,
-                  color: Colors.white,
-                ),
+              icon: const Icon(
+                Icons.redo,
+                size: 22,
+                color: Colors.white,
               ),
             ),
-            GestureDetector(
-              onTap: () async {
+            ActionButton(
+              onTap: () {
                 saveDrawingInDevice(points);
               },
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                margin: const EdgeInsets.all(2),
-                height: 35,
-                width: 35,
-                child: const Icon(
-                  Icons.save,
-                  size: 22,
-                  color: Colors.white,
-                ),
+              icon: const Icon(
+                Icons.save,
+                size: 22,
+                color: Colors.white,
               ),
             ),
           ],
