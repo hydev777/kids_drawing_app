@@ -228,25 +228,21 @@ class _PanelState extends State<Panel> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                child: Slider(
-                                  value: lineSize!,
-                                  onChanged: (newSize) {
-                                    panelActions.changeLineSize = newSize;
-                                  },
-                                  activeColor: selectedLineColor,
-                                  thumbColor: Colors.black,
-                                  min: 1,
-                                  max: 10,
-                                  divisions: 9,
-                                  label: "$lineSize",
-                                  inactiveColor: Colors.black45,
-                                ),
-                                width: 140,
-                              )
-                            ],
+                          SizedBox(
+                            child: Slider(
+                              value: lineSize!,
+                              onChanged: (newSize) {
+                                panelActions.changeLineSize = newSize;
+                              },
+                              activeColor: selectedLineColor,
+                              thumbColor: Colors.black,
+                              min: 1,
+                              max: 10,
+                              divisions: 9,
+                              label: "$lineSize",
+                              inactiveColor: Colors.black45,
+                            ),
+                            width: 140,
                           ),
                         ],
                       ),
