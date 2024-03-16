@@ -17,6 +17,7 @@ dependencies:
   path_provider: ^2.1.2
   image_gallery_saver: ^2.0.3
   go_router: ^13.2.0
+  flutter_native_splash: ^2.3.13
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +29,18 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/eraser.svg
-    - assets/images/pencil.svg
+    - assets/logos/
+    - assets/images/
+    - assets/logos/
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logos/pendraw_logo.png
+  color_dark: "#121212"
+
+  android_12:
+    image: assets/logos/pendraw_logo.png
+    icon_background_color: "#ffffff"
+
+  web: false
 
