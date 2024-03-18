@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -177,7 +178,9 @@ class _PanelState extends State<Panel> {
                 color: Colors.white,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push("/privacy-policy");
+                },
                 child: const Text(
                   "Privacy Policy - Pendraw",
                   style: TextStyle(color: Colors.white),
