@@ -149,7 +149,45 @@ class _PanelState extends State<Panel> {
 
     return SafeArea(
       child: Scaffold(
+        drawer: Container(
+          width: 250,
+          decoration: BoxDecoration(
+            color: Colors.blue[200],
+          ),
+          child: Column(
+            children: [
+              Container(
+                height: 120,
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      child: Image.asset("assets/logos/pendraw_logo.png"),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(
+                endIndent: 10,
+                indent: 10,
+                color: Colors.white,
+              ),
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Privacy Policy - Pendraw",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: Colors.blue[500],
           actions: [
             ActionButton(
@@ -226,7 +264,11 @@ class _PanelState extends State<Panel> {
                             'Line Size',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
+                          ),
+                          const SizedBox(
+                            height: 5,
                           ),
                           SizedBox(
                             child: Slider(
@@ -254,7 +296,11 @@ class _PanelState extends State<Panel> {
                             'Line',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
+                          ),
+                          const SizedBox(
+                            height: 5,
                           ),
                           SizedBox(
                             width: 105,
@@ -282,7 +328,11 @@ class _PanelState extends State<Panel> {
                             'Background',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
+                          ),
+                          const SizedBox(
+                            height: 5,
                           ),
                           SizedBox(
                             width: 105,
