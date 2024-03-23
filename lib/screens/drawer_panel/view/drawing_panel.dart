@@ -150,43 +150,46 @@ class _PanelState extends State<Panel> {
 
     return SafeArea(
       child: Scaffold(
-        drawer: Container(
-          width: 250,
-          decoration: BoxDecoration(
-            color: Colors.blue[200],
-          ),
-          child: Column(
-            children: [
-              Container(
-                height: 120,
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      child: Image.asset("assets/logos/pendraw_logo.png"),
-                    ),
-                  ],
+        drawerEdgeDragWidth: 0.0,
+        drawer: Drawer(
+          child: Container(
+            width: 250,
+            decoration: BoxDecoration(
+              color: Colors.blue[200],
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 120,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        child: Image.asset("assets/logos/pendraw_logo.png"),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const Divider(
-                endIndent: 10,
-                indent: 10,
-                color: Colors.white,
-              ),
-              TextButton(
-                onPressed: () {
-                  context.push("/privacy-policy");
-                },
-                child: const Text(
-                  "Privacy Policy - Pendraw",
-                  style: TextStyle(color: Colors.white),
+                const Divider(
+                  endIndent: 10,
+                  indent: 10,
+                  color: Colors.white,
                 ),
-              ),
-            ],
+                TextButton(
+                  onPressed: () {
+                    context.push("/privacy-policy");
+                  },
+                  child: const Text(
+                    "Privacy Policy - Pendraw",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         appBar: AppBar(
