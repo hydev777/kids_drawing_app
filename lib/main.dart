@@ -7,5 +7,7 @@ void main() {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   FlutterNativeSplash.remove();
-  runApp(const KidsDrawingApp());
+  runApp(
+    const KidsDrawingApp(),
+  );
 }

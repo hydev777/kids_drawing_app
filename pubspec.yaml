@@ -3,7 +3,7 @@ description: A drawing app
 
 publish_to: 'none'
 
-version: 2.0.2+4
+version: 2.0.2+6
 
 environment:
   sdk: ">=2.16.2 <4.0.0"
@@ -32,7 +32,12 @@ flutter:
   assets:
     - assets/logos/
     - assets/images/
-    - assets/logos/
+    - assets/images/pendraw_body_sketch_1.png
+    - assets/images/pendraw_body_sketch_2.png
+    - assets/images/pendraw_face_1.png
+    - assets/images/pendraw_face_2.png
+    - assets/images/pendraw_hands_sketch_1.png
+    - assets/images/pendraw_hands_sketch_2.png
 
 flutter_native_splash:
   color: "#ffffff"

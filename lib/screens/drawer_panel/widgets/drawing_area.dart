@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,13 +19,15 @@ class _DrawingAreaState extends State<DrawingArea> {
 
   @override
   Widget build(BuildContext context) {
-    Color selectedBackgroundColor =
+    final selectedBackgroundColor =
         context.watch<DrawerProvider>().selectedBackgroundColor;
-    Color selectedLineColor = context.watch<DrawerProvider>().selectedLineColor;
-    double? lineSize = context.watch<DrawerProvider>().lineSize;
-    List<LinePoint>? points = context.watch<DrawerProvider>().points;
-    Offset? pointerOffset = context.watch<DrawerProvider>().pointerOffset;
-    Tools selectedTool = context.watch<DrawerProvider>().selectedTool;
+    final selectedLineColor = context.watch<DrawerProvider>().selectedLineColor;
+    final lineSize = context.watch<DrawerProvider>().lineSize;
+    final points = context.watch<DrawerProvider>().points;
+    final pointerOffset = context.watch<DrawerProvider>().pointerOffset;
+    final selectedTool = context.watch<DrawerProvider>().selectedTool;
+    final ValueNotifier<ui.Image>? image =
+        context.watch<DrawerProvider>().image;
     final drawActions = context.read<DrawerProvider>();
 
     setStroke(Offset position) {
@@ -73,10 +76,10 @@ class _DrawingAreaState extends State<DrawingArea> {
         child: CustomPaint(
           size: MediaQuery.of(context).size,
           painter: DrawingBoard(
+            image: image,
             pointerOffset: pointerOffset,
             points: points,
             backgroundColor: selectedBackgroundColor,
-            // pointerImage: pointerImage
           ),
         ),
       ),

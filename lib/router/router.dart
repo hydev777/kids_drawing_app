@@ -12,7 +12,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/panel',
-      builder: (context, state) => const Panel(),
+      builder: (context, state) => const DrawingView(),
     ),
     GoRoute(
       path: '/privacy-policy',

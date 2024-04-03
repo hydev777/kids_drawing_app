@@ -1,19 +1,20 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../classes/classes.dart';
 import '../../../core/enums/enums.dart';
 
 class DrawingBoard extends CustomPainter {
+  ValueNotifier<ui.Image>? image;
   List<LinePoint>? points;
   Color? backgroundColor;
-  ui.Image? pointerImage;
   Offset? pointerOffset;
 
   DrawingBoard({
+    this.image,
     this.points,
     this.backgroundColor,
-    this.pointerImage,
     this.pointerOffset,
   }) : super();
 
@@ -22,6 +23,14 @@ class DrawingBoard extends CustomPainter {
     canvas.drawColor(backgroundColor!, BlendMode.multiply);
 
     // TODO: Add Shader pencil options
+
+    // image != null
+    //     ? canvas.drawImage(
+    //         image!.value,
+    //         Offset(size.width / 2, size.height / 2),
+    //         Paint()..color = Colors.black,
+    //       )
+    //     : canvas;
 
     for (int i = 0; i < (points!.length - 1); i++) {
       if (points![i].tool == Tools.pencil) {

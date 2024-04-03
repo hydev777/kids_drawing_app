@@ -8,18 +8,31 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/enums/enums.dart';
+import '../dialog/sketches_dialog.dart';
 import '../provider/provider.dart';
 import '../classes/classes.dart';
 import '../widgets/widgets.dart';
 
-class Panel extends StatefulWidget {
-  const Panel({Key? key}) : super(key: key);
+class DrawingView extends StatelessWidget {
+  const DrawingView({Key? key}) : super(key: key);
 
   @override
-  State<Panel> createState() => _PanelState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => SketchProvider(),
+      child: const DrawingPanelBody(),
+    );
+  }
 }
 
-class _PanelState extends State<Panel> {
+class DrawingPanelBody extends StatefulWidget {
+  const DrawingPanelBody({Key? key}) : super(key: key);
+
+  @override
+  State<DrawingPanelBody> createState() => _DrawingPanelBodyState();
+}
+
+class _DrawingPanelBodyState extends State<DrawingPanelBody> {
   void saveDrawingInDevice(List<LinePoint>? points) {
     if (points!.isNotEmpty) {
       showDialog(
@@ -116,7 +129,8 @@ class _PanelState extends State<Panel> {
             ),
           ),
           TextButton(
-            onPressed: () async {
+            onPressed: () {
+              context.read<SketchProvider>().unselectSketch();
               context.read<DrawerProvider>().newPaint();
               Navigator.of(context).pop();
             },
@@ -134,6 +148,13 @@ class _PanelState extends State<Panel> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    context.read<DrawerProvider>().setImage();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Color>? lineColors = context.watch<DrawerProvider>().lineColors;
     List<Color>? backgroundColors =
@@ -147,6 +168,8 @@ class _PanelState extends State<Panel> {
     double? lineSize = context.watch<DrawerProvider>().lineSize;
     List<LinePoint>? points = context.watch<DrawerProvider>().points;
     final panelActions = context.read<DrawerProvider>();
+    final sketch = context.watch<SketchProvider>().selectedSketch;
+    final isKetchSelected = context.watch<SketchProvider>().isSketchedSelected;
 
     return SafeArea(
       child: Scaffold(
@@ -198,7 +221,7 @@ class _PanelState extends State<Panel> {
           actions: [
             ActionButton(
               onTap: () {
-                if (points!.isNotEmpty) {
+                if (points!.isNotEmpty || isKetchSelected) {
                   clearBoard();
                 }
               },
@@ -238,129 +261,188 @@ class _PanelState extends State<Panel> {
                 color: Colors.white,
               ),
             ),
+            PopupMenuButton(
+              icon: const Icon(
+                Icons.more_vert,
+                size: 24.0,
+              ),
+              itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                PopupMenuItem(
+                  onTap: () {
+                    final sketchProvider = context.read<SketchProvider>();
+
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ChangeNotifierProvider<SketchProvider>.value(
+                            value: sketchProvider,
+                            child: const SketchesDialog(),
+                          );
+                        });
+                  },
+                  child: const Text('Sketches'),
+                ),
+              ],
+            )
           ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Stack(
             children: [
+              Selector<SketchProvider, bool>(
+                selector: (context, provider) => provider.isSketchedSelected,
+                builder: (context, isSketchedSelected, _) {
+                  if (isSketchedSelected) {
+                    return Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(sketch.srcUrl!),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
               const DrawingArea(),
               Align(
                 alignment: Alignment.topCenter,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue[200],
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(8),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue[200],
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      margin: const EdgeInsets.all(2),
+                      height: 95,
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Line Size',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                child: Slider(
+                                  value: lineSize!,
+                                  onChanged: (newSize) {
+                                    panelActions.changeLineSize = newSize;
+                                  },
+                                  activeColor: selectedLineColor,
+                                  thumbColor: Colors.black,
+                                  min: 1,
+                                  max: 10,
+                                  divisions: 9,
+                                  label: "$lineSize",
+                                  inactiveColor: Colors.black45,
+                                ),
+                                width: 140,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Line',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                width: 90,
+                                child: Wrap(
+                                  children: [
+                                    ...lineColors!.map((color) {
+                                      return ColorOption(
+                                        color: color,
+                                        selectedColor: selectedLineColor,
+                                        onTap: () {
+                                          panelActions.changeLineColor = color;
+                                        },
+                                      );
+                                    }).toList(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Background',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                width: 90,
+                                child: Wrap(
+                                  children: [
+                                    ...backgroundColors!.map((color) {
+                                      return ColorOption(
+                                        color: color,
+                                        selectedColor: selectedBackgroundColor,
+                                        onTap: () {
+                                          panelActions.changeBackgroundColor =
+                                              color;
+                                        },
+                                      );
+                                    }).toList(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  margin: const EdgeInsets.all(2),
-                  height: 95,
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Line Size',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            child: Slider(
-                              value: lineSize!,
-                              onChanged: (newSize) {
-                                panelActions.changeLineSize = newSize;
-                              },
-                              activeColor: selectedLineColor,
-                              thumbColor: Colors.black,
-                              min: 1,
-                              max: 10,
-                              divisions: 9,
-                              label: "$lineSize",
-                              inactiveColor: Colors.black45,
-                            ),
-                            width: 140,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Line',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 105,
-                            child: Wrap(
-                              children: [
-                                ...lineColors!.map((color) {
-                                  return ColorOption(
-                                    color: color,
-                                    selectedColor: selectedLineColor,
-                                    onTap: () {
-                                      panelActions.changeLineColor = color;
-                                    },
-                                  );
-                                }).toList(),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Background',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 105,
-                            child: Wrap(
-                              children: [
-                                ...backgroundColors!.map((color) {
-                                  return ColorOption(
-                                    color: color,
-                                    selectedColor: selectedBackgroundColor,
-                                    onTap: () {
-                                      panelActions.changeBackgroundColor =
-                                          color;
-                                    },
-                                  );
-                                }).toList(),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    isKetchSelected
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<SketchProvider>()
+                                      .unselectSketch();
+                                },
+                                icon: const Icon(Icons.close),
+                              )
+                            ],
+                          )
+                        : const SizedBox.shrink()
+                  ],
                 ),
               ),
               Positioned(
@@ -389,7 +471,7 @@ class _PanelState extends State<Panel> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

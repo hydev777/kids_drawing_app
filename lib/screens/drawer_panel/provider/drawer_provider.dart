@@ -31,10 +31,15 @@ class DrawerProvider with ChangeNotifier {
   int _lineColorSelected = 1;
   int _backgroundSelected = 0;
   int _toolSelected = 0;
+  ValueNotifier<ui.Image>? _image;
   Offset? _pointerOffset = const Offset(0, 0);
   List<LinePoint>? _points = [];
   List<List<LinePoint>> _strokesList = [];
   List<List<LinePoint>> _strokesHistory = [];
+
+  ValueNotifier<ui.Image>? get image {
+    return _image;
+  }
 
   Offset? get pointerOffset {
     return _pointerOffset;
@@ -99,6 +104,29 @@ class DrawerProvider with ChangeNotifier {
       _backgroundSelected = index;
       notifyListeners();
     }
+  }
+
+  void setImage() async {
+    final data = await NetworkAssetBundle(
+      Uri.parse(
+          'https://www.dexerto.com/cdn-cgi/image/width=3840,quality=60,format=auto/https://editors.dexerto.com/wp-content/uploads/2023/11/09/jujutsu-kaisen-sukuna-technique.jpeg'),
+    ).load('');
+
+    final data2 = await rootBundle.load('assets/images/pendraw_sketch_1.png');
+
+    final codec = await ui.instantiateImageCodec(
+      data2.buffer.asUint8List(),
+      targetHeight: 700,
+      targetWidth: 300,
+    );
+
+    var frame = await codec.getNextFrame();
+
+    _image = ValueNotifier<ui.Image>(
+      frame.image,
+    );
+
+    notifyListeners();
   }
 
   void drawOnBoard(line) {
