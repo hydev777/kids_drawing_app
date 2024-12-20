@@ -16,7 +16,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   void initState() {
     super.initState();
 
-    late final PlatformWebViewControllerCreationParams params;
+    final PlatformWebViewControllerCreationParams params;
 
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams(

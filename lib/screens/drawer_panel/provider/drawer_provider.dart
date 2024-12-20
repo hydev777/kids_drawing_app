@@ -107,15 +107,10 @@ class DrawerProvider with ChangeNotifier {
   }
 
   void setImage() async {
-    final data = await NetworkAssetBundle(
-      Uri.parse(
-          'https://www.dexerto.com/cdn-cgi/image/width=3840,quality=60,format=auto/https://editors.dexerto.com/wp-content/uploads/2023/11/09/jujutsu-kaisen-sukuna-technique.jpeg'),
-    ).load('');
-
-    final data2 = await rootBundle.load('assets/images/pendraw_sketch_1.png');
+    final image = await rootBundle.load('assets/images/pendraw_sketch_1.png');
 
     final codec = await ui.instantiateImageCodec(
-      data2.buffer.asUint8List(),
+      image.buffer.asUint8List(),
       targetHeight: 700,
       targetWidth: 300,
     );

@@ -7,7 +7,6 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/enums/enums.dart';
 import '../dialog/sketches_dialog.dart';
 import '../provider/provider.dart';
 import '../classes/classes.dart';
@@ -156,17 +155,15 @@ class _DrawingPanelBodyState extends State<DrawingPanelBody> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color>? lineColors = context.watch<DrawerProvider>().lineColors;
-    List<Color>? backgroundColors =
-        context.watch<DrawerProvider>().backgroundColors;
-    List<Tool>? toolsList = context.watch<DrawerProvider>().toolList;
-    Color? selectedBackgroundColor =
+    final lineColors = context.watch<DrawerProvider>().lineColors;
+    final backgroundColors = context.watch<DrawerProvider>().backgroundColors;
+    final toolsList = context.watch<DrawerProvider>().toolList;
+    final selectedBackgroundColor =
         context.watch<DrawerProvider>().selectedBackgroundColor;
-    Color? selectedLineColor =
-        context.watch<DrawerProvider>().selectedLineColor;
-    Tools? selectedTool = context.watch<DrawerProvider>().selectedTool;
-    double? lineSize = context.watch<DrawerProvider>().lineSize;
-    List<LinePoint>? points = context.watch<DrawerProvider>().points;
+    final selectedLineColor = context.watch<DrawerProvider>().selectedLineColor;
+    final selectedTool = context.watch<DrawerProvider>().selectedTool;
+    final lineSize = context.watch<DrawerProvider>().lineSize;
+    final points = context.watch<DrawerProvider>().points;
     final panelActions = context.read<DrawerProvider>();
     final sketch = context.watch<SketchProvider>().selectedSketch;
     final isKetchSelected = context.watch<SketchProvider>().isSketchedSelected;
