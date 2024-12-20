@@ -1,4 +1,4 @@
-# Drawing app
+# Kids drawing app
 
 Drawing app made in flutter with clean architecture. 
 
