@@ -1,4 +1,4 @@
-# drawing_things
+# Drawing app
 
 Drawing app made in flutter with clean architecture. 
 
